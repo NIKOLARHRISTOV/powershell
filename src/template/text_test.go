@@ -152,7 +152,7 @@ func TestRenderTemplate(t *testing.T) {
 	env.On("TemplateCache").Return(&platform.TemplateCache{
 		Env: make(map[string]string),
 	})
-	env.On("Log", mock2.Anything, mock2.Anything, mock2.Anything)
+	env.On("Error", mock2.Anything, mock2.Anything)
 	for _, tc := range cases {
 		tmpl := &Text{
 			Template: tc.Template,
@@ -209,7 +209,7 @@ func TestRenderTemplateEnvVar(t *testing.T) {
 		env.On("TemplateCache").Return(&platform.TemplateCache{
 			Env: tc.Env,
 		})
-		env.On("Log", mock2.Anything, mock2.Anything, mock2.Anything)
+		env.On("Error", mock2.Anything, mock2.Anything)
 		tmpl := &Text{
 			Template: tc.Template,
 			Context:  tc.Context,
@@ -282,5 +282,33 @@ func TestCleanTemplate(t *testing.T) {
 		}
 		tmpl.cleanTemplate()
 		assert.Equal(t, tc.Expected, tmpl.Template, tc.Case)
+	}
+}
+
+func TestSegmentContains(t *testing.T) {
+	cases := []struct {
+		Case     string
+		Expected string
+		Template string
+	}{
+		{Case: "match", Expected: "hello", Template: `{{ if .Segments.Contains "Git" }}hello{{ end }}`},
+		{Case: "match", Expected: "world", Template: `{{ if .Segments.Contains "Path" }}hello{{ else }}world{{ end }}`},
+	}
+
+	env := &mock.MockedEnvironment{}
+	env.On("TemplateCache").Return(&platform.TemplateCache{
+		Env: make(map[string]string),
+		Segments: map[string]interface{}{
+			"Git": nil,
+		},
+	})
+	for _, tc := range cases {
+		tmpl := &Text{
+			Template: tc.Template,
+			Context:  nil,
+			Env:      env,
+		}
+		text, _ := tmpl.Render()
+		assert.Equal(t, tc.Expected, text, tc.Case)
 	}
 }

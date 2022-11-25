@@ -1,5 +1,6 @@
 set --export POSH_THEME ::CONFIG::
 set --global POWERLINE_COMMAND "oh-my-posh"
+set --global POSH_PID $fish_pid
 set --global CONDA_PROMPT_MODIFIER false
 set --global omp_tooltip_prompt ""
 set --global has_omp_tooltip false
@@ -59,6 +60,11 @@ function postexec_omp --on-event fish_postexec
   # works with fish <3.2
   # pre and postexec not fired for empty command in fish >=3.2
   set --global --export omp_lastcommand $argv
+end
+
+# fix tooltip not resetting on SIGINT (ctrl+c)
+function sigint_omp --on-signal INT
+    commandline --function repaint
 end
 
 # perform cleanup so a new initialization in current session works
