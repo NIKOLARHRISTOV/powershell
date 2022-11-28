@@ -1345,6 +1345,25 @@
       "contributions": [
         "design"
       ]
+    },
+    {
+      "login": "treed",
+      "name": "Ted Reed",
+      "avatar_url": "https://avatars.githubusercontent.com/u/71910?v=4",
+      "profile": "http://tedreed.info",
+      "contributions": [
+        "code",
+        "doc"
+      ]
+    },
+    {
+      "login": "asportnoy",
+      "name": "Albert Portnoy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/14863373?v=4",
+      "profile": "http://albertp.dev",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
