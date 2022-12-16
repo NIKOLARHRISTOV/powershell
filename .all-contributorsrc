@@ -1362,7 +1362,57 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/14863373?v=4",
       "profile": "http://albertp.dev",
       "contributions": [
-        "code"
+        "code",
+        "doc"
+      ]
+    },
+    {
+      "login": "Lemorz56",
+      "name": "Sebastian",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1346676?v=4",
+      "profile": "https://www.msbrg.net/",
+      "contributions": [
+        "code",
+        "design",
+        "doc"
+      ]
+    },
+    {
+      "login": "mirsella",
+      "name": "Lucas",
+      "avatar_url": "https://avatars.githubusercontent.com/u/45905567?v=4",
+      "profile": "https://github.com/mirsella",
+      "contributions": [
+        "code",
+        "design",
+        "doc"
+      ]
+    },
+    {
+      "login": "ethansocal",
+      "name": "Ethan",
+      "avatar_url": "https://avatars.githubusercontent.com/u/79533577?v=4",
+      "profile": "https://github.com/ethansocal",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "astronaako",
+      "name": "Mohamed Naamy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/18577543?v=4",
+      "profile": "https://github.com/astronaako",
+      "contributions": [
+        "design"
+      ]
+    },
+    {
+      "login": "bend-n",
+      "name": "bendn",
+      "avatar_url": "https://avatars.githubusercontent.com/u/70787919?v=4",
+      "profile": "http://bend-n.github.io",
+      "contributions": [
+        "design"
       ]
     }
   ],

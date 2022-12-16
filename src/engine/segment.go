@@ -36,11 +36,13 @@ type Segment struct {
 	Properties          properties.Map `json:"properties,omitempty"`
 	Interactive         bool           `json:"interactive,omitempty"`
 	Alias               string         `json:"alias,omitempty"`
+	MaxWidth            int            `json:"max_width,omitempty"`
+	MinWidth            int            `json:"min_width,omitempty"`
 
+	env             platform.Environment
 	writer          SegmentWriter
 	Enabled         bool `json:"-"`
 	text            string
-	env             platform.Environment
 	backgroundCache string
 	foregroundCache string
 }
@@ -121,6 +123,8 @@ const (
 	GCP SegmentType = "gcp"
 	// GIT represents the git status and information
 	GIT SegmentType = "git"
+	// GITVERSION represents the gitversion information
+	GITVERSION SegmentType = "gitversion"
 	// GOLANG writes which go version is currently active
 	GOLANG SegmentType = "go"
 	// HASKELL segment
@@ -294,6 +298,7 @@ func (segment *Segment) mapSegmentWithWriter(env platform.Environment) error {
 		FOSSIL:        &segments.Fossil{},
 		GCP:           &segments.Gcp{},
 		GIT:           &segments.Git{},
+		GITVERSION:    &segments.GitVersion{},
 		GOLANG:        &segments.Golang{},
 		HASKELL:       &segments.Haskell{},
 		IPIFY:         &segments.IPify{},
@@ -395,6 +400,9 @@ func (segment *Segment) SetEnabled(env platform.Environment) {
 				return
 			}
 		}
+	}
+	if shouldHideForWidth(segment.env, segment.MinWidth, segment.MaxWidth) {
+		return
 	}
 	if segment.writer.Enabled() {
 		segment.Enabled = true

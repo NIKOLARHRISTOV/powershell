@@ -103,8 +103,17 @@ func (e *Engine) printPWD() {
 }
 
 func (e *Engine) newline() {
-	e.write("\n")
+	// WARP terminal will remove \n from the prompt, so we hack a newline in
+	if e.isWarp() {
+		e.write(e.Ansi.LineBreak())
+	} else {
+		e.write("\n")
+	}
 	e.currentLineLength = 0
+}
+
+func (e *Engine) isWarp() bool {
+	return e.Env.Getenv("TERM_PROGRAM") == "WarpTerminal"
 }
 
 func (e *Engine) shouldFill(block *Block, length int) (string, bool) {
@@ -264,6 +273,17 @@ func (e *Engine) print() string {
 	case shell.ZSH:
 		if !e.Env.Flags().Eval {
 			break
+		}
+		// Warp doesn't support RPROMPT so we need to write it manually
+		if e.isWarp() {
+			e.write(e.Ansi.SaveCursorPosition())
+			e.write(e.Ansi.CarriageForward())
+			e.write(e.Ansi.GetCursorForRightWrite(e.rpromptLength, 0))
+			e.write(e.rprompt)
+			e.write(e.Ansi.RestoreCursorPosition())
+			// escape double quotes contained in the prompt
+			prompt := fmt.Sprintf("PS1=\"%s\"", strings.ReplaceAll(e.string(), `"`, `\"`))
+			return prompt
 		}
 		// escape double quotes contained in the prompt
 		prompt := fmt.Sprintf("PS1=\"%s\"", strings.ReplaceAll(e.string(), `"`, `\"`))
