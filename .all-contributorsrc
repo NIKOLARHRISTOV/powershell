@@ -1280,7 +1280,8 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/121028?v=4",
       "profile": "https://github.com/mjcarman",
       "contributions": [
-        "code"
+        "code",
+        "doc"
       ]
     },
     {
@@ -1411,6 +1412,52 @@
       "name": "bendn",
       "avatar_url": "https://avatars.githubusercontent.com/u/70787919?v=4",
       "profile": "http://bend-n.github.io",
+      "contributions": [
+        "design"
+      ]
+    },
+    {
+      "login": "davidanthoff",
+      "name": "David Anthoff",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1036561?v=4",
+      "profile": "http://www.david-anthoff.com",
+      "contributions": [
+        "code",
+        "doc"
+      ]
+    },
+    {
+      "login": "jooooel",
+      "name": "jooooel",
+      "avatar_url": "https://avatars.githubusercontent.com/u/9303280?v=4",
+      "profile": "https://github.com/jooooel",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "maxlandon",
+      "name": "maxlandon",
+      "avatar_url": "https://avatars.githubusercontent.com/u/25826036?v=4",
+      "profile": "https://github.com/maxlandon",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "lino-levan",
+      "name": "Lino Le Van",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11367844?v=4",
+      "profile": "https://linolevan.com",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "dvlprJobayer",
+      "name": "Jobayer Ahammed Patwary",
+      "avatar_url": "https://avatars.githubusercontent.com/u/76583359?v=4",
+      "profile": "https://github.com/dvlprJobayer",
       "contributions": [
         "design"
       ]

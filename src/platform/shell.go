@@ -62,6 +62,7 @@ type Flags struct {
 	Strict        bool
 	Debug         bool
 	Manual        bool
+	Plain         bool
 }
 
 type CommandError struct {
@@ -526,12 +527,6 @@ func (env *Shell) CommandPath(command string) string {
 		return path
 	}
 	path, err := exec.LookPath(command)
-	if err == nil {
-		env.cmdCache.set(command, path)
-		env.Debug("CommandPath", path)
-		return path
-	}
-	path, err = env.LookWinAppPath(command)
 	if err == nil {
 		env.cmdCache.set(command, path)
 		env.Debug("CommandPath", path)
