@@ -1,35 +1,35 @@
 on:
-  pull_request:
-    paths-ignore:
-      - 'README.md'
-      - 'CONTRIBUTING.md'
-      - 'COPYING'
-      - 'website/**'
-      - '.github/*.md'
-      - '.github/FUNDING.yml'
-  push:
-    branches:
-      - main
+    pull_request:
+        paths-ignore:
+            - "README.md"
+            - "CONTRIBUTING.md"
+            - "COPYING"
+            - "website/**"
+            - ".github/*.md"
+            - ".github/FUNDING.yml"
+    push:
+        branches:
+            - main
 
 name: Code QL
 jobs:
-  code-ql:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ${{ github.workspace }}/src
-    steps:
-    - name: Install Go
-      uses: actions/setup-go@6edd4406fa81c3da01a34fa6f6343087c207a568
-      with:
-        go-version: 1.18
-    - name: Checkout code
-      uses: actions/checkout@v3.3.0
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@959cbb7472c4d4ad70cdfe6f4976053fe48ab394
-      with:
-        languages: go
-    - name: Autobuild
-      uses: github/codeql-action/autobuild@959cbb7472c4d4ad70cdfe6f4976053fe48ab394
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@959cbb7472c4d4ad70cdfe6f4976053fe48ab394
+    code-ql:
+        runs-on: ubuntu-latest
+        defaults:
+            run:
+                working-directory: ${{ github.workspace }}/src
+        steps:
+            - name: Install Go
+              uses: actions/setup-go@v3.5.0
+              with:
+                  go-version: 1.18
+            - name: Checkout code
+              uses: actions/checkout@v3.3.0
+            - name: Initialize CodeQL
+              uses: github/codeql-action/init@959cbb7472c4d4ad70cdfe6f4976053fe48ab394
+              with:
+                  languages: go
+            - name: Autobuild
+              uses: github/codeql-action/autobuild@959cbb7472c4d4ad70cdfe6f4976053fe48ab394
+            - name: Perform CodeQL Analysis
+              uses: github/codeql-action/analyze@959cbb7472c4d4ad70cdfe6f4976053fe48ab394

@@ -3,24 +3,24 @@ name: Go Mod
 on: [pull_request]
 
 jobs:
-  go-mod:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ${{ github.workspace }}/src
-    steps:
-    - name: Install Go
-      uses: actions/setup-go@6edd4406fa81c3da01a34fa6f6343087c207a568
-      with:
-        go-version: 1.19
-    - name: Checkout code
-      uses: actions/checkout@v3.3.0
-    - name: Check for unused dependencies
-      run: |
-        go mod tidy
-        if [ "$(git status | grep -c "nothing to commit, working tree clean")" == "1" ]; then
-          echo "Nothing to tidy"
-          exit 0
-        fi
-        echo "Go mod tidy is needed"
-        exit 1
+    go-mod:
+        runs-on: ubuntu-latest
+        defaults:
+            run:
+                working-directory: ${{ github.workspace }}/src
+        steps:
+            - name: Install Go
+              uses: actions/setup-go@v3.5.0
+              with:
+                  go-version: 1.19
+            - name: Checkout code
+              uses: actions/checkout@v3.3.0
+            - name: Check for unused dependencies
+              run: |
+                  go mod tidy
+                  if [ "$(git status | grep -c "nothing to commit, working tree clean")" == "1" ]; then
+                    echo "Nothing to tidy"
+                    exit 0
+                  fi
+                  echo "Go mod tidy is needed"
+                  exit 1
