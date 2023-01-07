@@ -3,12 +3,13 @@ package platform
 import (
 	"errors"
 	"fmt"
-	"oh-my-posh/regex"
 	"reflect"
 	"strings"
 	"syscall"
 	"unicode/utf16"
 	"unsafe"
+
+	"github.com/jandedobbeleer/oh-my-posh/src/regex"
 
 	"golang.org/x/sys/windows"
 )

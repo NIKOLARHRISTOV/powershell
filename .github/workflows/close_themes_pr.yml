@@ -5,18 +5,18 @@ on:
             - opened
 
 jobs:
-    check:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout code 👋
-              uses: actions/checkout@v3.3.0
-            - name: Check and close 🔐
-              uses: actions/github-script@v6.3.3
-              with:
-                  github-token: ${{ secrets.GH_PAT }}
-                  script: |
-                      const { repo: { owner, repo } } = context;
-                      const pr = context.payload.pull_request;
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code 👋
+        uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c
+      - name: Check and close 🔐
+        uses: actions/github-script@d556feaca394842dc55e4734bf3bb9f685482fa0
+        with:
+          github-token: ${{ secrets.GH_PAT }}
+          script: |
+            const { repo: { owner, repo } } = context;
+            const pr = context.payload.pull_request;
 
                       const response = await github.rest.pulls.listFiles({
                         owner, repo,

@@ -2,10 +2,11 @@ package cli
 
 import (
 	"fmt"
-	"oh-my-posh/color"
-	"oh-my-posh/platform"
 	"strings"
 	"time"
+
+	"github.com/jandedobbeleer/oh-my-posh/src/ansi"
+	"github.com/jandedobbeleer/oh-my-posh/src/platform"
 
 	color2 "github.com/gookit/color"
 	"github.com/spf13/cobra"
@@ -51,7 +52,7 @@ This command is used to get the value of the following variables:
 		case "shell":
 			fmt.Println(env.Shell())
 		case "accent":
-			rgb, err := color.GetAccentColor(env)
+			rgb, err := ansi.GetAccentColor(env)
 			if err != nil {
 				fmt.Println("error getting accent color:", err.Error())
 				return

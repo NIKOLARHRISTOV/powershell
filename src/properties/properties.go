@@ -2,8 +2,9 @@ package properties
 
 import (
 	"fmt"
-	"oh-my-posh/color"
-	"oh-my-posh/regex"
+
+	"github.com/jandedobbeleer/oh-my-posh/src/ansi"
+	"github.com/jandedobbeleer/oh-my-posh/src/regex"
 )
 
 type Properties interface {
@@ -69,7 +70,7 @@ func (m Map) GetColor(property Property, defaultValue string) string {
 		return defaultValue
 	}
 	colorString := fmt.Sprint(val)
-	if color.IsAnsiColorName(colorString) {
+	if ansi.IsAnsiColorName(colorString) {
 		return colorString
 	}
 	values := regex.FindNamedRegexMatch(`(?P<color>#[A-Fa-f0-9]{6}|[A-Fa-f0-9]{3}|p:.*)`, colorString)

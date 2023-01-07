@@ -10,57 +10,57 @@ jobs:
         if: github.event.pull_request.merged == true
         steps:
             - name: Checkout code 👋
-              uses: actions/checkout@v3.3.0
+              uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c
             - name: Check and comment 👩🏾‍💻
-              uses: actions/github-script@v6.3.3
+              uses: actions/github-script@d556feaca394842dc55e4734bf3bb9f685482fa0
               with:
                   github-token: ${{ secrets.GH_PAT }}
                   script: |
                       const { repo: { owner, repo } } = context;
                       const pr = context.payload.pull_request;
 
-                      if (pr.user.id === 2492783 || pr.user.type === "Bot") {
-                        console.log('No credit for maintainer/bot, stop processing');
-                        return;
-                      }
+                                if (pr.user.id === 2492783 || pr.user.type === "Bot") {
+                                  console.log('No credit for maintainer/bot, stop processing');
+                                  return;
+                                }
 
-                      const response = await github.rest.pulls.listFiles({
-                        owner, repo,
-                        pull_number: pr.number
-                      });
+                                const response = await github.rest.pulls.listFiles({
+                                  owner, repo,
+                                  pull_number: pr.number
+                                });
 
-                      if (response.status !== 200) {
-                        console.log('Could not fetch files');
-                        return;
-                      }
+                                if (response.status !== 200) {
+                                  console.log('Could not fetch files');
+                                  return;
+                                }
 
-                      var addContribution = function(arr, name, path, contribution) {
-                        if (arr.indexOf(contribution) != -1) {
-                          return
-                        }
-                        if (name.includes(path)) {
-                          arr.push(contribution)
-                        }
-                      };
+                                var addContribution = function(arr, name, path, contribution) {
+                                  if (arr.indexOf(contribution) != -1) {
+                                    return
+                                  }
+                                  if (name.includes(path)) {
+                                    arr.push(contribution)
+                                  }
+                                };
 
-                      var contributions = [];
-                      for (const file of response.data) {
-                        const name = file.filename;
-                        addContribution(contributions, name, 'themes/', 'design');
-                        addContribution(contributions, name, 'src/', 'code');
-                        addContribution(contributions, name, 'website/', 'doc');
-                      }
+                                var contributions = [];
+                                for (const file of response.data) {
+                                  const name = file.filename;
+                                  addContribution(contributions, name, 'themes/', 'design');
+                                  addContribution(contributions, name, 'src/', 'code');
+                                  addContribution(contributions, name, 'website/', 'doc');
+                                }
 
-                      if (contributions.length === 0) {
-                        console.log('No relevant additions found');
-                        return;
-                      }
+                                if (contributions.length === 0) {
+                                  console.log('No relevant additions found');
+                                  return;
+                                }
 
-                      const body = `@all-contributors please add @${pr.user.login} for ${contributions.join()}`;
+                                const body = `@all-contributors please add @${pr.user.login} for ${contributions.join()}`;
 
-                      console.log(`Adding comment: ${body}`);
-                      await github.rest.issues.createComment({
-                        owner, repo,
-                        issue_number: pr.number,
-                        body,
-                      });
+                                console.log(`Adding comment: ${body}`);
+                                await github.rest.issues.createComment({
+                                  owner, repo,
+                                  issue_number: pr.number,
+                                  body,
+                                });

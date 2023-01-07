@@ -3,9 +3,10 @@ package mock
 import (
 	"io"
 	"io/fs"
-	"oh-my-posh/platform"
-	"oh-my-posh/platform/battery"
 	"time"
+
+	"github.com/jandedobbeleer/oh-my-posh/src/platform"
+	"github.com/jandedobbeleer/oh-my-posh/src/platform/battery"
 
 	mock "github.com/stretchr/testify/mock"
 )

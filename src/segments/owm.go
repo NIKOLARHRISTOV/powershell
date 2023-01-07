@@ -5,8 +5,9 @@ import (
 	"errors"
 	"fmt"
 	"math"
-	"oh-my-posh/platform"
-	"oh-my-posh/properties"
+
+	"github.com/jandedobbeleer/oh-my-posh/src/platform"
+	"github.com/jandedobbeleer/oh-my-posh/src/properties"
 )
 
 type Owm struct {

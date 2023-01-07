@@ -2,8 +2,9 @@ package cli
 
 import (
 	"fmt"
-	"oh-my-posh/font"
-	"oh-my-posh/platform"
+
+	"github.com/jandedobbeleer/oh-my-posh/src/font"
+	"github.com/jandedobbeleer/oh-my-posh/src/platform"
 
 	"github.com/spf13/cobra"
 )

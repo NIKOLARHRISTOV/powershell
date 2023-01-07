@@ -2,10 +2,11 @@ package battery
 
 import (
 	"errors"
-	"oh-my-posh/platform/cmd"
-	"oh-my-posh/regex"
 	"strconv"
 	"strings"
+
+	"github.com/jandedobbeleer/oh-my-posh/src/platform/cmd"
+	"github.com/jandedobbeleer/oh-my-posh/src/regex"
 )
 
 func mapMostLogicalState(state string) State {

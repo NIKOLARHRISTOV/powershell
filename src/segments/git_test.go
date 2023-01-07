@@ -3,13 +3,14 @@ package segments
 import (
 	"errors"
 	"fmt"
-	"oh-my-posh/mock"
-	"oh-my-posh/platform"
-	"oh-my-posh/properties"
 	"os"
 	"path/filepath"
 	"strings"
 	"testing"
+
+	"github.com/jandedobbeleer/oh-my-posh/src/mock"
+	"github.com/jandedobbeleer/oh-my-posh/src/platform"
+	"github.com/jandedobbeleer/oh-my-posh/src/properties"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -580,7 +581,7 @@ func TestGetStashContextZeroEntries(t *testing.T) {
 				workingDir: "",
 			},
 		}
-		got := g.getStashContext()
+		got := g.StashCount()
 		assert.Equal(t, tc.Expected, got)
 	}
 }
@@ -597,6 +598,7 @@ func TestGitUpstream(t *testing.T) {
 		{Case: "Azure DevOps", Expected: "AD", Upstream: "dev.azure.com/test"},
 		{Case: "Azure DevOps Dos", Expected: "AD", Upstream: "test.visualstudio.com"},
 		{Case: "Gitstash", Expected: "G", Upstream: "gitstash.com/test"},
+		{Case: "My custom server", Expected: "CU", Upstream: "mycustom.server/test"},
 	}
 	for _, tc := range cases {
 		env := &mock.MockedEnvironment{}
@@ -610,6 +612,9 @@ func TestGitUpstream(t *testing.T) {
 			BitbucketIcon:   "BB",
 			AzureDevOpsIcon: "AD",
 			GitIcon:         "G",
+			UpstreamIcons: map[string]string{
+				"mycustom.server": "CU",
+			},
 		}
 		g := &Git{
 			scm: scm{
@@ -760,7 +765,8 @@ func TestGitTemplateString(t *testing.T) {
 						Modified: 1,
 					},
 				},
-				StashCount: 3,
+				stashCount: 3,
+				poshgit:    true,
 			},
 		},
 		{

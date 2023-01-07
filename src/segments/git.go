@@ -3,12 +3,13 @@ package segments
 import (
 	"fmt"
 	url2 "net/url"
-	"oh-my-posh/platform"
-	"oh-my-posh/properties"
-	"oh-my-posh/regex"
 	"path/filepath"
 	"strconv"
 	"strings"
+
+	"github.com/jandedobbeleer/oh-my-posh/src/platform"
+	"github.com/jandedobbeleer/oh-my-posh/src/properties"
+	"github.com/jandedobbeleer/oh-my-posh/src/regex"
 
 	"gopkg.in/ini.v1"
 )
@@ -71,6 +72,8 @@ const (
 	TagIcon properties.Property = "tag_icon"
 	// MergeIcon shows before the merge context
 	MergeIcon properties.Property = "merge_icon"
+	// UpstreamIcons allows to add custom upstream icons
+	UpstreamIcons properties.Property = "upstream_icons"
 	// GithubIcon shows√ when upstream is github
 	GithubIcon properties.Property = "github_icon"
 	// BitbucketIcon shows  when upstream is bitbucket
@@ -108,15 +111,18 @@ type Git struct {
 	UpstreamURL    string
 	RawUpstreamURL string
 	UpstreamGone   bool
-	StashCount     int
-	WorktreeCount  int
 	IsWorkTree     bool
 	RepoName       string
 	IsBare         bool
+
+	// needed for posh-git support
+	poshgit       bool
+	stashCount    int
+	worktreeCount int
 }
 
 func (g *Git) Template() string {
-	return " {{ .HEAD }}{{if .BranchStatus }} {{ .BranchStatus }}{{ end }}{{ if .Working.Changed }} \uF044 {{ .Working.String }}{{ end }}{{ if and (.Staging.Changed) (.Working.Changed) }} |{{ end }}{{ if .Staging.Changed }} \uF046 {{ .Staging.String }}{{ end }}{{ if gt .StashCount 0}} \uF692 {{ .StashCount }}{{ end }}{{ if gt .WorktreeCount 0}} \uf1bb {{ .WorktreeCount }}{{ end }} " //nolint: lll
+	return " {{ .HEAD }}{{if .BranchStatus }} {{ .BranchStatus }}{{ end }}{{ if .Working.Changed }} \uF044 {{ .Working.String }}{{ end }}{{ if and (.Staging.Changed) (.Working.Changed) }} |{{ end }}{{ if .Staging.Changed }} \uF046 {{ .Staging.String }}{{ end }} " //nolint: lll
 }
 
 func (g *Git) Enabled() bool {
@@ -132,10 +138,6 @@ func (g *Git) Enabled() bool {
 	if g.IsBare {
 		g.getBareRepoInfo()
 		return true
-	}
-
-	if g.props.GetBool(FetchWorktreeCount, false) {
-		g.WorktreeCount = g.getWorktreeContext()
 	}
 
 	if g.hasPoshGitStatus() {
@@ -155,10 +157,20 @@ func (g *Git) Enabled() bool {
 	if len(g.Upstream) != 0 && g.props.GetBool(FetchUpstreamIcon, false) {
 		g.UpstreamIcon = g.getUpstreamIcon()
 	}
-	if g.props.GetBool(FetchStashCount, false) {
-		g.StashCount = g.getStashContext()
-	}
 	return true
+}
+
+func (g *Git) StashCount() int {
+	if g.poshgit || g.stashCount != 0 {
+		return g.stashCount
+	}
+	stashContent := g.FileContents(g.rootDir, "logs/refs/stash")
+	if stashContent == "" {
+		return 0
+	}
+	lines := strings.Split(stashContent, "\n")
+	g.stashCount = len(lines)
+	return g.stashCount
 }
 
 func (g *Git) Kraken() string {
@@ -327,17 +339,29 @@ func (g *Git) getUpstreamIcon() string {
 	}
 	g.RawUpstreamURL = g.getRemoteURL()
 	g.UpstreamURL = cleanSSHURL(g.RawUpstreamURL)
-	if strings.Contains(g.UpstreamURL, "github") {
-		return g.props.GetString(GithubIcon, "\uF408 ")
+
+	// allow overrides first
+	custom := g.props.GetKeyValueMap(UpstreamIcons, map[string]string{})
+	for key, value := range custom {
+		if strings.Contains(g.UpstreamURL, key) {
+			return value
+		}
 	}
-	if strings.Contains(g.UpstreamURL, "gitlab") {
-		return g.props.GetString(GitlabIcon, "\uF296 ")
+
+	defaults := map[string]struct {
+		Icon    properties.Property
+		Default string
+	}{
+		"github":           {GithubIcon, "\uF408 "},
+		"gitlab":           {GitlabIcon, "\uF296 "},
+		"bitbucket":        {BitbucketIcon, "\uF171 "},
+		"dev.azure.com":    {AzureDevOpsIcon, "\uFD03 "},
+		"visualstudio.com": {AzureDevOpsIcon, "\uFD03 "},
 	}
-	if strings.Contains(g.UpstreamURL, "bitbucket") {
-		return g.props.GetString(BitbucketIcon, "\uF171 ")
-	}
-	if strings.Contains(g.UpstreamURL, "dev.azure.com") || strings.Contains(g.UpstreamURL, "visualstudio.com") {
-		return g.props.GetString(AzureDevOpsIcon, "\uFD03 ")
+	for key, value := range defaults {
+		if strings.Contains(g.UpstreamURL, key) {
+			return g.props.GetString(value.Icon, value.Default)
+		}
 	}
 	return g.props.GetString(GitIcon, "\uE5FB ")
 }
@@ -577,16 +601,10 @@ func (g *Git) setPrettyHEADName() {
 	g.HEAD = fmt.Sprintf("%s%s", g.props.GetString(CommitIcon, "\uF417"), g.ShortHash)
 }
 
-func (g *Git) getStashContext() int {
-	stashContent := g.FileContents(g.rootDir, "logs/refs/stash")
-	if stashContent == "" {
-		return 0
+func (g *Git) WorktreeCount() int {
+	if g.worktreeCount > 0 {
+		return g.worktreeCount
 	}
-	lines := strings.Split(stashContent, "\n")
-	return len(lines)
-}
-
-func (g *Git) getWorktreeContext() int {
 	if !g.env.HasFolder(g.rootDir + "/worktrees") {
 		return 0
 	}

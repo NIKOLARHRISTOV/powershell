@@ -2,10 +2,12 @@ package engine
 
 import (
 	"io/ioutil" //nolint:staticcheck,nolintlint
-	"oh-my-posh/color"
 	"os"
 	"path/filepath"
 	"testing"
+
+	"github.com/jandedobbeleer/oh-my-posh/src/ansi"
+	"github.com/jandedobbeleer/oh-my-posh/src/shell"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -31,11 +33,11 @@ func runImageTest(config, content string) (string, error) {
 		return "", err
 	}
 	defer os.Remove(file.Name())
-	ansi := &color.Ansi{}
-	ansi.InitPlain()
+	writer := &ansi.Writer{}
+	writer.Init(shell.GENERIC)
 	image := &ImageRenderer{
 		AnsiString: content,
-		Ansi:       ansi,
+		Ansi:       writer,
 	}
 	image.Init(config)
 	err = image.SavePNG()

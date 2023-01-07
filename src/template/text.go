@@ -3,10 +3,11 @@ package template
 import (
 	"bytes"
 	"errors"
-	"oh-my-posh/platform"
-	"oh-my-posh/regex"
 	"strings"
 	"text/template"
+
+	"github.com/jandedobbeleer/oh-my-posh/src/platform"
+	"github.com/jandedobbeleer/oh-my-posh/src/regex"
 )
 
 const (

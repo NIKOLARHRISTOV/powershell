@@ -4,8 +4,8 @@ import (
 	"path"
 	"testing"
 
-	"oh-my-posh/mock"
-	"oh-my-posh/platform"
+	"github.com/jandedobbeleer/oh-my-posh/src/mock"
+	"github.com/jandedobbeleer/oh-my-posh/src/platform"
 
 	"github.com/stretchr/testify/assert"
 	mock2 "github.com/stretchr/testify/mock"

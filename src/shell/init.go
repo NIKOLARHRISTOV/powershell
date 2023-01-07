@@ -6,10 +6,11 @@ import (
 	"strconv"
 
 	"fmt"
-	"oh-my-posh/platform"
-	"oh-my-posh/template"
 	"os"
 	"strings"
+
+	"github.com/jandedobbeleer/oh-my-posh/src/platform"
+	"github.com/jandedobbeleer/oh-my-posh/src/template"
 )
 
 //go:embed scripts/omp.ps1

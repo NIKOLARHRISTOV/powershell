@@ -2,11 +2,12 @@ package cli
 
 import (
 	"fmt"
-	"oh-my-posh/platform"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"strings"
+
+	"github.com/jandedobbeleer/oh-my-posh/src/platform"
 
 	"github.com/spf13/cobra"
 )
