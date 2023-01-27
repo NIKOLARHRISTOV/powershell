@@ -11,11 +11,16 @@ import (
 	"github.com/jandedobbeleer/oh-my-posh/src/template"
 )
 
+var (
+	cycle *ansi.Cycle = &ansi.Cycle{}
+)
+
 type Engine struct {
-	Config *Config
-	Env    platform.Environment
-	Writer *ansi.Writer
-	Plain  bool
+	Config      *Config
+	Env         platform.Environment
+	Writer      *ansi.Writer
+	Plain       bool
+	PromptCount int
 
 	console           strings.Builder
 	currentLineLength int
@@ -57,8 +62,11 @@ func (e *Engine) canWriteRightBlock(rprompt bool) bool {
 }
 
 func (e *Engine) PrintPrimary() string {
-	for _, block := range e.Config.Blocks {
-		e.renderBlock(block)
+	// cache a pointer to the color cycle
+	cycle = &e.Config.Cycle
+	firstLine := e.Env.Getenv("POSH_CURSOR_LINE") == "1"
+	for i, block := range e.Config.Blocks {
+		e.renderBlock(block, (i == 0 && (e.PromptCount == 1 || firstLine)))
 	}
 	if len(e.Config.ConsoleTitleTemplate) > 0 {
 		title := e.getTitleTemplateText()
@@ -141,34 +149,41 @@ func (e *Engine) getTitleTemplateText() string {
 	return ""
 }
 
-func (e *Engine) renderBlock(block *Block) {
+func (e *Engine) renderBlock(block *Block, cancelNewline bool) {
 	defer func() {
-		// Due to a bug in PowerShell, the end of the line needs to be cleared.
-		// If this doesn't happen, the portion after the prompt gets colored in the background
-		// color of the line above the new input line. Clearing the line fixes this,
-		// but can hopefully one day be removed when this is resolved natively.
-		if e.Env.Shell() == shell.PWSH || e.Env.Shell() == shell.PWSH5 {
-			e.write(e.Writer.ClearAfter())
-		}
+		e.write(e.Writer.ClearAfter())
 	}()
+
 	// when in bash, for rprompt blocks we need to write plain
 	// and wrap in escaped mode or the prompt will not render correctly
-	if e.Env.Shell() == shell.BASH && (block.Type == RPrompt || block.Alignment == Right) {
+	if e.Env.Shell() == shell.BASH && block.Type == RPrompt {
 		block.InitPlain(e.Env, e.Config)
 	} else {
 		block.Init(e.Env, e.Writer)
 	}
+
 	if !block.Enabled() {
 		return
 	}
-	if block.Newline {
+
+	// do not print a newline to avoid a leading space
+	// when we're printin the first primary prompt in
+	// the shell
+	if block.Newline && !cancelNewline {
 		e.newline()
 	}
+
 	switch block.Type {
-	// This is deprecated but leave if to not break current configs
+	// This is deprecated but we leave it in to not break configs
 	// It is encouraged to used "newline": true on block level
 	// rather than the standalone the linebreak block
 	case LineBreak:
+		// do not print a newline to avoid a leading space
+		// when we're printin the first primary prompt in
+		// the shell
+		if !cancelNewline {
+			return
+		}
 		e.newline()
 	case Prompt:
 		if block.VerticalOffset != 0 {
@@ -208,18 +223,10 @@ func (e *Engine) renderBlock(block *Block) {
 			e.write(text)
 			return
 		}
-		// this can contain ANSI escape sequences
-		writer := e.Writer
-		if e.Env.Shell() == shell.BASH {
-			writer.Init(shell.GENERIC)
-		}
-		prompt := writer.CarriageForward()
-		prompt += writer.GetCursorForRightWrite(length, block.HorizontalOffset)
+		prompt := e.Writer.CarriageForward()
+		prompt += e.Writer.GetCursorForRightWrite(length, block.HorizontalOffset)
 		prompt += text
 		e.currentLineLength = 0
-		if e.Env.Shell() == shell.BASH {
-			prompt = e.Writer.FormatText(prompt)
-		}
 		e.write(prompt)
 	case RPrompt:
 		e.rprompt, e.rpromptLength = block.RenderSegments()
@@ -229,20 +236,22 @@ func (e *Engine) renderBlock(block *Block) {
 // debug will loop through your config file and output the timings for each segments
 func (e *Engine) PrintDebug(startTime time.Time, version string) string {
 	var segmentTimings []*SegmentTiming
-	largestSegmentNameLength := 0
-	e.write(fmt.Sprintf("\n\x1b[1mVersion:\x1b[0m %s\n", version))
-	e.write("\n\x1b[1mSegments:\x1b[0m\n\n")
+	e.write(fmt.Sprintf("\n\x1b[38;2;191;207;240m\x1b[1mVersion:\x1b[0m %s\n", version))
+	e.write("\n\x1b[38;2;191;207;240m\x1b[1mSegments:\x1b[0m\n\n")
 	// console title timing
 	titleStartTime := time.Now()
 	title := e.getTitleTemplateText()
-	segmentTiming := &SegmentTiming{
+	consoleTitleTiming := &SegmentTiming{
 		name:       "ConsoleTitle",
 		nameLength: 12,
 		active:     len(e.Config.ConsoleTitleTemplate) > 0,
 		text:       title,
 		duration:   time.Since(titleStartTime),
 	}
-	segmentTimings = append(segmentTimings, segmentTiming)
+	largestSegmentNameLength := consoleTitleTiming.nameLength
+	segmentTimings = append(segmentTimings, consoleTitleTiming)
+	// cache a pointer to the color cycle
+	cycle = &e.Config.Cycle
 	// loop each segments of each blocks
 	for _, block := range e.Config.Blocks {
 		block.Init(e.Env, e.Writer)
@@ -253,17 +262,23 @@ func (e *Engine) PrintDebug(startTime time.Time, version string) string {
 		}
 	}
 
-	// pad the output so the tabs render correctly
-	largestSegmentNameLength += 7
+	// 22 is the color for false/true and 7 is the reset color
+	largestSegmentNameLength += 22 + 7
 	for _, segment := range segmentTimings {
 		duration := segment.duration.Milliseconds()
-		segmentName := fmt.Sprintf("%s(%t)", segment.name, segment.active)
+		var active string
+		if segment.active {
+			active = "\x1b[38;2;156;231;201mtrue\x1b[0m"
+		} else {
+			active = "\x1b[38;2;204;137;214mfalse\x1b[0m"
+		}
+		segmentName := fmt.Sprintf("%s(%s)", segment.name, active)
 		e.write(fmt.Sprintf("%-*s - %3d ms - %s\n", largestSegmentNameLength, segmentName, duration, segment.text))
 	}
-	e.write(fmt.Sprintf("\n\x1b[1mRun duration:\x1b[0m %s\n", time.Since(startTime)))
-	e.write(fmt.Sprintf("\n\x1b[1mCache path:\x1b[0m %s\n", e.Env.CachePath()))
-	e.write(fmt.Sprintf("\n\x1b[1mConfig path:\x1b[0m %s\n", e.Env.Flags().Config))
-	e.write("\n\x1b[1mLogs:\x1b[0m\n\n")
+	e.write(fmt.Sprintf("\n\x1b[38;2;191;207;240m\x1b[1mRun duration:\x1b[0m %s\n", time.Since(startTime)))
+	e.write(fmt.Sprintf("\n\x1b[38;2;191;207;240m\x1b[1mCache path:\x1b[0m %s\n", e.Env.CachePath()))
+	e.write(fmt.Sprintf("\n\x1b[38;2;191;207;240m\x1b[1mConfig path:\x1b[0m %s\n", e.Env.Flags().Config))
+	e.write("\n\x1b[38;2;191;207;240m\x1b[1mLogs:\x1b[0m\n\n")
 	e.write(e.Env.Logs())
 	return e.string()
 }

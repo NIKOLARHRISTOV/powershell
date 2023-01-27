@@ -6,28 +6,28 @@ on:
         types: [published]
 
 jobs:
-    notify:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Notes 📝
-              id: notes
-              uses: actions/github-script@v6.3.3
-              with:
-                  result-encoding: string
-                  script: |
-                      notes = context.payload.release.body
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Notes 📝
+        id: notes
+        uses: actions/github-script@98814c53be79b1d30f795b907e553d8679345975
+        with:
+          result-encoding: string
+          script: |
+            notes = context.payload.release.body
 
-                      // replace all non-supported characters
-                      notes = notes.replaceAll('###', '')
-                      notes = notes.replaceAll('**', '')
-                      notes = notes.replace(/ \(\[[0-9a-z]+\]\(.*\)/g, '')
-                      notes = notes.trim()
-                      return notes
-            - name: Toot 🐘
-              uses: cbrgm/mastodon-github-action@845d2db774a6ac1c058f0fc7559023797b9d05ae
-              with:
-                  message: |
-                      📦 ${{ github.event.release.name }}
+            // replace all non-supported characters
+            notes = notes.replaceAll('###', '')
+            notes = notes.replaceAll('**', '')
+            notes = notes.replace(/ \(\[[0-9a-z]+\]\(.*\)/g, '')
+            notes = notes.trim()
+            return notes
+      - name: Toot 🐘
+        uses: cbrgm/mastodon-github-action@d98ab3376f941df14d37d5737961de431c0838c6
+        with:
+          message: |
+            📦 ${{ github.event.release.name }}
 
                       ${{steps.notes.outputs.result}}
 

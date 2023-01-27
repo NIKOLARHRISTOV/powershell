@@ -6,18 +6,18 @@ on:
             - reopened
 
 jobs:
-    check:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout code 👋
-              uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c
-            - name: Check and merge ⛙
-              uses: actions/github-script@d556feaca394842dc55e4734bf3bb9f685482fa0
-              with:
-                  github-token: ${{ secrets.GH_PAT }}
-                  script: |
-                      const { repo: { owner, repo } } = context;
-                      const pr = context.payload.pull_request;
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code 👋
+        uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c
+      - name: Check and merge ⛙
+        uses: actions/github-script@98814c53be79b1d30f795b907e553d8679345975
+        with:
+          github-token: ${{ secrets.GH_PAT }}
+          script: |
+            const { repo: { owner, repo } } = context;
+            const pr = context.payload.pull_request;
 
                                 if (pr.user.id !== 46447321) {
                                   console.log('Not an all-contributors pull request');

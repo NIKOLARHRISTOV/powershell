@@ -2,9 +2,18 @@ export POSH_THEME=::CONFIG::
 export POSH_PID=$$
 export POWERLINE_COMMAND="oh-my-posh"
 export CONDA_PROMPT_MODIFIER=false
+export POSH_PROMPT_COUNT=0
 
 # set secondary prompt
 PS2="$(::OMP:: print secondary --config="$POSH_THEME" --shell=zsh)"
+
+function _set_posh_cursor_position() {
+  echo -ne "\033[6n"            # ask the terminal for the position
+  read -s -d\[ garbage          # discard the first part of the response
+  read -s -d R pos              # store the position in bash variable 'pos'
+  export POSH_CURSOR_LINE=${pos%;*}
+  export POSH_CURSOR_COLUMN=${pos#*;}
+}
 
 # template function for context loading
 function set_poshcontext() {
@@ -23,7 +32,10 @@ function prompt_ohmyposh_precmd() {
     omp_now=$(::OMP:: get millis --shell=zsh)
     omp_elapsed=$(($omp_now-$omp_start_time))
   fi
+  count=$((POSH_PROMPT_COUNT+1))
+  export POSH_PROMPT_COUNT=$count
   set_poshcontext
+  _set_posh_cursor_position
   eval "$(::OMP:: print primary --config="$POSH_THEME" --error="$omp_last_error" --execution-time="$omp_elapsed" --stack-count="$omp_stack_count" --eval --shell=zsh --shell-version="$ZSH_VERSION")"
   unset omp_start_time
   unset omp_now
@@ -50,34 +62,29 @@ if [ "$TERM" != "linux" ]; then
 fi
 
 # perform cleanup so a new initialization in current session works
-if [[ "$(zle -lL self-insert)" = *"_posh-self-insert"* ]]; then
+if [[ "$(zle -lL self-insert)" = *"_posh-tooltip"* ]]; then
   zle -N self-insert
 fi
 if [[ "$(zle -lL zle-line-init)" = *"_posh-zle-line-init"* ]]; then
   zle -N zle-line-init
 fi
 
-function _posh-self-insert() {
+function _posh-tooltip() {
   # ignore an empty buffer
   if [[ -z  "$BUFFER"  ]]; then
     zle .self-insert
     return
   fi
-  # trigger a tip check only if the input is a space character
-  if [[ "$KEYS" = " " ]]; then
-    local tooltip=$(::OMP:: print tooltip --config="$POSH_THEME" --shell=zsh --error="$omp_last_error" --command="$BUFFER" --shell-version="$ZSH_VERSION")
-  fi
+
+  local tooltip=$(::OMP:: print tooltip --config="$POSH_THEME" --shell=zsh --error="$omp_last_error" --command="$BUFFER" --shell-version="$ZSH_VERSION")
   # ignore an empty tooltip
   if [[ -n "$tooltip" ]]; then
     RPROMPT=$tooltip
     zle .reset-prompt
   fi
+
   zle .self-insert
 }
-
-if [[ "::TOOLTIPS::" = "true" ]]; then
-  zle -N self-insert _posh-self-insert
-fi
 
 function _posh-zle-line-init() {
     [[ $CONTEXT == start ]] || return 0
@@ -106,7 +113,12 @@ function _posh-zle-line-init() {
     return ret
 }
 
-if [[ "::TRANSIENT::" = "true" ]]; then
+function enable_poshtooltips() {
+  zle -N _posh-tooltip
+  bindkey " " _posh-tooltip
+}
+
+function enable_poshtransientprompt() {
   zle -N zle-line-init _posh-zle-line-init
 
   # restore broken key bindings
@@ -120,8 +132,12 @@ if [[ "::TRANSIENT::" = "true" ]]; then
   if [[ -n "${_widgets[(r)up-line-or-beginning-search]}" ]]; then
     bindkey '^[[A' up-line-or-beginning-search
   fi
+}
+
+if [[ "::TOOLTIPS::" = "true" ]]; then
+  enable_poshtooltips
 fi
 
-# legacy functions for backwards compatibility
-function enable_poshtooltips() {}
-function enable_poshtransientprompt() {}
+if [[ "::TRANSIENT::" = "true" ]]; then
+  enable_poshtransientprompt
+fi

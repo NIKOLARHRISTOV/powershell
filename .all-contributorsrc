@@ -1481,6 +1481,54 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "kamfaima",
+      "name": "kamfaima",
+      "avatar_url": "https://avatars.githubusercontent.com/u/23546392?v=4",
+      "profile": "https://github.com/kamfaima",
+      "contributions": [
+        "design"
+      ]
+    },
+    {
+      "login": "dhrdlicka",
+      "name": "David Hrdlička",
+      "avatar_url": "https://avatars.githubusercontent.com/u/13226155?v=4",
+      "profile": "https://github.com/dhrdlicka",
+      "contributions": [
+        "code",
+        "doc"
+      ]
+    },
+    {
+      "login": "davidcourtney",
+      "name": "David Courtney",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1019134?v=4",
+      "profile": "http://davidcourtney.com",
+      "contributions": [
+        "code",
+        "design",
+        "doc"
+      ]
+    },
+    {
+      "login": "Jensdevloo",
+      "name": "jensdevloo",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2276152?v=4",
+      "profile": "https://github.com/Jensdevloo",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "thomasdoerr",
+      "name": "Thomas Dörr",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6919685?v=4",
+      "profile": "https://github.com/thomasdoerr",
+      "contributions": [
+        "design"
+      ]
     }
   ],
   "contributorsPerLine": 7,

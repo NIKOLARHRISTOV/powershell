@@ -7,12 +7,14 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/jandedobbeleer/oh-my-posh/src/mock"
 	"github.com/jandedobbeleer/oh-my-posh/src/platform"
 	"github.com/jandedobbeleer/oh-my-posh/src/properties"
 
 	"github.com/stretchr/testify/assert"
+	mock2 "github.com/stretchr/testify/mock"
 )
 
 const (
@@ -51,6 +53,7 @@ func TestEnabledInWorkingDirectory(t *testing.T) {
 	env.On("PathSeparator").Return("/")
 	env.On("Home").Return("/Users/posh")
 	env.On("Getenv", poshGitEnv).Return("")
+	env.On("DirMatchesOneOf", mock2.Anything, mock2.Anything).Return(false)
 	g := &Git{
 		scm: scm{
 			env:   env,
@@ -592,6 +595,8 @@ func TestGitUpstream(t *testing.T) {
 		Expected string
 		Upstream string
 	}{
+		{Case: "No upstream", Expected: "", Upstream: ""},
+		{Case: "SSH url", Expected: "G", Upstream: "ssh://git@git.my.domain:3001/ADIX7/dotconfig.git"},
 		{Case: "GitHub", Expected: "GH", Upstream: "github.com/test"},
 		{Case: "Gitlab", Expected: "GL", Upstream: "gitlab.com/test"},
 		{Case: "Bitbucket", Expected: "BB", Upstream: "bitbucket.org/test"},
@@ -889,6 +894,88 @@ func TestGitIgnoreSubmodules(t *testing.T) {
 			},
 		}
 		got := g.getIgnoreSubmodulesMode()
+		assert.Equal(t, tc.Expected, got, tc.Case)
+	}
+}
+
+func TestGitCommit(t *testing.T) {
+	cases := []struct {
+		Case     string
+		Expected *Commit
+		Output   string
+	}{
+		{
+			Case: "Clean commit",
+			Output: `
+			an:Jan De Dobbeleer
+			ae:jan@ohmyposh.dev
+			cn:Jan De Dobbeleer
+			ce:jan@ohmyposh.dev
+			at:1673176335
+			su:docs(error): you can't use cross segment properties
+			`,
+			Expected: &Commit{
+				Author: &User{
+					Name:  "Jan De Dobbeleer",
+					Email: "jan@ohmyposh.dev",
+				},
+				Committer: &User{
+					Name:  "Jan De Dobbeleer",
+					Email: "jan@ohmyposh.dev",
+				},
+				Subject:   "docs(error): you can't use cross segment properties",
+				Timestamp: time.Unix(1673176335, 0),
+			},
+		},
+		{
+			Case: "No commit output",
+			Expected: &Commit{
+				Author:    &User{},
+				Committer: &User{},
+			},
+		},
+		{
+			Case: "No author",
+			Output: `
+			an:
+			ae:
+			cn:Jan De Dobbeleer
+			ce:jan@ohmyposh.dev
+			at:1673176335
+			su:docs(error): you can't use cross segment properties
+			`,
+			Expected: &Commit{
+				Author: &User{},
+				Committer: &User{
+					Name:  "Jan De Dobbeleer",
+					Email: "jan@ohmyposh.dev",
+				},
+				Subject:   "docs(error): you can't use cross segment properties",
+				Timestamp: time.Unix(1673176335, 0),
+			},
+		},
+		{
+			Case: "Bad timestamp",
+			Output: `
+			at:err
+			`,
+			Expected: &Commit{
+				Author:    &User{},
+				Committer: &User{},
+			},
+		},
+	}
+
+	for _, tc := range cases {
+		env := new(mock.MockedEnvironment)
+		env.MockGitCommand("", tc.Output, "log", "-1", "--pretty=format:an:%an%nae:%ae%ncn:%cn%nce:%ce%nat:%at%nsu:%s")
+		g := &Git{
+			scm: scm{
+				env:     env,
+				command: "git",
+			},
+		}
+		got := g.Commit()
 		assert.Equal(t, tc.Expected, got, tc.Case)
 	}
 }
