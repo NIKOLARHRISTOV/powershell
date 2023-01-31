@@ -34,60 +34,39 @@ jobs:
         if: ${{ needs.changelog.outputs.skipped == 'false' }}
         runs-on: ubuntu-latest
         env:
-            COSIGN_KEY_LOCATION: "/tmp/cosign.key"
-        defaults:
-            run:
-                shell: pwsh
-                working-directory: ${{ github.workspace }}/src
-        steps:
-            - name: Checkout code 👋
-              uses: actions/checkout@v3.3.0
-            - name: Install Go 🗳
-              uses: ./.github/workflows/composite/bootstrap-go
-            - name: Tag HEAD 😸
-              run: git tag ${{ needs.changelog.outputs.tag }}
-            - name: Install cosign 🔑
-              uses: sigstore/cosign-installer@9becc617647dfa20ae7b1151972e9b3a2c338a2b
-              with:
-                  cosign-release: "v1.4.0"
-            - name: Private Key 🔐
-              run: |
-                  $PSDefaultParameterValues['Out-File:Encoding']='UTF8'
-                  $env:COSIGN_KEY > $env:COSIGN_KEY_LOCATION
-              env:
-                  COSIGN_KEY: ${{secrets.COSIGN_KEY}}
-            - name: Run GoReleaser 🚀
-              uses: goreleaser/goreleaser-action@8f67e590f2d095516493f017008adc464e63adb1
-              with:
-                  distribution: goreleaser
-                  version: latest
-                  args: build --rm-dist
-                  workdir: src
-              env:
-                  COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
-            - name: Zip theme files 🤐
-              run: |
-                  $compress = @{
-                    Path = "../themes/*.omp.*"
-                    CompressionLevel = "Fastest"
-                    DestinationPath = "./dist/themes.zip"
-                  }
-                  Compress-Archive @compress
-            - name: Add hashes 🤫
-              run: |
-                  Get-ChildItem ./dist -Exclude *.yaml,*.sig | Get-Unique |
-                  Foreach-Object {
-                    $zipHash = Get-FileHash $_.FullName -Algorithm SHA256
-                    $zipHash.Hash | Out-File -Encoding 'UTF8' "./dist/$($_.Name).sha256"
-                  }
-              shell: pwsh
-            - name: Release 🎓
-              uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844
-              with:
-                  tag_name: ${{ needs.changelog.outputs.tag }}
-                  body: ${{ needs.changelog.outputs.body }}
-                  fail_on_unmatched_files: true
-                  token: ${{ secrets.GH_PAT }}
-                  files: |
-                      src/dist/posh-*
-                      src/dist/themes.*
+          COSIGN_KEY: ${{secrets.COSIGN_KEY}}
+      - name: Run GoReleaser 🚀
+        uses: goreleaser/goreleaser-action@9754a253a8673b0ea869c2e863b4e975497efd0c
+        with:
+          distribution: goreleaser
+          version: latest
+          args: build --rm-dist
+          workdir: src
+        env:
+          COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
+      - name: Zip theme files 🤐
+        run: |
+          $compress = @{
+            Path = "../themes/*.omp.*"
+            CompressionLevel = "Fastest"
+            DestinationPath = "./dist/themes.zip"
+          }
+          Compress-Archive @compress
+      - name: Add hashes 🤫
+        run: |
+          Get-ChildItem ./dist -Exclude *.yaml,*.sig | Get-Unique |
+          Foreach-Object {
+            $zipHash = Get-FileHash $_.FullName -Algorithm SHA256
+            $zipHash.Hash | Out-File -Encoding 'UTF8' "./dist/$($_.Name).sha256"
+          }
+        shell: pwsh
+      - name: Release 🎓
+        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844
+        with:
+          tag_name: ${{ needs.changelog.outputs.tag }}
+          body: ${{ needs.changelog.outputs.body }}
+          fail_on_unmatched_files: true
+          token: ${{ secrets.GH_PAT }}
+          files: |
+            src/dist/posh-*
+            src/dist/themes.*
