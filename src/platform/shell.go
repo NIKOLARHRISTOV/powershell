@@ -216,6 +216,7 @@ type Environment interface {
 	TemplateCache() *TemplateCache
 	LoadTemplateCache()
 	SetPromptCount()
+	CursorPosition() (row, col int)
 	Debug(message string)
 	Error(err error)
 	Trace(start time.Time, args ...string)
@@ -274,11 +275,13 @@ func (env *Shell) resolveConfigPath() {
 		env.CmdFlags.Config = env.Getenv("POSH_THEME")
 	}
 	if len(env.CmdFlags.Config) == 0 {
+		env.Debug("No config set, fallback to default config")
 		return
 	}
 	if strings.HasPrefix(env.CmdFlags.Config, "https://") {
 		if err := env.downloadConfig(env.CmdFlags.Config); err != nil {
 			// make it use default config when download fails
+			env.Error(err)
 			env.CmdFlags.Config = ""
 			return
 		}
@@ -286,6 +289,7 @@ func (env *Shell) resolveConfigPath() {
 	// Cygwin path always needs the full path as we're on Windows but not really.
 	// Doing filepath actions will convert it to a Windows path and break the init script.
 	if env.Platform() == WINDOWS && env.Shell() == "bash" {
+		env.Debug("Cygwin detected, using full path for config")
 		return
 	}
 	configFile := env.CmdFlags.Config
@@ -829,6 +833,16 @@ func (env *Shell) SetPromptCount() {
 		env.Cache().Set(PROMPTCOUNTCACHE, strconv.Itoa(count), 1440)
 	}
 	env.CmdFlags.PromptCount = count
+}
+
+func (env *Shell) CursorPosition() (row, col int) {
+	if number, err := strconv.Atoi(env.Getenv("POSH_CURSOR_LINE")); err == nil {
+		row = number
+	}
+	if number, err := strconv.Atoi(env.Getenv("POSH_CURSOR_COLUMN")); err != nil {
+		col = number
+	}
+	return
 }
 
 func IsPathSeparator(env Environment, c uint8) bool {
