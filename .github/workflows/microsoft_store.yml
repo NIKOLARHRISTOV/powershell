@@ -9,7 +9,7 @@ on:
 jobs:
   microsoft_store:
     name: Publish To Windows Store
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, ubuntu-latest]
     steps:
       - name: Configure Store Credentials 🔑
         uses: jandedobbeleer/store-submission@submission-status

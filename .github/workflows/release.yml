@@ -11,7 +11,7 @@ on:
 
 jobs:
     changelog:
-        runs-on: ubuntu-latest
+        runs-on: [self-hosted, ubuntu-latest]
         outputs:
             version: ${{ steps.changelog.outputs.version }}
             body: ${{ steps.changelog.outputs.clean_changelog }}
@@ -32,7 +32,7 @@ jobs:
     artifacts:
         needs: changelog
         if: ${{ needs.changelog.outputs.skipped == 'false' }}
-        runs-on: ubuntu-latest
+        runs-on: [self-hosted, ubuntu-latest]
         env:
           COSIGN_KEY: ${{secrets.COSIGN_KEY}}
       - name: Run GoReleaser 🚀

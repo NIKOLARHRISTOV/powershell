@@ -47,7 +47,7 @@ jobs:
                         });
                       }
     notify:
-        runs-on: ubuntu-latest
+        runs-on: [self-hosted, ubuntu-latest]
         needs: publish
         steps:
             - name: Notify Winget Build 🙋🏾‍♀️
@@ -95,7 +95,7 @@ jobs:
                                                 });
                                               }
                   notify:
-                      runs-on: ubuntu-latest
+                      runs-on: [self-hosted, ubuntu-latest]
                       needs: publish
                       steps:
                           - name: Notify Winget Build 🙋🏾‍♀️
