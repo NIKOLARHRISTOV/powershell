@@ -5,7 +5,7 @@ on:
 
 jobs:
     notify:
-        runs-on: [self-hosted, ubuntu-latest]
+        runs-on: ubuntu-latest
         steps:
             - name: Notify Homebrew Repo 🙋🏾‍♀️
               uses: actions/github-script@98814c53be79b1d30f795b907e553d8679345975
