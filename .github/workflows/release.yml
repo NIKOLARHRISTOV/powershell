@@ -1,59 +1,38 @@
 name: Release
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - 'src/**'
-      - 'packages/**'
-      - '.github/workflows/**'
+    push:
+        branches:
+            - main
+        paths:
+            - "src/**"
+            - "packages/**"
+            - ".github/workflows/**"
 
 jobs:
-  changelog:
-    runs-on: ubuntu-latest
-    outputs:
-      version: ${{ steps.changelog.outputs.version }}
-      body: ${{ steps.changelog.outputs.clean_changelog }}
-      tag: ${{ steps.changelog.outputs.tag }}
-      skipped: ${{ steps.changelog.outputs.skipped }}
-    steps:
-      - name: Checkout code 👋
-        uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c
-      - name: Create changelog ✍️
-        id: changelog
-        uses: TriPSs/conventional-changelog-action@858fe562a4d01987825f5e96b2a541f53b22c8b6
-        with:
-          github-token: ${{ secrets.github_token }}
-          skip-version-file: "true"
-          output-file: "false"
-          skip-commit: "true"
-          skip-on-empty: "true"
-  artifacts:
-    needs: changelog
-    if: ${{ needs.changelog.outputs.skipped == 'false' }}
-    runs-on: ubuntu-latest
-    env:
-      COSIGN_KEY_LOCATION: "/tmp/cosign.key"
-    defaults:
-      run:
-        shell: pwsh
-        working-directory: ${{ github.workspace }}/src
-    steps:
-      - name: Checkout code 👋
-        uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c
-      - name: Install Go 🗳
-        uses: ./.github/workflows/composite/bootstrap-go
-      - name: Tag HEAD 😸
-        run: git tag ${{ needs.changelog.outputs.tag }}
-      - name: Install cosign 🔑
-        uses: sigstore/cosign-installer@9becc617647dfa20ae7b1151972e9b3a2c338a2b
-        with:
-          cosign-release: 'v1.4.0'
-      - name: Private Key 🔐
-        run: |
-          $PSDefaultParameterValues['Out-File:Encoding']='UTF8'
-          $env:COSIGN_KEY > $env:COSIGN_KEY_LOCATION
+    changelog:
+        runs-on: ubuntu-latest
+        outputs:
+            version: ${{ steps.changelog.outputs.version }}
+            body: ${{ steps.changelog.outputs.clean_changelog }}
+            tag: ${{ steps.changelog.outputs.tag }}
+            skipped: ${{ steps.changelog.outputs.skipped }}
+        steps:
+            - name: Checkout code 👋
+              uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c
+            - name: Create changelog ✍️
+              id: changelog
+              uses: TriPSs/conventional-changelog-action@858fe562a4d01987825f5e96b2a541f53b22c8b6
+              with:
+                  github-token: ${{ secrets.github_token }}
+                  skip-version-file: "true"
+                  output-file: "false"
+                  skip-commit: "true"
+                  skip-on-empty: "true"
+    artifacts:
+        needs: changelog
+        if: ${{ needs.changelog.outputs.skipped == 'false' }}
+        runs-on: ubuntu-latest
         env:
           COSIGN_KEY: ${{secrets.COSIGN_KEY}}
       - name: Run GoReleaser 🚀

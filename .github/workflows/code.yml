@@ -20,11 +20,11 @@ jobs:
         working-directory: ${{ github.workspace }}/src
     steps:
     - name: Install Go
-      uses: actions/setup-go@6edd4406fa81c3da01a34fa6f6343087c207a568
+      uses: actions/setup-go@v3.5.0
       with:
         go-version: 1.19
     - name: Checkout code
-      uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c
+      uses: actions/checkout@v3.3.0
     - name: Golang CI
       uses: golangci/golangci-lint-action@08e2f20817b15149a52b5b3ebe7de50aff2ba8c5
       with:
