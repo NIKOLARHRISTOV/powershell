@@ -1,31 +1,31 @@
 name: Discord
 on:
-  release:
-    types: [published]
+    release:
+        types: [published]
 
 jobs:
-  notify:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Notes 📝
-        id: notes
-        uses: actions/github-script@98814c53be79b1d30f795b907e553d8679345975
-        with:
-          result-encoding: string
-          script: |
-            notes = context.payload.release.body
+    notify:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Notes 📝
+              id: notes
+              uses: actions/github-script@98814c53be79b1d30f795b907e553d8679345975
+              with:
+                  result-encoding: string
+                  script: |
+                      notes = context.payload.release.body
 
-            // replace all non-supported characters
-            notes = notes.replaceAll('###', '')
-            notes = notes.trim()
-            return notes
-      - name: Changelog 📝
-        uses: sebastianpopp/discord-action@4f2d5417bc61a79593304a62e71cd32427c17790
-        with:
-          webhook: ${{ secrets.CHANGELOG_WEBHOOK }}
-          message: |
-            📦 ${{ github.event.release.name }}
+                      // replace all non-supported characters
+                      notes = notes.replaceAll('###', '')
+                      notes = notes.trim()
+                      return notes
+            - name: Changelog 📝
+              uses: sebastianpopp/discord-action@4f2d5417bc61a79593304a62e71cd32427c17790
+              with:
+                  webhook: ${{ secrets.CHANGELOG_WEBHOOK }}
+                  message: |
+                      📦 ${{ github.event.release.name }}
 
-            ${{steps.notes.outputs.result}}
+                                ${{steps.notes.outputs.result}}
 
-            ${{ github.event.release.html_url }}
+                                ${{ github.event.release.html_url }}

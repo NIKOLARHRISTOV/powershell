@@ -1,8 +1,8 @@
 name: Close Themes PR
 on:
-  pull_request_target:
-    types:
-      - opened
+    pull_request_target:
+        types:
+            - opened
 
 jobs:
   check:
@@ -18,44 +18,44 @@ jobs:
             const { repo: { owner, repo } } = context;
             const pr = context.payload.pull_request;
 
-            const response = await github.rest.pulls.listFiles({
-              owner, repo,
-              pull_number: pr.number
-            });
+                      const response = await github.rest.pulls.listFiles({
+                        owner, repo,
+                        pull_number: pr.number
+                      });
 
-            if (response.status !== 200) {
-              console.log('Could not fetch files');
-              return;
-            }
+                      if (response.status !== 200) {
+                        console.log('Could not fetch files');
+                        return;
+                      }
 
-            let hasThemeAdditions = false;
-            for (const file of response.data) {
-              const name = file.filename
-              console.log(`File: ${name}`);
-              if (file.status === 'added' && name.includes('themes/')) {
-                console.log(`File: ${name} is a theme addition`);
-                hasThemeAdditions = true;
-                break;
-              }
-            }
+                      let hasThemeAdditions = false;
+                      for (const file of response.data) {
+                        const name = file.filename
+                        console.log(`File: ${name}`);
+                        if (file.status === 'added' && name.includes('themes/')) {
+                          console.log(`File: ${name} is a theme addition`);
+                          hasThemeAdditions = true;
+                          break;
+                        }
+                      }
 
-            if (!hasThemeAdditions) {
-              console.log('No theme additions found.');
-              return;
-            }
+                      if (!hasThemeAdditions) {
+                        console.log('No theme additions found.');
+                        return;
+                      }
 
-            const body = `👋 @${pr.user.login}, theme aditions are no longer accepted due to the ever growing set. We do however accept showcasing your custom theme in the [🎨 Themes section](https://github.com/JanDeDobbeleer/oh-my-posh/discussions/categories/themes) or [themes channel](https://discord.com/channels/1023597603331526656/1055533233309233252) on Discord.`
+                      const body = `👋 @${pr.user.login}, theme aditions are no longer accepted due to the ever growing set. We do however accept showcasing your custom theme in the [🎨 Themes section](https://github.com/JanDeDobbeleer/oh-my-posh/discussions/categories/themes) or [themes channel](https://discord.com/channels/1023597603331526656/1055533233309233252) on Discord.`
 
-            console.log(`Adding comment: ${body}`);
-            await github.rest.issues.createComment({
-              owner, repo,
-              issue_number: pr.number,
-              body,
-            });
+                      console.log(`Adding comment: ${body}`);
+                      await github.rest.issues.createComment({
+                        owner, repo,
+                        issue_number: pr.number,
+                        body,
+                      });
 
-            console.log(`Closing pull request: ${pr.html_url}`);
-            await github.rest.pulls.update({
-              owner, repo,
-              pull_number: pr.number,
-              state: "closed",
-            });
+                      console.log(`Closing pull request: ${pr.html_url}`);
+                      await github.rest.pulls.update({
+                        owner, repo,
+                        pull_number: pr.number,
+                        state: "closed",
+                      });
