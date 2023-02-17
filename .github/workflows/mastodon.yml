@@ -2,8 +2,8 @@
 
 name: Mastodon
 on:
-  release:
-    types: [published]
+    release:
+        types: [published]
 
 jobs:
   notify:
@@ -29,12 +29,12 @@ jobs:
           message: |
             📦 ${{ github.event.release.name }}
 
-            ${{steps.notes.outputs.result}}
+                      ${{steps.notes.outputs.result}}
 
-            ${{ github.event.release.html_url }}
+                      ${{ github.event.release.html_url }}
 
-            #ohmyposh #oss #cli #opensource
-          visibility: "public"
-        env:
-          MASTODON_URL: "https://social.ohmyposh.dev/"
-          MASTODON_ACCESS_TOKEN: ${{ secrets.MASTODON_ACCESS_TOKEN }}
+                      #ohmyposh #oss #cli #opensource
+                  visibility: "public"
+              env:
+                  MASTODON_URL: "https://social.ohmyposh.dev/"
+                  MASTODON_ACCESS_TOKEN: ${{ secrets.MASTODON_ACCESS_TOKEN }}
