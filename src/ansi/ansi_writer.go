@@ -138,7 +138,7 @@ func (w *Writer) Init(shellName string) {
 		w.osc99 = "\\[\x1b]9;9;%s\x1b\\\\\\]"
 		w.osc7 = "\\[\x1b]7;file://%s/%s\x1b\\\\\\]"
 		w.osc51 = "\\[\x1b]51;A;%s@%s:%s\x1b\\\\\\]"
-	case "zsh":
+	case shell.ZSH, shell.TCSH:
 		w.format = "%%{%s%%}"
 		w.linechange = "%%{\x1b[%d%s%%}"
 		w.right = "%%{\x1b[%dC%%}"
@@ -250,6 +250,9 @@ func (w *Writer) FormatTitle(title string) string {
 		title = strings.NewReplacer("`", "\\`", `\`, `\\`).Replace(title)
 	case shell.ZSH:
 		title = strings.NewReplacer("`", "\\`", `%`, `%%`).Replace(title)
+	case shell.ELVISH, shell.XONSH:
+		// these shells don't support setting the title
+		return ""
 	}
 	return fmt.Sprintf(w.title, title)
 }
