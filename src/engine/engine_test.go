@@ -22,10 +22,10 @@ func TestCanWriteRPrompt(t *testing.T) {
 		RPromptLength      int
 	}{
 		{Case: "Width Error", Expected: true, TerminalWidthError: errors.New("burp")},
-		{Case: "Terminal > Prompt enabled", Expected: true, TerminalWidth: 200, PromptLength: 100, RPromptLength: 10},
-		{Case: "Terminal > Prompt enabled edge", Expected: true, TerminalWidth: 200, PromptLength: 100, RPromptLength: 70},
+		{Case: "Terminal > Prompt enabled", Expected: true, TerminalWidth: 200, PromptLength: 100.0, RPromptLength: 10},
+		{Case: "Terminal > Prompt enabled edge", Expected: true, TerminalWidth: 200, PromptLength: 100.0, RPromptLength: 70},
 		{Case: "Prompt > Terminal enabled", Expected: true, TerminalWidth: 200, PromptLength: 300, RPromptLength: 70},
-		{Case: "Terminal > Prompt disabled no breathing", Expected: false, TerminalWidth: 200, PromptLength: 100, RPromptLength: 71},
+		{Case: "Terminal > Prompt disabled no breathing", Expected: false, TerminalWidth: 200, PromptLength: 100.0, RPromptLength: 71},
 		{Case: "Prompt > Terminal disabled no breathing", Expected: false, TerminalWidth: 200, PromptLength: 300, RPromptLength: 80},
 		{Case: "Prompt > Terminal disabled no room", Expected: true, TerminalWidth: 200, PromptLength: 400, RPromptLength: 80},
 	}
