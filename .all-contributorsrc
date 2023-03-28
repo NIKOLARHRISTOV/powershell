@@ -1170,7 +1170,8 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/7165033?v=4",
       "profile": "https://github.com/kapsiR",
       "contributions": [
-        "doc"
+        "doc",
+        "code"
       ]
     },
     {
@@ -1546,7 +1547,8 @@
       "profile": "https://github.com/CodexLink",
       "contributions": [
         "design",
-        "doc"
+        "doc",
+        "code"
       ]
     },
     {
@@ -1574,6 +1576,44 @@
       "profile": "https://github.com/gork3n",
       "contributions": [
         "design"
+      ]
+    },
+    {
+      "login": "cabauman",
+      "name": "Colt",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6819362?v=4",
+      "profile": "https://www.coltbauman.com",
+      "contributions": [
+        "code",
+        "design",
+        "doc"
+      ]
+    },
+    {
+      "login": "craftzneko",
+      "name": "craftzneko",
+      "avatar_url": "https://avatars.githubusercontent.com/u/662108?v=4",
+      "profile": "https://github.com/craftzneko",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "atlanswer",
+      "name": "甘亭",
+      "avatar_url": "https://avatars.githubusercontent.com/u/17683244?v=4",
+      "profile": "http://waferlab.dev",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "Mertsch",
+      "name": "Mertsch",
+      "avatar_url": "https://avatars.githubusercontent.com/u/9402861?v=4",
+      "profile": "https://github.com/Mertsch",
+      "contributions": [
+        "doc"
       ]
     }
   ],

@@ -1,4 +1,5 @@
 set --export POSH_THEME ::CONFIG::
+set --export POSH_SHELL_VERSION $FISH_VERSION
 set --global POWERLINE_COMMAND "oh-my-posh"
 set --global POSH_PID $fish_pid
 set --global CONDA_PROMPT_MODIFIER false
@@ -100,7 +101,8 @@ function _render_tooltip
 end
 
 if test "::TOOLTIPS::" = "true"
-  bind \x20 _render_tooltip
+  bind \x20 _render_tooltip -M default
+  bind \x20 _render_tooltip -M insert
 end
 
 # transient prompt
@@ -116,7 +118,9 @@ function _render_transient
 end
 
 if test "::TRANSIENT::" = "true"
-  bind \r _render_transient
+  bind \r _render_transient -M default
+  bind \r _render_transient -M insert
+  bind \r _render_transient -M visual
 end
 
 # legacy functions
@@ -125,4 +129,8 @@ function enable_poshtooltips
 end
 function enable_poshtransientprompt
   return
+end
+
+if test "::UPGRADE::" = "true"
+  echo "::UPGRADENOTICE::"
 end

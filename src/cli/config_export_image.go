@@ -48,10 +48,10 @@ Exports the config to an image file using customized output options.`,
 	Args: cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		env := &platform.Shell{
-			Version: cliVersion,
 			CmdFlags: &platform.Flags{
-				Config: config,
-				Shell:  shell.GENERIC,
+				Config:  config,
+				Shell:   shell.GENERIC,
+				Version: cliVersion,
 			},
 		}
 		env.Init()
@@ -66,6 +66,7 @@ Exports the config to an image file using customized output options.`,
 		writer := &ansi.Writer{
 			TerminalBackground: shell.ConsoleBackgroundColor(env, cfg.TerminalBackground),
 			AnsiColors:         writerColors,
+			TrueColor:          env.CmdFlags.TrueColor,
 		}
 		writer.Init(shell.GENERIC)
 		eng := &engine.Engine{

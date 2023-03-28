@@ -1,4 +1,5 @@
 export POSH_THEME=::CONFIG::
+export POSH_SHELL_VERSION=$BASH_VERSION
 export POWERLINE_COMMAND="oh-my-posh"
 export POSH_PID=$$
 export CONDA_PROMPT_MODIFIER=false
@@ -55,4 +56,8 @@ function _omp_hook() {
 
 if [ "$TERM" != "linux" ] && [ -x "$(command -v ::OMP::)" ] && ! [[ "$PROMPT_COMMAND" =~ "_omp_hook" ]]; then
     PROMPT_COMMAND="_omp_hook; $PROMPT_COMMAND"
+fi
+
+if [ "::UPGRADE::" == "true" ]; then
+    echo "::UPGRADENOTICE::"
 fi

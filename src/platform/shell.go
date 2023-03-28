@@ -70,6 +70,8 @@ type Flags struct {
 	Primary       bool
 	PromptCount   int
 	Cleared       bool
+	Version       string
+	TrueColor     bool
 }
 
 type CommandError struct {
@@ -90,9 +92,15 @@ type FileInfo struct {
 type Cache interface {
 	Init(home string)
 	Close()
+	// Gets the value for a given key.
+	// Returns the value and a boolean indicating if the key was found.
+	// In case the ttl expired, the function returns false.
 	Get(key string) (string, bool)
-	// ttl in minutes
+	// Sets a value for a given key.
+	// The ttl indicates how may minutes to cache the value.
 	Set(key, value string, ttl int)
+	// Deletes a key from the cache.
+	Delete(key string)
 }
 
 type HTTPRequestModifier func(request *http.Request)
@@ -271,7 +279,6 @@ func (c *commandCache) get(command string) (string, bool) {
 
 type Shell struct {
 	CmdFlags *Flags
-	Version  string
 	Var      map[string]interface{}
 
 	cwd       string
@@ -291,6 +298,14 @@ func (env *Shell) Init() {
 	if env.CmdFlags.Debug {
 		log.Enable()
 	}
+	if env.CmdFlags.Plain {
+		log.Plain()
+	}
+	trueColor := true
+	if env.Getenv("TERM_PROGRAM") == "Apple_Terminal" {
+		trueColor = false
+	}
+	env.CmdFlags.TrueColor = trueColor
 	env.fileCache = &fileCache{}
 	env.fileCache.Init(env.CachePath())
 	env.resolveConfigPath()
@@ -412,6 +427,7 @@ func (env *Shell) HasFiles(pattern string) bool {
 	matches, err := fs.Glob(fileSystem, pattern)
 	if err != nil {
 		env.Error(err)
+		env.Debug("false")
 		return false
 	}
 	for _, match := range matches {
@@ -419,8 +435,10 @@ func (env *Shell) HasFiles(pattern string) bool {
 		if err != nil || file.IsDir() {
 			continue
 		}
+		env.Debug("true")
 		return true
 	}
+	env.Debug("false")
 	return false
 }
 
@@ -430,6 +448,7 @@ func (env *Shell) HasFilesInDir(dir, pattern string) bool {
 	matches, err := fs.Glob(fileSystem, pattern)
 	if err != nil {
 		env.Error(err)
+		env.Debug("false")
 		return false
 	}
 	hasFilesInDir := len(matches) > 0
@@ -623,7 +642,7 @@ func (env *Shell) Shell() string {
 	// this is used for when scoop creates a shim, see
 	// https://github.com/jandedobbeleer/oh-my-posh/issues/2806
 	executable, _ := os.Executable()
-	if name == "cmd.exe" || name == executable {
+	if name == executable {
 		p, _ = p.Parent()
 		name, err = p.Name()
 		env.Debug("parent process name: " + name)

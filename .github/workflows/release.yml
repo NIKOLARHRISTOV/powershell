@@ -10,29 +10,53 @@ on:
             - ".github/workflows/**"
 
 jobs:
-    changelog:
-        runs-on: ubuntu-latest
-        outputs:
-            version: ${{ steps.changelog.outputs.version }}
-            body: ${{ steps.changelog.outputs.clean_changelog }}
-            tag: ${{ steps.changelog.outputs.tag }}
-            skipped: ${{ steps.changelog.outputs.skipped }}
-        steps:
-            - name: Checkout code 👋
-              uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c
-            - name: Create changelog ✍️
-              id: changelog
-              uses: TriPSs/conventional-changelog-action@858fe562a4d01987825f5e96b2a541f53b22c8b6
-              with:
-                  github-token: ${{ secrets.github_token }}
-                  skip-version-file: "true"
-                  output-file: "false"
-                  skip-commit: "true"
-                  skip-on-empty: "true"
-    artifacts:
-        needs: changelog
-        if: ${{ needs.changelog.outputs.skipped == 'false' }}
-        runs-on: ubuntu-latest
+  changelog:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.changelog.outputs.version }}
+      body: ${{ steps.changelog.outputs.clean_changelog }}
+      tag: ${{ steps.changelog.outputs.tag }}
+      skipped: ${{ steps.changelog.outputs.skipped }}
+    steps:
+      - name: Checkout code 👋
+        uses: actions/checkout@8f4b7f84864484a7bf31766abe9204da3cbe65b3
+      - name: Create changelog ✍️
+        id: changelog
+        uses: TriPSs/conventional-changelog-action@858fe562a4d01987825f5e96b2a541f53b22c8b6
+        with:
+          github-token: ${{ secrets.github_token }}
+          skip-version-file: "true"
+          output-file: "false"
+          skip-commit: "true"
+          skip-on-empty: "true"
+  artifacts:
+    needs: changelog
+    if: ${{ needs.changelog.outputs.skipped == 'false' }}
+    runs-on: ubuntu-latest
+    env:
+      COSIGN_KEY_LOCATION: "/tmp/cosign.key"
+    defaults:
+      run:
+        shell: pwsh
+        working-directory: ${{ github.workspace }}/src
+    steps:
+      - name: Checkout code 👋
+        uses: actions/checkout@8f4b7f84864484a7bf31766abe9204da3cbe65b3
+      - name: Install Go 🗳
+        uses: ./.github/workflows/composite/bootstrap-go
+      - name: Tag HEAD 😸
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag ${{ needs.changelog.outputs.tag }}
+      - name: Install cosign 🔑
+        uses: sigstore/cosign-installer@c3667d99424e7e6047999fb6246c0da843953c65
+        with:
+          cosign-release: 'v1.4.0'
+      - name: Private Key 🔐
+        run: |
+          $PSDefaultParameterValues['Out-File:Encoding']='UTF8'
+          $env:COSIGN_KEY > $env:COSIGN_KEY_LOCATION
         env:
           COSIGN_KEY: ${{secrets.COSIGN_KEY}}
       - name: Run GoReleaser 🚀
