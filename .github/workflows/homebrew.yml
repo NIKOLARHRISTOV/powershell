@@ -4,6 +4,7 @@ on:
         types: [published]
 
 jobs:
+<<<<<<< HEAD
     notify:
         runs-on: ubuntu-latest
         steps:
@@ -19,3 +20,20 @@ jobs:
                         ref: 'main',
                         inputs: {"version": process.env.GITHUB_REF.replace('refs/tags/v', '')}
                       })
+=======
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Notify Homebrew Repo 🙋🏾‍♀️
+      uses: actions/github-script@d7906e4ad0b1822421a7e6a35d5ca353c962f410
+      with:
+        github-token: ${{ secrets.GH_PAT }}
+        script: |
+          await github.request('POST /repos/{owner}/{repo}/actions/workflows/{workflow_id}/dispatches', {
+            owner: 'jandedobbeleer',
+            repo: 'homebrew-oh-my-posh',
+            workflow_id: 'release.yml',
+            ref: 'main',
+            inputs: {"version": process.env.GITHUB_REF.replace('refs/tags/v', '')}
+          })
+>>>>>>> upstream/main

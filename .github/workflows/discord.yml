@@ -4,6 +4,7 @@ on:
         types: [published]
 
 jobs:
+<<<<<<< HEAD
     notify:
         runs-on: ubuntu-latest
         steps:
@@ -14,6 +15,18 @@ jobs:
                   result-encoding: string
                   script: |
                       notes = context.payload.release.body
+=======
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Notes 📝
+        id: notes
+        uses: actions/github-script@d7906e4ad0b1822421a7e6a35d5ca353c962f410
+        with:
+          result-encoding: string
+          script: |
+            notes = context.payload.release.body
+>>>>>>> upstream/main
 
                       // replace all non-supported characters
                       notes = notes.replaceAll('###', '')
