@@ -5,62 +5,76 @@ on:
             - closed
 
 jobs:
-  check:
-    runs-on: ubuntu-latest
-    if: github.event.pull_request.merged == true
-    steps:
-      - name: Checkout code 👋
-        uses: actions/checkout@8f4b7f84864484a7bf31766abe9204da3cbe65b3
-      - name: Check and comment 👩🏾‍💻
-        uses: actions/github-script@d7906e4ad0b1822421a7e6a35d5ca353c962f410
-        with:
-          github-token: ${{ secrets.GH_PAT }}
-          script: |
-            const { repo: { owner, repo } } = context;
-            const pr = context.payload.pull_request;
+    check:
+        runs-on: ubuntu-latest
+        if: github.event.pull_request.merged == true
+        steps:
+            - name: Checkout code 👋
+              uses: actions/checkout@8f4b7f84864484a7bf31766abe9204da3cbe65b3
+            - name: Check and comment 👩🏾‍💻
+              uses: actions/github-script@d7906e4ad0b1822421a7e6a35d5ca353c962f410
+              with:
+                  github-token: ${{ secrets.GH_PAT }}
+                  script: |
+                      const fs = require('fs');
+                      const { repo: { owner, repo } } = context;
+                      const pr = context.payload.pull_request;
 
-                                          if (pr.user.id === 2492783 || pr.user.type === "Bot") {
-                                            console.log('No credit for maintainer/bot, stop processing');
-                                            return;
-                                          }
+                      if (pr.user.id === 2492783 || pr.user.type === "Bot") {
+                        console.log('No credit for maintainer/bot, stop processing');
+                        return;
+                      }
 
-                                          const response = await github.rest.pulls.listFiles({
-                                            owner, repo,
-                                            pull_number: pr.number
-                                          });
+                      const response = await github.rest.pulls.listFiles({
+                        owner, repo,
+                        pull_number: pr.number
+                      });
 
-                                          if (response.status !== 200) {
-                                            console.log('Could not fetch files');
-                                            return;
-                                          }
+                      if (response.status !== 200) {
+                        console.log('Could not fetch files');
+                        return;
+                      }
 
-                                          var addContribution = function(arr, name, path, contribution) {
-                                            if (arr.indexOf(contribution) != -1) {
-                                              return
-                                            }
-                                            if (name.includes(path)) {
-                                              arr.push(contribution)
-                                            }
-                                          };
+                      var addContribution = function(arr, name, path, contribution) {
+                        if (arr.indexOf(contribution) != -1) {
+                          return
+                        }
+                        if (name.includes(path)) {
+                          arr.push(contribution)
+                        }
+                      };
 
-                                          var contributions = [];
-                                          for (const file of response.data) {
-                                            const name = file.filename;
-                                            addContribution(contributions, name, 'themes/', 'design');
-                                            addContribution(contributions, name, 'src/', 'code');
-                                            addContribution(contributions, name, 'website/', 'doc');
-                                          }
+                      var contributions = [];
+                      for (const file of response.data) {
+                        const name = file.filename;
+                        addContribution(contributions, name, 'themes/', 'design');
+                        addContribution(contributions, name, 'src/', 'code');
+                        addContribution(contributions, name, 'website/', 'doc');
+                      }
 
-                                          if (contributions.length === 0) {
-                                            console.log('No relevant additions found');
-                                            return;
-                                          }
+                      if (contributions.length === 0) {
+                        console.log('No relevant contributions found');
+                        return;
+                      }
 
-                                          const body = `@all-contributors please add @${pr.user.login} for ${contributions.join()}`;
+                      var data = fs.readFileSync('.all-contributorsrc', 'utf8');
+                      let json = JSON.parse(data);
+                      const contributor = json.contributors.find(contributor => contributor.login === pr.user.login);
+                      if (contributor) {
+                        console.log(contributor);
+                        contributions = contributions.filter(contribution => !contributor.contributions.includes(contribution));
+                      }
 
-                                          console.log(`Adding comment: ${body}`);
-                                          await github.rest.issues.createComment({
-                                            owner, repo,
-                                            issue_number: pr.number,
-                                            body,
-                                          });
+                      if (contributions.length === 0) {
+                        console.log('No new contributions found');
+                        return;
+                      }
+
+                      const body = `@all-contributors please add @${pr.user.login} for ${contributions.join()}`;
+
+                      console.log(`Adding comment: ${body}`);
+                      await github.rest.issues.createComment({
+                        owner, repo,
+                        issue_number: pr.number,
+                        body,
+                      });
