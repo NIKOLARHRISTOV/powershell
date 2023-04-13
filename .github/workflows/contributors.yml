@@ -5,6 +5,7 @@ on:
             - closed
 
 jobs:
+<<<<<<< HEAD
     check:
         runs-on: ubuntu-latest
         if: github.event.pull_request.merged == true
@@ -19,6 +20,22 @@ jobs:
                       const fs = require('fs');
                       const { repo: { owner, repo } } = context;
                       const pr = context.payload.pull_request;
+=======
+  check:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
+    steps:
+      - name: Checkout code 👋
+        uses: actions/checkout@83b7061638ee4956cf7545a6f7efe594e5ad0247
+      - name: Check and comment 👩🏾‍💻
+        uses: actions/github-script@d7906e4ad0b1822421a7e6a35d5ca353c962f410
+        with:
+          github-token: ${{ secrets.GH_PAT }}
+          script: |
+            const fs = require('fs');
+            const { repo: { owner, repo } } = context;
+            const pr = context.payload.pull_request;
+>>>>>>> upstream/main
 
                       if (pr.user.id === 2492783 || pr.user.type === "Bot") {
                         console.log('No credit for maintainer/bot, stop processing');
