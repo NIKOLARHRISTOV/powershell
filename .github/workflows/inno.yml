@@ -4,34 +4,6 @@ on:
         types: [published]
 
 jobs:
-<<<<<<< HEAD
-    publish:
-        runs-on: windows-latest
-        strategy:
-            matrix:
-                arch: [amd64, arm64, 386]
-        defaults:
-            run:
-                shell: pwsh
-                working-directory: ${{ github.workspace }}/packages/inno
-        steps:
-            - name: Checkout code 👋
-              uses: actions/checkout@8f4b7f84864484a7bf31766abe9204da3cbe65b3
-            - name: Build installer 📦
-              id: build
-              env:
-                  CERTIFICATE: ${{ secrets.CERTIFICATE }}
-                  CERTIFICATE_PASSWORD: ${{ secrets.CERTIFICATE_PASSWORD }}
-              run: |
-                  $version = $env:GITHUB_REF.TrimStart("refs/tags/v")
-                  ./build.ps1 -Architecture ${{ matrix.arch }}  -Version $version
-            - name: Upload artifacts 🆙
-              uses: actions/github-script@d7906e4ad0b1822421a7e6a35d5ca353c962f410
-              with:
-                  github-token: ${{secrets.GITHUB_TOKEN}}
-                  script: |
-                      console.log('environment', process.versions);
-=======
   publish:
     runs-on: windows-latest
     strategy:
@@ -58,7 +30,6 @@ jobs:
         github-token: ${{secrets.GITHUB_TOKEN}}
         script: |
           console.log('environment', process.versions);
->>>>>>> upstream/main
 
                                                           const fs = require('fs').promises;
 
