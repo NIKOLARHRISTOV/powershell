@@ -19,5 +19,6 @@ func shouldHideForWidth(env platform.Environment, minWidth, maxWidth int) bool {
 	if minWidth > 0 && width < minWidth {
 		return true
 	}
+
 	return false
 }

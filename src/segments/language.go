@@ -56,6 +56,7 @@ func (c *cmd) parse(versionInfo string) (*version, error) {
 		Prerelease:    values["prerelease"],
 		BuildMetadata: values["buildmetadata"],
 	}
+
 	return version, nil
 }
 
@@ -142,6 +143,7 @@ func (l *language) Enabled() bool {
 	if l.matchesVersionFile != nil {
 		l.version.Expected, l.Mismatch = l.matchesVersionFile()
 	}
+
 	return enabled
 }
 
@@ -151,6 +153,7 @@ func (l *language) hasLanguageFiles() bool {
 			return true
 		}
 	}
+
 	return false
 }
 
@@ -160,6 +163,7 @@ func (l *language) hasLanguageFolders() bool {
 			return true
 		}
 	}
+
 	return false
 }
 
@@ -203,6 +207,7 @@ func (l *language) setVersion() error {
 	if lastError != nil {
 		return lastError
 	}
+
 	return errors.New(l.props.GetString(MissingCommandText, ""))
 }
 
@@ -217,6 +222,7 @@ func (l *language) inLanguageContext() bool {
 	if l.inContext == nil {
 		return false
 	}
+
 	return l.inContext()
 }
 

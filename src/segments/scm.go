@@ -109,6 +109,7 @@ func (s *scm) shouldIgnoreRootRepository(rootDir string) bool {
 	if len(excludedFolders) == 0 {
 		return false
 	}
+
 	return s.env.DirMatchesOneOf(rootDir, excludedFolders)
 }
 
@@ -120,6 +121,7 @@ func (s *scm) convertToWindowsPath(path string) string {
 	if s.env.GOOS() == platform.WINDOWS || s.IsWslSharedPath {
 		return s.env.ConvertToWindowsPath(path)
 	}
+
 	return path
 }
 
@@ -127,6 +129,7 @@ func (s *scm) convertToLinuxPath(path string) string {
 	if !s.IsWslSharedPath {
 		return path
 	}
+
 	return s.env.ConvertToLinuxPath(path)
 }
 
@@ -153,5 +156,6 @@ func (s *scm) hasCommand(command string) bool {
 			return true
 		}
 	}
+
 	return false
 }

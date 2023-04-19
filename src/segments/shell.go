@@ -34,6 +34,7 @@ func (s *Shell) Enabled() bool {
 			break
 		}
 	}
+
 	return true
 }
 

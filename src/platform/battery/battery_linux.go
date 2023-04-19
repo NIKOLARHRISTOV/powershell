@@ -39,6 +39,7 @@ func newState(name string) (State, error) {
 			return State(i), nil
 		}
 	}
+
 	return Unknown, fmt.Errorf("Invalid state `%s`", name)
 }
 
@@ -54,6 +55,7 @@ func readFloat(path, filename string) (float64, error) {
 	if err != nil {
 		return 0, err
 	}
+
 	return num / 1000, nil // Convert micro->milli
 }
 
@@ -62,6 +64,7 @@ func readAmp(path, filename string, volts float64) (float64, error) {
 	if err != nil {
 		return 0, err
 	}
+
 	return val * volts, nil
 }
 

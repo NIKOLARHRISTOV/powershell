@@ -197,6 +197,7 @@ func (pt *Path) getFolderSeparator() string {
 	if len(text) == 0 {
 		return pt.env.PathSeparator()
 	}
+
 	return text
 }
 
@@ -218,6 +219,7 @@ func (pt *Path) getMixedPath() string {
 		}
 		buffer.WriteString(fmt.Sprintf("%s%s", separator, folder))
 	}
+
 	return buffer.String()
 }
 
@@ -229,6 +231,7 @@ func (pt *Path) pathDepth(pwd string) int {
 			depth++
 		}
 	}
+
 	return depth
 }
 
@@ -248,6 +251,7 @@ func (pt *Path) getAgnosterPath() string {
 	if n > 1 {
 		buffer.WriteString(fmt.Sprintf("%s%s", separator, elements[n-1]))
 	}
+
 	return buffer.String()
 }
 
@@ -267,6 +271,7 @@ func (pt *Path) getAgnosterLeftPath() string {
 	for i := 2; i < n; i++ {
 		buffer.WriteString(fmt.Sprintf("%s%s", separator, folderIcon))
 	}
+
 	return buffer.String()
 }
 
@@ -354,6 +359,7 @@ func (pt *Path) getAgnosterFullPath() string {
 	if pt.root == pt.env.PathSeparator() {
 		return path
 	}
+
 	return pt.root + pt.getFolderSeparator() + path
 }
 
@@ -396,6 +402,7 @@ func (pt *Path) getAgnosterShortPath() string {
 	for i := splitPos; i < pathDepth; i++ {
 		buffer.WriteString(fmt.Sprintf("%s%s", folderSeparator, splitted[i]))
 	}
+
 	return buffer.String()
 }
 
@@ -486,6 +493,7 @@ func (pt *Path) replaceMappedLocations() (string, string) {
 			return value, strings.Trim(overflow, pathSeparator)
 		}
 	}
+
 	return root, strings.Trim(relative, pathSeparator)
 }
 
@@ -505,6 +513,7 @@ func (pt *Path) normalizePath(path string) string {
 		}
 		clean = append(clean, char)
 	}
+
 	return string(clean)
 }
 
@@ -545,6 +554,7 @@ func (pt *Path) parsePath(inputPath string) (root, path string) {
 	if len(s) == 2 {
 		path = clean(s[1])
 	}
+
 	return root, path
 }
 
@@ -560,6 +570,7 @@ func (pt *Path) normalize(inputPath string) string {
 	case platform.DARWIN:
 		normalized = strings.ToLower(normalized)
 	}
+
 	return normalized
 }
 

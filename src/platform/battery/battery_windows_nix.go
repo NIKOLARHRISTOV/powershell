@@ -34,6 +34,7 @@ func mapMostLogicalState(currentState, newState State) State {
 	case Full:
 		return newState
 	}
+
 	return newState
 }
 
@@ -61,5 +62,6 @@ func Get() (*Info, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	return parseBatteryInfo(batteries), nil
 }

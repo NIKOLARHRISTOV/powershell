@@ -212,6 +212,7 @@ func (w *Writer) ChangeLine(numberOfLines int) string {
 		position = "F"
 		numberOfLines = -numberOfLines
 	}
+
 	return fmt.Sprintf(w.linechange, numberOfLines, position)
 }
 
@@ -238,6 +239,7 @@ func (w *Writer) ClearAfter() string {
 	if w.Plain {
 		return ""
 	}
+
 	return w.clearLine + w.clearBelow
 }
 
@@ -256,6 +258,7 @@ func (w *Writer) FormatTitle(title string) string {
 		// these shells don't support setting the title
 		return ""
 	}
+
 	return fmt.Sprintf(w.title, title)
 }
 
@@ -572,6 +575,7 @@ func (w *Writer) expandKeyword(keyword string) string {
 		}
 		keyword = resolved
 	}
+
 	return keyword
 }
 
@@ -579,5 +583,6 @@ func (w *Writer) trimAnsi(text string) string {
 	if len(text) == 0 || !strings.Contains(text, "\x1b") {
 		return text
 	}
+
 	return regex.ReplaceAllString(AnsiRegex, text, "")
 }

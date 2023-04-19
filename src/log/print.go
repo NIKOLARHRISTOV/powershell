@@ -20,6 +20,7 @@ func (t Text) Green() Text {
 	if plain {
 		return t
 	}
+
 	return "\x1b[38;2;191;207;240m" + t
 }
 
@@ -27,6 +28,7 @@ func (t Text) Red() Text {
 	if plain {
 		return t
 	}
+
 	return "\x1b[38;2;253;122;140m" + t
 }
 
@@ -34,6 +36,7 @@ func (t Text) Purple() Text {
 	if plain {
 		return t
 	}
+
 	return "\x1b[38;2;204;137;214m" + t
 }
 
@@ -41,6 +44,7 @@ func (t Text) Yellow() Text {
 	if plain {
 		return t
 	}
+
 	return "\x1b[38;2;156;231;201m" + t
 }
 
@@ -48,6 +52,7 @@ func (t Text) Bold() Text {
 	if plain {
 		return t
 	}
+
 	return "\x1b[1m" + t
 }
 
@@ -55,6 +60,7 @@ func (t Text) Plain() Text {
 	if plain {
 		return t
 	}
+
 	return t + "\033[0m"
 }
 
@@ -107,5 +113,6 @@ func parseArgs(args ...string) Text {
 	for _, line := range splitted {
 		str += Text(fmt.Sprintf("    %s\n", line))
 	}
+
 	return str
 }

@@ -41,5 +41,6 @@ func (s *Session) activeSSHSession() bool {
 			return true
 		}
 	}
+
 	return false
 }

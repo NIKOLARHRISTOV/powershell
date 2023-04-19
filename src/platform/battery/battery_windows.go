@@ -88,6 +88,7 @@ func uint32ToFloat64(num uint32) (float64, error) {
 	if num == 0xffffffff { // BATTERY_UNKNOWN_CAPACITY
 		return 0, errors.New("Unknown value received")
 	}
+
 	return float64(num), nil
 }
 
@@ -99,6 +100,7 @@ func setupDiSetup(proc *windows.LazyProc, nargs, a1, a2, a3, a4, a5, a6 uintptr)
 		}
 		return 0, syscall.EINVAL
 	}
+
 	return r1, nil
 }
 
@@ -110,6 +112,7 @@ func setupDiCall(proc *windows.LazyProc, nargs, a1, a2, a3, a4, a5, a6 uintptr) 
 		}
 		return syscall.EINVAL
 	}
+
 	return 0
 }
 

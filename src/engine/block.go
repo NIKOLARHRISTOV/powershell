@@ -99,6 +99,7 @@ func (b *Block) Enabled() bool {
 			return true
 		}
 	}
+
 	return false
 }
 
@@ -214,6 +215,7 @@ func (b *Block) getPowerlineColor() string {
 	if !b.previousActiveSegment.isPowerline() {
 		return ansi.Transparent
 	}
+
 	return b.previousActiveSegment.background()
 }
 
@@ -240,5 +242,6 @@ func (b *Block) Debug() (int, []*SegmentTiming) {
 		segmentTiming.duration = time.Since(start)
 		segmentTimings = append(segmentTimings, &segmentTiming)
 	}
+
 	return largestSegmentNameLength, segmentTimings
 }

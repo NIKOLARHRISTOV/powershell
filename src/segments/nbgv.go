@@ -43,6 +43,7 @@ func (n *Nbgv) Enabled() bool {
 	if err != nil {
 		return false
 	}
+
 	return n.VersionInfo.VersionFileFound
 }
 

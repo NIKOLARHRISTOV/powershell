@@ -33,6 +33,7 @@ func (c *Connection) Enabled() bool {
 		c.Connection = *network
 		return true
 	}
+
 	return false
 }
 

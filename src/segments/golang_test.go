@@ -33,6 +33,7 @@ func getMockedLanguageEnv(params *mockedLanguageParams) (*mock.MockedEnvironment
 	props := properties.Map{
 		properties.FetchVersion: true,
 	}
+
 	return env, props
 }
 

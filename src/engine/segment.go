@@ -81,6 +81,7 @@ func (s *SegmentStyle) Resolve(env platform.Environment, context interface{}) Se
 	if err != nil || len(value) == 0 {
 		return Plain
 	}
+
 	return SegmentStyle(value)
 }
 
@@ -377,6 +378,7 @@ func (segment *Segment) shouldInvokeWithTip(tip string) bool {
 			return true
 		}
 	}
+
 	return false
 }
 
@@ -387,6 +389,7 @@ func (segment *Segment) foreground() string {
 	if len(segment.colors.Foreground) == 0 {
 		segment.colors.Foreground = segment.ForegroundTemplates.FirstMatch(segment.writer, segment.env, segment.Foreground)
 	}
+
 	return segment.colors.Foreground
 }
 
@@ -397,6 +400,7 @@ func (segment *Segment) background() string {
 	if len(segment.colors.Background) == 0 {
 		segment.colors.Background = segment.BackgroundTemplates.FirstMatch(segment.writer, segment.env, segment.Background)
 	}
+
 	return segment.colors.Background
 }
 
@@ -442,6 +446,7 @@ func (segment *Segment) string() string {
 	if err != nil {
 		return err.Error()
 	}
+
 	return text
 }
 

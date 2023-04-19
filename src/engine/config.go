@@ -84,6 +84,7 @@ func (cfg *Config) getPalette() ansi.Palette {
 			return p
 		}
 	}
+
 	return cfg.Palette
 }
 
@@ -94,6 +95,7 @@ func LoadConfig(env platform.Environment) *Config {
 	if !env.Flags().Migrate && cfg.Version < configVersion {
 		cfg.BackupAndMigrate()
 	}
+
 	return cfg
 }
 
@@ -193,6 +195,7 @@ func (cfg *Config) Export(format string) string {
 	case TOML:
 		prefix = "#:schema https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json\n\n"
 	}
+
 	return prefix + escapeGlyphs(result.String(), cfg.MigrateGlyphs)
 }
 
@@ -300,6 +303,7 @@ func escapeGlyphs(s string, migrate bool) string {
 		quoted := fmt.Sprintf("\\u%04x", r)
 		builder.WriteString(quoted)
 	}
+
 	return builder.String()
 }
 

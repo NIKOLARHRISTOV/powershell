@@ -87,6 +87,7 @@ func (s *Svn) shouldDisplay() bool {
 		// to the mounted path
 		s.workingDir = s.convertToLinuxPath(matches["dir"])
 	}
+
 	return false
 }
 
@@ -125,5 +126,6 @@ func (s *Svn) getSvnCommandOutput(command string, args ...string) string {
 	if err != nil {
 		return ""
 	}
+
 	return strings.TrimSpace(val)
 }

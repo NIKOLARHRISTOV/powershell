@@ -9,5 +9,6 @@ func NoArgsOrOneValidArg(cmd *cobra.Command, args []string) error {
 	if err := cobra.ExactArgs(1)(cmd, args); err != nil {
 		return err
 	}
+
 	return cobra.OnlyValidArgs(cmd, args)
 }

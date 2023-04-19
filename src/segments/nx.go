@@ -52,5 +52,6 @@ func getNodePackageVersion(env platform.Environment, nodePackage string) (string
 	if err != nil {
 		return "", err
 	}
+
 	return data.Version, nil
 }

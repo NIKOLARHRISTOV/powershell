@@ -54,5 +54,6 @@ func (r *Ruby) Enabled() bool {
 	if r.Full == "______" {
 		r.Full = ""
 	}
+
 	return enabled
 }

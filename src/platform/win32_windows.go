@@ -41,6 +41,7 @@ func enumWindows(enumFunc, lparam uintptr) (err error) {
 			err = syscall.EINVAL
 		}
 	}
+
 	return
 }
 
@@ -56,6 +57,7 @@ func getWindowText(hwnd syscall.Handle, str *uint16, maxCount int32) (length int
 			err = syscall.EINVAL
 		}
 	}
+
 	return
 }
 
@@ -113,6 +115,7 @@ func queryWindowTitles(processName, windowTitleRegex string) (string, error) {
 		}
 		return "", errors.New("no matching window title found\n" + message)
 	}
+
 	return title, nil
 }
 
@@ -153,6 +156,7 @@ func (rb *AppExecLinkReparseBuffer) Path() (string, error) {
 		}
 		stringList = stringList[position:]
 	}
+
 	return link, nil
 }
 
@@ -174,6 +178,7 @@ func (m accessMask) canWrite() bool {
 			return true
 		}
 	}
+
 	return false
 }
 
@@ -212,6 +217,7 @@ func (m accessMask) permissions() string {
 	if m&windows.MAXIMUM_ALLOWED != 0 {
 		permissions = append(permissions, "MAXIMUM_ALLOWED")
 	}
+
 	return strings.Join(permissions, "\n")
 }
 
@@ -239,6 +245,7 @@ func getCurrentUser() (user *tokenUser, err error) {
 		sid:    tokenuser.User.Sid,
 		groups: tokenGroups.AllGroups(),
 	}
+
 	return
 }
 
@@ -256,6 +263,7 @@ func (u *tokenUser) isMemberOf(sid *windows.SID) bool {
 			return true
 		}
 	}
+
 	return false
 }
 
@@ -343,6 +351,7 @@ func (env *Shell) Memory() (*Memory, error) {
 		env.Error(err)
 		return nil, err
 	}
+
 	return &Memory{
 		PhysicalTotalMemory:     memStat.TotalPhys,
 		PhysicalFreeMemory:      memStat.AvailPhys,

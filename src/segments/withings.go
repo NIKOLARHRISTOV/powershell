@@ -88,6 +88,7 @@ func (w *withingsAPI) GetMeasures(meastypes string) (*WithingsData, error) {
 		"lastupdate": {twoWeeksAgo},
 		"category":   {"1"},
 	}
+
 	return w.getWithingsData("https://wbsapi.withings.net/measure", formData)
 }
 
@@ -101,6 +102,7 @@ func (w *withingsAPI) GetActivities(activities string) (*WithingsData, error) {
 		"enddateymd":   {today},
 		"category":     {"1"},
 	}
+
 	return w.getWithingsData("https://wbsapi.withings.net/v2/measure", formData)
 }
 
@@ -116,6 +118,7 @@ func (w *withingsAPI) GetSleep() (*WithingsData, error) {
 		"startdate": {strconv.FormatInt(start, 10)},
 		"enddate":   {strconv.FormatInt(end, 10)},
 	}
+
 	return w.getWithingsData("https://wbsapi.withings.net/v2/sleep", formData)
 }
 
@@ -129,6 +132,7 @@ func (w *withingsAPI) getWithingsData(endpoint string, formData url.Values) (*Wi
 	if data != nil && data.Status != 0 {
 		return nil, errors.New("Withings API error: " + strconv.Itoa(data.Status))
 	}
+
 	return data, err
 }
 
@@ -162,6 +166,7 @@ func (w *Withings) Enabled() bool {
 	if w.getSleep() {
 		enabled = true
 	}
+
 	return enabled
 }
 
@@ -193,6 +198,7 @@ func (w *Withings) getActivities() bool {
 		w.Steps = activity.Steps
 		return true
 	}
+
 	return false
 }
 

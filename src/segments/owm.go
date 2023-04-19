@@ -94,6 +94,7 @@ func (d *Owm) getResult() (*owmDataResponse, error) {
 		d.env.Cache().Set(CacheKeyResponse, string(body), cacheTimeout)
 		d.env.Cache().Set(CacheKeyURL, d.URL, cacheTimeout)
 	}
+
 	return response, nil
 }
 
@@ -161,6 +162,7 @@ func (d *Owm) setStatus() error {
 	case "standard":
 		d.UnitIcon = "°K" // \ufa05"
 	}
+
 	return nil
 }
 

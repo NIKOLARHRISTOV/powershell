@@ -66,6 +66,7 @@ func (w *Wakatime) setAPIData() error {
 	if cacheTimeout > 0 {
 		w.env.Cache().Set(url, string(body), cacheTimeout)
 	}
+
 	return nil
 }
 
@@ -76,6 +77,7 @@ func (w *Wakatime) getURL() (string, error) {
 		Context:  w,
 		Env:      w.env,
 	}
+
 	return tmpl.Render()
 }
 

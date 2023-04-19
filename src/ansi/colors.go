@@ -45,6 +45,7 @@ func (c Color) ToForeground() Color {
 	if strings.HasPrefix(colorString, "38;") {
 		return Color(strings.Replace(colorString, "38;", "48;", 1))
 	}
+
 	return c
 }
 
@@ -58,6 +59,7 @@ func MakeColors(palette Palette, cacheEnabled bool, accentColor string, env plat
 	if cacheEnabled {
 		colors = &CachedColors{ansiColors: colors}
 	}
+
 	return
 }
 
@@ -137,6 +139,7 @@ func (d *DefaultColors) ToColor(colorString string, isBackground, trueColor bool
 		c := color.C256(uint8(colorInt), isBackground)
 		return Color(c.String())
 	}
+
 	return emptyColor
 }
 
@@ -149,6 +152,7 @@ func getAnsiColorFromName(colorName string, isBackground bool) (Color, error) {
 		}
 		return colorCodes[foregroundIndex], nil
 	}
+
 	return "", fmt.Errorf("color name %s does not exist", colorName)
 }
 

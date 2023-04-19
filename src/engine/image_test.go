@@ -44,6 +44,7 @@ func runImageTest(config, content string) (string, error) {
 	if err == nil {
 		os.Remove(image.Path)
 	}
+
 	return filepath.Base(image.Path), err
 }
 

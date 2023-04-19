@@ -113,6 +113,7 @@ func (t *Executiontime) formatDurationAustin() string {
 	if t.Ms >= day {
 		result = fmt.Sprintf("%dd %s", t.Ms/day, result)
 	}
+
 	return result
 }
 
@@ -130,6 +131,7 @@ func (t *Executiontime) formatDurationRoundrock() string {
 	if t.Ms >= day {
 		result = fmt.Sprintf("%dd %s", t.Ms/day, result)
 	}
+
 	return result
 }
 
@@ -146,6 +148,7 @@ func (t *Executiontime) formatDurationDallas() string {
 	if t.Ms >= day {
 		result = fmt.Sprintf("%d:%s", t.Ms/day, result)
 	}
+
 	return result
 }
 
@@ -221,5 +224,6 @@ func (t *Executiontime) formatDurationRound() string {
 	if t.Ms >= second {
 		return fmt.Sprintf("%ds", seconds)
 	}
+
 	return fmt.Sprintf("%dms", t.Ms%second)
 }

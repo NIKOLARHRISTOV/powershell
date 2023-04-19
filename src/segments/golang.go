@@ -52,6 +52,7 @@ func (g *Golang) getVersion() (string, error) {
 	if err != nil {
 		return "", err
 	}
+
 	return file.Go.Version, nil
 }
 

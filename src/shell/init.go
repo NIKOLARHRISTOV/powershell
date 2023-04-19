@@ -67,6 +67,7 @@ func getExecutablePath(env platform.Environment) (string, error) {
 	if env.GOOS() == platform.WINDOWS {
 		executable = strings.ReplaceAll(executable, "\\", "/")
 	}
+
 	return executable, nil
 }
 
@@ -114,6 +115,7 @@ func quotePosixStr(str string) string {
 	if needQuoting {
 		return fmt.Sprintf("$'%s'", b.String())
 	}
+
 	return b.String()
 }
 
@@ -143,6 +145,7 @@ func quoteFishStr(str string) string {
 	if needQuoting {
 		return fmt.Sprintf("'%s'", b.String())
 	}
+
 	return b.String()
 }
 
@@ -150,6 +153,7 @@ func quoteLuaStr(str string) string {
 	if len(str) == 0 {
 		return "''"
 	}
+
 	return fmt.Sprintf("'%s'", strings.NewReplacer(`\`, `\\`, `'`, `\'`).Replace(str))
 }
 
@@ -157,6 +161,7 @@ func quoteNuStr(str string) string {
 	if len(str) == 0 {
 		return "''"
 	}
+
 	return fmt.Sprintf(`"%s"`, strings.NewReplacer(`\`, `\\`, `"`, `\"`).Replace(str))
 }
 
@@ -303,5 +308,6 @@ func ConsoleBackgroundColor(env platform.Environment, backgroundColorTemplate st
 	if err != nil {
 		return err.Error()
 	}
+
 	return text
 }

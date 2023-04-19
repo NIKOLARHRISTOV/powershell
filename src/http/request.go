@@ -23,6 +23,7 @@ func Do[a any](r *Request, url string, requestModifiers ...platform.HTTPRequestM
 	if data, err := getCacheValue[a](r, url); err == nil {
 		return data, nil
 	}
+
 	return do[a](r, url, nil, requestModifiers...)
 }
 

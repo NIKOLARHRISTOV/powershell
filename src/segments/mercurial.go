@@ -164,5 +164,6 @@ func (hg *Mercurial) getHgCommandOutput(command string, args ...string) string {
 	if err != nil {
 		return ""
 	}
+
 	return strings.TrimSpace(val)
 }

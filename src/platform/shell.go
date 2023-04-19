@@ -42,6 +42,7 @@ func pid() string {
 	if len(pid) == 0 {
 		pid = strconv.Itoa(os.Getppid())
 	}
+
 	return pid
 }
 
@@ -585,6 +586,7 @@ func (env *Shell) RunShellCommand(shell, command string) string {
 	if out, err := env.RunCommand(shell, "-c", command); err == nil {
 		return out
 	}
+
 	return ""
 }
 
@@ -609,6 +611,7 @@ func (env *Shell) HasCommand(command string) bool {
 	if path := env.CommandPath(command); path != "" {
 		return true
 	}
+
 	return false
 }
 
@@ -622,6 +625,7 @@ func (env *Shell) ExecutionTime() float64 {
 	if env.CmdFlags.ExecutionTime < 0 {
 		return 0
 	}
+
 	return env.CmdFlags.ExecutionTime
 }
 
@@ -670,6 +674,7 @@ func (env *Shell) unWrapError(err error) error {
 		}
 		cause = unwrap.Unwrap()
 	}
+
 	return cause
 }
 
@@ -740,6 +745,7 @@ func (env *Shell) StackCount() int {
 	if env.CmdFlags.StackCount < 0 {
 		return 0
 	}
+
 	return env.CmdFlags.StackCount
 }
 
@@ -872,6 +878,7 @@ func dirMatchesOneOf(dir, home, goos string, regexes []string) bool {
 			return true
 		}
 	}
+
 	return false
 }
 
@@ -904,6 +911,7 @@ func (env *Shell) CursorPosition() (row, col int) {
 	if number, err := strconv.Atoi(env.Getenv("POSH_CURSOR_COLUMN")); err != nil {
 		col = number
 	}
+
 	return
 }
 
@@ -937,6 +945,7 @@ func (env *Shell) SystemInfo() (*SystemInfo, error) {
 	if err == nil {
 		s.Disks = diskIO
 	}
+
 	return s, nil
 }
 
@@ -947,6 +956,7 @@ func IsPathSeparator(env Environment, c uint8) bool {
 	if env.GOOS() == WINDOWS && c == '\\' {
 		return true
 	}
+
 	return false
 }
 
@@ -979,6 +989,7 @@ func Base(env Environment, path string) string {
 	if len(path) == 0 {
 		return env.PathSeparator()
 	}
+
 	return path
 }
 
@@ -992,6 +1003,7 @@ func ReplaceHomeDirPrefixWithTilde(env Environment, path string) string {
 	if len(rem) == 0 || IsPathSeparator(env, rem[0]) {
 		return "~" + rem
 	}
+
 	return path
 }
 
@@ -1006,6 +1018,7 @@ func cleanHostName(hostName string) string {
 			hostName = strings.Replace(hostName, g, "", 1)
 		}
 	}
+
 	return hostName
 }
 
@@ -1022,5 +1035,6 @@ func returnOrBuildCachePath(path string) string {
 	if err := os.Mkdir(cachePath, 0755); err != nil {
 		return ""
 	}
+
 	return cachePath
 }

@@ -49,6 +49,7 @@ func (k *Kubectl) Enabled() bool {
 	if parseKubeConfig {
 		return k.doParseKubeConfig()
 	}
+
 	return k.doCallKubectl()
 }
 
@@ -126,6 +127,7 @@ func (k *Kubectl) doCallKubectl() bool {
 	if len(config.Contexts) > 0 {
 		k.KubeContext = *config.Contexts[0].Context
 	}
+
 	return true
 }
 

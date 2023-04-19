@@ -43,6 +43,7 @@ func (env *Shell) parseBatteryOutput(output string) (*battery.Info, error) {
 		env.Error(err)
 		return nil, errors.New("Unable to parse battery percentage")
 	}
+
 	return &battery.Info{
 		Percentage: percentage,
 		State:      mapMostLogicalState(matches["STATE"]),
@@ -59,5 +60,6 @@ func (env *Shell) BatteryState() (*battery.Info, error) {
 	if !strings.Contains(output, "Battery") {
 		return nil, errors.New("No battery found")
 	}
+
 	return env.parseBatteryOutput(output)
 }

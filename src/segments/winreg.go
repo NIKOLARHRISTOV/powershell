@@ -45,5 +45,6 @@ func (wr *WindowsRegistry) Enabled() bool {
 		// we have fallback value
 		return true
 	}
+
 	return false
 }

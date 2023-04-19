@@ -89,6 +89,7 @@ func (oi *Os) Enabled() bool {
 	default:
 		oi.Icon = goos
 	}
+
 	return true
 }
 
@@ -139,6 +140,7 @@ func (oi *Os) getDistroIcon(distro string) string {
 	case "ubuntu":
 		return oi.props.GetString(Ubuntu, "\uF31b")
 	}
+
 	return oi.props.GetString(Linux, "\uF17C")
 }
 

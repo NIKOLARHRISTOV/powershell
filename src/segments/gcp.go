@@ -67,6 +67,7 @@ func (g *Gcp) getActiveConfig(cfgDir string) (string, error) {
 	if len(fileContent) == 0 {
 		return "", errors.New(GCPNOACTIVECONFIG)
 	}
+
 	return fileContent, nil
 }
 
@@ -78,5 +79,6 @@ func (g *Gcp) getConfigDirectory() string {
 	if g.env.GOOS() == platform.WINDOWS {
 		return path.Join(g.env.Getenv("APPDATA"), "gcloud")
 	}
+
 	return path.Join(g.env.Home(), ".config", "gcloud")
 }

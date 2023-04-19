@@ -63,5 +63,6 @@ func (f *Fossil) Enabled() bool {
 			f.Status.add(context[0])
 		}
 	}
+
 	return true
 }

@@ -89,6 +89,7 @@ func (a *Az) Enabled() bool {
 	case cli:
 		return a.getCLISubscription()
 	}
+
 	return false
 }
 
@@ -118,6 +119,7 @@ func (a *Az) getCLISubscription() bool {
 			return true
 		}
 	}
+
 	return false
 }
 
@@ -155,5 +157,6 @@ func (a *Az) findConfig(fileName string) (string, error) {
 			return filepath.Join(dir, fileName), nil
 		}
 	}
+
 	return "", errors.New("azure config dir not found")
 }

@@ -38,6 +38,7 @@ func renderTemplate(env *mock.MockedEnvironment, segmentTemplate string, context
 	if err != nil {
 		return err.Error()
 	}
+
 	return strings.TrimSpace(text)
 }
 

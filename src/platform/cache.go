@@ -21,6 +21,7 @@ func (c *cacheObject) expired() bool {
 	if c.TTL < 0 {
 		return false
 	}
+
 	return time.Now().Unix() >= (c.Timestamp + int64(c.TTL)*60)
 }
 
@@ -73,6 +74,7 @@ func (fc *fileCache) Get(key string) (string, bool) {
 	if co, ok := val.(*cacheObject); ok {
 		return co.Value, true
 	}
+
 	return "", false
 }
 

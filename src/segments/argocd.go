@@ -56,6 +56,7 @@ func (a *Argocd) Enabled() bool {
 		a.env.Error(err)
 		return false
 	}
+
 	return succeeded
 }
 
@@ -65,6 +66,7 @@ func (a *Argocd) getConfigPath() string {
 	if len(cpo) > 0 {
 		cp = cpo
 	}
+
 	return cp
 }
 
@@ -106,5 +108,6 @@ func (a *Argocd) parseConfig(file string) (bool, error) {
 			return true, nil
 		}
 	}
+
 	return false, errors.New(argocdNoCurrent)
 }

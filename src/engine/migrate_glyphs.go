@@ -48,5 +48,6 @@ func getGlyphCodePoints() codePoints {
 		}
 		codePoints[int(oldGlyph)] = int(newGlyph)
 	}
+
 	return codePoints
 }

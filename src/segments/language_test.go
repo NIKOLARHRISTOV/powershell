@@ -35,6 +35,7 @@ func (l *languageArgs) hasvalue(value string, list []string) bool {
 			return true
 		}
 	}
+
 	return false
 }
 
@@ -68,6 +69,7 @@ func bootStrapLanguageTest(args *languageArgs) *language {
 		versionURLTemplate: args.versionURLTemplate,
 		matchesVersionFile: args.matchesVersionFile,
 	}
+
 	return l
 }
 

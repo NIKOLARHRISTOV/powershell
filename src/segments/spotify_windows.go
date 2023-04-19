@@ -17,6 +17,7 @@ func (s *Spotify) Enabled() bool {
 	if err != nil {
 		return false
 	}
+
 	return s.parseWebTitle(windowTitle)
 }
 

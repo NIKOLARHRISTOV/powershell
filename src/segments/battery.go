@@ -60,6 +60,7 @@ func (b *Battery) Enabled() bool {
 	case battery.Empty, battery.Unknown:
 		return true
 	}
+
 	return true
 }
 

@@ -22,5 +22,6 @@ func funcMap() template.FuncMap {
 			funcMap[key] = fun
 		}
 	}
+
 	return template.FuncMap(funcMap)
 }

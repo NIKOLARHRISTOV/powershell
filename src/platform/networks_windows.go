@@ -231,6 +231,7 @@ func (env *Shell) wifiNetwork() (*Connection, error) {
 		}
 		return env.parseNetworkInterface(network, phClientHandle)
 	}
+
 	return nil, errors.New("Not connected")
 }
 

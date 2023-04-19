@@ -14,6 +14,7 @@ func url(text, url string) (string, error) {
 	if err != nil {
 		return "", err
 	}
+
 	return fmt.Sprintf("«%s»(%s)", text, url), nil
 }
 

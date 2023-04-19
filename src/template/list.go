@@ -47,6 +47,7 @@ func (l List) Join(context interface{}, env platform.Environment) string {
 		}
 		buffer.WriteString(value)
 	}
+
 	return buffer.String()
 }
 
@@ -66,5 +67,6 @@ func (l List) FirstMatch(context interface{}, env platform.Environment, defaultV
 		}
 		return value
 	}
+
 	return defaultValue
 }

@@ -17,6 +17,7 @@ func Get() (*Info, error) {
 	if err != nil {
 		return nil, errors.New("Unable to parse battery percentage")
 	}
+
 	return &Info{
 		Percentage: percentage,
 		State:      Unknown,

@@ -165,5 +165,6 @@ func (sl *Sapling) getSaplingCommandOutput(command string, args ...string) strin
 	if err != nil {
 		return ""
 	}
+
 	return strings.TrimSpace(val)
 }

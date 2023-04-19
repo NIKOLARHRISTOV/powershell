@@ -27,6 +27,7 @@ func (s *SystemInfo) Enabled() bool {
 	if s.PhysicalPercentUsed == 0 && s.SwapPercentUsed == 0 {
 		return false
 	}
+
 	return true
 }
 

@@ -18,5 +18,6 @@ func resolveGitPath(base, path string) string {
 		// path is a disk-relative path.
 		return filepath.VolumeName(base) + path
 	}
+
 	return filepath.ToSlash(filepath.Join(base, path))
 }

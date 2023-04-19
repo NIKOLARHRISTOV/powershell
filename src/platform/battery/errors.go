@@ -38,5 +38,6 @@ func (e Errors) Error() string {
 	if len(s) > 1 {
 		s = s[:len(s)-2]
 	}
+
 	return s
 }

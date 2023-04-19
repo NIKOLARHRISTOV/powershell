@@ -25,6 +25,7 @@ func (c *ConcurrentMap) Get(key string) (interface{}, bool) {
 	if val, ok := c.values[key]; ok {
 		return val, true
 	}
+
 	return "", false
 }
 

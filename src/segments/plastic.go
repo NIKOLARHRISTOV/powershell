@@ -67,6 +67,7 @@ func (p *Plastic) Enabled() bool {
 	if displayStatus {
 		p.setPlasticStatus()
 	}
+
 	return true
 }
 
@@ -110,6 +111,7 @@ func (p *Plastic) parseStringPattern(output, pattern, name string) string {
 	if sValue, ok := match[name]; ok {
 		return sValue
 	}
+
 	return ""
 }
 
@@ -119,6 +121,7 @@ func (p *Plastic) parseIntPattern(output, pattern, name string, defValue int) in
 		iValue, _ := strconv.Atoi(sValue)
 		return iValue
 	}
+
 	return defValue
 }
 

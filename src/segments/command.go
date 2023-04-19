@@ -40,6 +40,7 @@ func (c *Cmd) Enabled() bool {
 	if len(script) != 0 {
 		return c.runScript(shell, script)
 	}
+
 	return false
 }
 

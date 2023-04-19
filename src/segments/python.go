@@ -96,6 +96,7 @@ func (p *Python) canUseVenvName(name string) bool {
 			return false
 		}
 	}
+
 	return true
 }
 
@@ -140,5 +141,6 @@ func (p *Python) pyenvVersion() (string, error) {
 	if len(parts) > 2 && p.canUseVenvName(parts[2]) {
 		p.Venv = parts[2]
 	}
+
 	return parts[0], nil
 }

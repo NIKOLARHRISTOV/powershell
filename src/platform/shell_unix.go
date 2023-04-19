@@ -62,6 +62,7 @@ func (env *Shell) TerminalWidth() (int, error) {
 	if err != nil {
 		env.Error(err)
 	}
+
 	return int(width), err
 }
 
@@ -102,6 +103,7 @@ func (env *Shell) CachePath() string {
 	if cachePath := returnOrBuildCachePath(env.Home() + "/.cache"); len(cachePath) != 0 {
 		return cachePath
 	}
+
 	return env.Home()
 }
 
@@ -122,6 +124,7 @@ func (env *Shell) ConvertToWindowsPath(path string) string {
 	if err == nil {
 		return windowsPath
 	}
+
 	return path
 }
 
@@ -129,6 +132,7 @@ func (env *Shell) ConvertToLinuxPath(path string) string {
 	if linuxPath, err := env.RunCommand("wslpath", "-u", path); err == nil {
 		return linuxPath
 	}
+
 	return path
 }
 
@@ -146,6 +150,7 @@ func (env *Shell) Connection(_ ConnectionType) (*Connection, error) {
 	if len(env.networks) == 0 {
 		return nil, &NotImplemented{}
 	}
+
 	return nil, &NotImplemented{}
 }
 

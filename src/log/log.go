@@ -72,5 +72,6 @@ func funcSpec() (string, int) {
 	if strings.HasPrefix(fn, "func") {
 		return file, line
 	}
+
 	return fmt.Sprintf("%s:%s", file, fn), line
 }

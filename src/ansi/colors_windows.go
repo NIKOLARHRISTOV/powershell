@@ -17,6 +17,7 @@ func GetAccentColor(env platform.Environment) (*RGB, error) {
 	if err != nil || value.ValueType != platform.DWORD {
 		return nil, err
 	}
+
 	return &RGB{
 		R: byte(value.DWord >> 16),
 		G: byte(value.DWord >> 8),

@@ -47,5 +47,6 @@ func Nerds() ([]*Asset, error) {
 			nerdFonts = append(nerdFonts, asset)
 		}
 	}
+
 	return nerdFonts, nil
 }

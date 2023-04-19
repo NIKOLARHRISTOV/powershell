@@ -71,6 +71,7 @@ func (n *Project) Enabled() bool {
 			return true
 		}
 	}
+
 	return n.props.GetBool(properties.AlwaysEnabled, false)
 }
 
@@ -132,6 +133,7 @@ func (n *Project) hasProjectFile(p *ProjectItem) bool {
 			return true
 		}
 	}
+
 	return false
 }
 

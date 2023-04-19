@@ -48,6 +48,7 @@ func FindNamedRegexMatch(pattern, text string) map[string]string {
 		}
 		result[name] = match[i]
 	}
+
 	return result
 }
 
@@ -69,6 +70,7 @@ func FindAllNamedRegexMatch(pattern, text string) []map[string]string {
 		}
 		results = append(results, result)
 	}
+
 	return results
 }
 

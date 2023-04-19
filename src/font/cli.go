@@ -170,6 +170,7 @@ func (m *main) Init() tea.Cmd {
 	if isZipFile() {
 		m.state = unzipFont
 	}
+
 	return m.spinner.Tick
 }
 
@@ -261,6 +262,7 @@ func (m *main) View() string {
 	case done:
 		return textStyle.Render(fmt.Sprintf("Successfully installed %s 🚀", m.font))
 	}
+
 	return ""
 }
 

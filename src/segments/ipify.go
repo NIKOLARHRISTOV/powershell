@@ -59,6 +59,7 @@ func (i *IPify) getResult() (string, error) {
 	if err != nil {
 		return "", err
 	}
+
 	return data.IP, err
 }
 

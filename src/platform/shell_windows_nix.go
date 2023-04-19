@@ -15,5 +15,6 @@ func (env *Shell) BatteryState() (*battery.Info, error) {
 		env.Error(err)
 		return nil, err
 	}
+
 	return info, nil
 }

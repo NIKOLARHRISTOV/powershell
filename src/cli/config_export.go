@@ -66,6 +66,7 @@ func cleanOutputPath(path string, env platform.Environment) string {
 			path = absPath
 		}
 	}
+
 	return filepath.Clean(path)
 }
 

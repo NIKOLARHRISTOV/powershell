@@ -56,6 +56,7 @@ func (a *Aws) Enabled() bool {
 	if !displayDefaultUser && a.Profile == defaultUser {
 		return false
 	}
+
 	return a.Profile != ""
 }
 

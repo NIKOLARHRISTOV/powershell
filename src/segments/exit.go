@@ -23,6 +23,7 @@ func (e *Exit) Enabled() bool {
 	if e.props.GetBool(properties.AlwaysEnabled, false) {
 		return true
 	}
+
 	return e.env.ErrorCode() != 0
 }
 

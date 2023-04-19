@@ -89,6 +89,7 @@ func (tf *Terraform) setVersionFromTfFiles() error {
 		tf.TerraformBlock = *config.Terraform
 		return nil
 	}
+
 	return errors.New("no valid terraform files found")
 }
 

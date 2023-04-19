@@ -177,6 +177,7 @@ func (g *Git) Enabled() bool {
 	if g.props.GetBool(FetchUpstreamIcon, false) {
 		g.UpstreamIcon = g.getUpstreamIcon()
 	}
+
 	return true
 }
 
@@ -214,6 +215,7 @@ func (g *Git) Commit() *Commit {
 			g.commit.Subject = line
 		}
 	}
+
 	return g.commit
 }
 
@@ -241,6 +243,7 @@ func (g *Git) Kraken() string {
 	if len(g.Hash) == 0 {
 		g.Hash = g.getGitCommandOutput("rev-parse", "HEAD")
 	}
+
 	return fmt.Sprintf("gitkraken://repolink/%s/commit/%s?url=%s", root, g.Hash, url2.QueryEscape(g.RawUpstreamURL))
 }
 
@@ -358,6 +361,7 @@ func (g *Git) hasWorktree(gitdir *platform.FileInfo) bool {
 		g.realDir = gitFolder
 		return true
 	}
+
 	return false
 }
 
@@ -415,6 +419,7 @@ func (g *Git) cleanUpstreamURL(url string) string {
 	if len(match) == 0 {
 		return ""
 	}
+
 	return fmt.Sprintf("https://%s/%s", match["URL"], match["PATH"])
 }
 
@@ -448,6 +453,7 @@ func (g *Git) getUpstreamIcon() string {
 			return g.props.GetString(value.Icon, value.Default)
 		}
 	}
+
 	return g.props.GetString(GitIcon, "\uE5FB ")
 }
 
@@ -521,6 +527,7 @@ func (g *Git) getGitCommandOutput(args ...string) string {
 	if err != nil {
 		return ""
 	}
+
 	return val
 }
 
@@ -645,6 +652,7 @@ func (g *Git) formatSHA(sha string) string {
 	if len(sha) <= 7 {
 		return sha
 	}
+
 	return sha[0:7]
 }
 
@@ -700,6 +708,7 @@ func (g *Git) WorktreeCount() int {
 			count++
 		}
 	}
+
 	return count
 }
 
@@ -716,6 +725,7 @@ func (g *Git) getRemoteURL() string {
 	if len(url) != 0 {
 		return url
 	}
+
 	return g.getGitCommandOutput("remote", "get-url", upstream)
 }
 
@@ -740,5 +750,6 @@ func (g *Git) getSwitchMode(property properties.Property, gitSwitch, mode string
 	if len(mode) == 0 {
 		return ""
 	}
+
 	return fmt.Sprintf("%s%s", gitSwitch, mode)
 }

@@ -159,6 +159,7 @@ func (e *Engine) getTitleTemplateText() string {
 	if text, err := tmpl.Render(); err == nil {
 		return text
 	}
+
 	return ""
 }
 
@@ -403,6 +404,7 @@ func (e *Engine) PrintTooltip(tip string) string {
 		e.write(text)
 		return e.string()
 	}
+
 	return ""
 }
 
@@ -487,6 +489,7 @@ func (e *Engine) PrintExtraPrompt(promptType ExtraPromptType) string {
 		// Return the string and empty our buffer
 		return str
 	}
+
 	return ""
 }
 

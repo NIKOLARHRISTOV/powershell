@@ -180,6 +180,7 @@ func (segment *Segment) hasProperty(property properties.Property) bool {
 			return true
 		}
 	}
+
 	return false
 }
 

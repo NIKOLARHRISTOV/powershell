@@ -253,6 +253,7 @@ func (ir *ImageRenderer) runeAdditionalWidth(r rune) int {
 			return 1
 		}
 	}
+
 	return 0
 }
 
@@ -277,6 +278,7 @@ func (ir *ImageRenderer) lenWithoutANSI(text string) int {
 	for _, rune := range stripped {
 		length += ir.runeAdditionalWidth(rune)
 	}
+
 	return length
 }
 
@@ -288,6 +290,7 @@ func (ir *ImageRenderer) calculateWidth() int {
 			longest = length
 		}
 	}
+
 	return longest
 }
 
@@ -512,6 +515,7 @@ func (ir *ImageRenderer) shouldPrint() bool {
 			ir.AnsiString = match[url] + ir.AnsiString
 		}
 	}
+
 	return true
 }
 

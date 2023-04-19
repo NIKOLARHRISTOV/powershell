@@ -39,6 +39,7 @@ func parseBatteryOutput(output string) (*Info, error) {
 	if percentage, err = strconv.Atoi(matches["PERCENTAGE"]); err != nil {
 		return nil, errors.New("Unable to parse battery percentage")
 	}
+
 	return &Info{
 		Percentage: percentage,
 		State:      mapMostLogicalState(matches["STATE"]),
@@ -53,5 +54,6 @@ func Get() (*Info, error) {
 	if !strings.Contains(output, "Battery") {
 		return nil, ErrNotFound
 	}
+
 	return parseBatteryOutput(output)
 }

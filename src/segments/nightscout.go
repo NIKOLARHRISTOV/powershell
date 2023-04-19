@@ -137,6 +137,7 @@ func (ns *Nightscout) getResult() (*NightscoutData, error) {
 		// persist new sugars in cache
 		ns.env.Cache().Set(url, string(body), cacheTimeout)
 	}
+
 	return data, nil
 }
 

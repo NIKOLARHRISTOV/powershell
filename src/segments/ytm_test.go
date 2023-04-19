@@ -20,6 +20,7 @@ func bootstrapYTMDATest(json string, err error) *Ytm {
 			APIURL: url,
 		},
 	}
+
 	return ytm
 }
 

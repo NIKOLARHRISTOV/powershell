@@ -63,6 +63,7 @@ func (env *Shell) Home() string {
 	if home == "" {
 		home = os.Getenv("USERPROFILE")
 	}
+
 	return home
 }
 
@@ -72,6 +73,7 @@ func (env *Shell) QueryWindowTitles(processName, windowTitleRegex string) (strin
 	if err != nil {
 		env.Error(err)
 	}
+
 	return title, err
 }
 
@@ -114,6 +116,7 @@ func (env *Shell) CachePath() string {
 	if cachePath := returnOrBuildCachePath(env.Getenv("LOCALAPPDATA")); len(cachePath) != 0 {
 		return cachePath
 	}
+
 	return env.Home()
 }
 

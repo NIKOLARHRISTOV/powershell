@@ -7,5 +7,6 @@ func glob(pattern string) (bool, error) {
 	if err != nil {
 		return false, err
 	}
+
 	return len(matches) > 0, nil
 }

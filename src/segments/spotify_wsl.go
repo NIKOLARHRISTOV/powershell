@@ -30,5 +30,6 @@ func (s *Spotify) Enabled() bool {
 			return true
 		}
 	}
+
 	return false
 }

@@ -30,6 +30,7 @@ func (t *Time) Enabled() bool {
 	if t.CurrentDate.IsZero() {
 		t.CurrentDate = time.Now()
 	}
+
 	return true
 }
 

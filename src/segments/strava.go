@@ -90,6 +90,7 @@ func (s *Strava) Enabled() bool {
 		s.Error = err.(*http.OAuthError).Error()
 		return true
 	}
+
 	return false
 }
 
@@ -103,6 +104,7 @@ func (s *Strava) getAgo() string {
 		days := int32(math.Floor(float64(s.Hours) / float64(24)))
 		return fmt.Sprintf("%d", days) + string('d')
 	}
+
 	return fmt.Sprintf("%d", s.Hours) + string("h")
 }
 
@@ -123,6 +125,7 @@ func (s *Strava) getActivityIcon() string {
 	default:
 		return s.props.GetString(UnknownActivityIcon, "\ue213")
 	}
+
 	return s.props.GetString(UnknownActivityIcon, "\ue213")
 }
 

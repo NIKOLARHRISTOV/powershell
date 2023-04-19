@@ -56,6 +56,7 @@ func setupCmStatusEnv(status, headStatus string) *Plastic {
 			props: properties.Map{},
 		},
 	}
+
 	return p
 }
 

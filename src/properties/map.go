@@ -61,6 +61,7 @@ func (m Map) GetString(property Property, defaultValue string) string {
 	if !found {
 		return defaultValue
 	}
+
 	return fmt.Sprint(val)
 }
 
@@ -77,6 +78,7 @@ func (m Map) GetColor(property Property, defaultValue string) string {
 	if values != nil && values["color"] != "" {
 		return values["color"]
 	}
+
 	return defaultValue
 }
 
@@ -89,6 +91,7 @@ func (m Map) GetBool(property Property, defaultValue bool) bool {
 	if !ok {
 		return defaultValue
 	}
+
 	return boolValue
 }
 
