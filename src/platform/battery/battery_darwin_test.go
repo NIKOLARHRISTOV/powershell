@@ -39,10 +39,15 @@ func TestParseBatteryOutput(t *testing.T) {
 			ExpectedPercentage: 100.0,
 		},
 		{
-			Case:               "discharging",
+			Case:               "discharging, but not",
 			Output:             "100%; discharging;",
+<<<<<<< HEAD
 			ExpectedState:      Discharging,
 			ExpectedPercentage: 100.0,
+=======
+			ExpectedState:      Full,
+			ExpectedPercentage: 100,
+>>>>>>> upstream/main
 		},
 	}
 	for _, tc := range cases {
