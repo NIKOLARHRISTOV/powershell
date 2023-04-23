@@ -41,8 +41,6 @@ func parseBatteryOutput(output string) (*Info, error) {
 		return nil, errors.New("Unable to parse battery percentage")
 	}
 
-<<<<<<< HEAD
-=======
 	// sometimes it reports discharging when at 100, so let's force it to Full
 	// https://github.com/JanDeDobbeleer/oh-my-posh/issues/3729
 	if percentage == 100 {
@@ -52,7 +50,6 @@ func parseBatteryOutput(output string) (*Info, error) {
 		}, nil
 	}
 
->>>>>>> upstream/main
 	return &Info{
 		Percentage: percentage,
 		State:      mapMostLogicalState(matches["STATE"]),

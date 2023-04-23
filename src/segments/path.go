@@ -250,17 +250,9 @@ func (pt *Path) getAgnosterPath() string {
 	for i := 1; i < n; i++ {
 		elements = append(elements, folderIcon)
 	}
-<<<<<<< HEAD
-	if n > 1 {
-		buffer.WriteString(fmt.Sprintf("%s%s", separator, elements[n-1]))
-	}
-
-	return buffer.String()
-=======
 	elements = append(elements, splitted[n-1])
 
 	return pt.colorizePath(pt.root, elements)
->>>>>>> upstream/main
 }
 
 func (pt *Path) getAgnosterLeftPath() string {
@@ -277,16 +269,8 @@ func (pt *Path) getAgnosterLeftPath() string {
 	for i := 1; i < n; i++ {
 		elements = append(elements, folderIcon)
 	}
-<<<<<<< HEAD
-	for i := 2; i < n; i++ {
-		buffer.WriteString(fmt.Sprintf("%s%s", separator, folderIcon))
-	}
-
-	return buffer.String()
-=======
 
 	return pt.colorizePath(pt.root, elements)
->>>>>>> upstream/main
 }
 
 func (pt *Path) getRelevantLetter(folder string) string {
@@ -378,11 +362,7 @@ func (pt *Path) getAgnosterFullPath() string {
 		splitted = splitted[1:]
 	}
 
-<<<<<<< HEAD
-	return pt.root + pt.getFolderSeparator() + path
-=======
 	return pt.colorizePath(pt.root, splitted)
->>>>>>> upstream/main
 }
 
 func (pt *Path) getAgnosterShortPath() string {
@@ -424,12 +404,7 @@ func (pt *Path) getAgnosterShortPath() string {
 	for i := splitPos; i < pathDepth; i++ {
 		elements = append(elements, splitted[i])
 	}
-<<<<<<< HEAD
-
-	return buffer.String()
-=======
 	return pt.colorizePath(root, elements)
->>>>>>> upstream/main
 }
 
 func (pt *Path) getFullPath() string {
