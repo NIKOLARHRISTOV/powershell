@@ -4,65 +4,65 @@ on:
         types: [published]
 
 jobs:
-  notify:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Notes 📝
-        id: notes
-        uses: actions/github-script@d7906e4ad0b1822421a7e6a35d5ca353c962f410
-        with:
-          result-encoding: string
-          script: |
-            notes = context.payload.release.body
+    notify:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Notes 📝
+              id: notes
+              uses: actions/github-script@d7906e4ad0b1822421a7e6a35d5ca353c962f410
+              with:
+                  result-encoding: string
+                  script: |
+                      notes = context.payload.release.body
 
-            // replace all non-supported characters
-            notes = notes.replaceAll('###', '')
-            notes = notes.replaceAll('**', '')
-            notes = notes.replace(/ \(\[[0-9a-z]+\]\(.*\)/g, '')
-            notes = notes.trim()
-            return notes
-      - name: Bluesky 🌤️
-        id: bluesky
-        uses: actions/github-script@d7906e4ad0b1822421a7e6a35d5ca353c962f410
-        with:
-          script: |
-            const { BskyAgent } = require('@atproto/api')
+                      // replace all non-supported characters
+                      notes = notes.replaceAll('###', '')
+                      notes = notes.replaceAll('**', '')
+                      notes = notes.replace(/ \(\[[0-9a-z]+\]\(.*\)/g, '')
+                      notes = notes.trim()
+                      return notes
+            - name: Bluesky 🌤️
+              id: bluesky
+              uses: actions/github-script@d7906e4ad0b1822421a7e6a35d5ca353c962f410
+              with:
+                  script: |
+                      const { BskyAgent } = require('@atproto/api')
 
-            const agent = new BskyAgent({ service: 'https://bsky.social' })
-            await agent.login({identifier: '${{ secrets.BLUESKY_IDENTIFIER }}', password: '${{ secrets.BLUESKY_PASSWORD }}'})
+                      const agent = new BskyAgent({ service: 'https://bsky.social' })
+                      await agent.login({identifier: '${{ secrets.BLUESKY_IDENTIFIER }}', password: '${{ secrets.BLUESKY_PASSWORD }}'})
 
-            const version = '${{ github.event.release.name }}';
-            const notes = `${{steps.notes.outputs.result}}`;
+                      const version = '${{ github.event.release.name }}';
+                      const notes = `${{steps.notes.outputs.result}}`;
 
-            const text = `📦 ${version}
+                      const text = `📦 ${version}
 
-            ${notes}
+                      ${notes}
 
-            #ohmyposh #oss #cli #opensource`;
+                      #ohmyposh #oss #cli #opensource`;
 
-            await agent.post({
-                text: text,
-                embed: {
-                    $type: 'app.bsky.embed.external',
-                    external: {
-                        uri: `https://github.com/JanDeDobbeleer/oh-my-posh/releases/tag/${version}`,
-                        title: "GitHub release",
-                        description: version,
-                    },
-                },
-            });
-      - name: Toot 🐘
-        uses: cbrgm/mastodon-github-action@d98ab3376f941df14d37d5737961de431c0838c6
-        with:
-          message: |
-            📦 ${{ github.event.release.name }}
+                      await agent.post({
+                          text: text,
+                          embed: {
+                              $type: 'app.bsky.embed.external',
+                              external: {
+                                  uri: `https://github.com/JanDeDobbeleer/oh-my-posh/releases/tag/${version}`,
+                                  title: "GitHub release",
+                                  description: version,
+                              },
+                          },
+                      });
+            - name: Toot 🐘
+              uses: cbrgm/mastodon-github-action@d98ab3376f941df14d37d5737961de431c0838c6
+              with:
+                  message: |
+                      📦 ${{ github.event.release.name }}
 
-                      ${{steps.notes.outputs.result}}
+                                ${{steps.notes.outputs.result}}
 
-                      ${{ github.event.release.html_url }}
+                                ${{ github.event.release.html_url }}
 
-            #ohmyposh #oss #cli #opensource
-          visibility: "public"
-        env:
-          MASTODON_URL: "https://hachyderm.io/"
-          MASTODON_ACCESS_TOKEN: ${{ secrets.MASTODON_ACCESS_TOKEN }}
+                      #ohmyposh #oss #cli #opensource
+                  visibility: "public"
+              env:
+                  MASTODON_URL: "https://hachyderm.io/"
+                  MASTODON_ACCESS_TOKEN: ${{ secrets.MASTODON_ACCESS_TOKEN }}

@@ -13,23 +13,23 @@ on:
 
 name: Code QL
 jobs:
-  code-ql:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ${{ github.workspace }}/src
-    steps:
-    - name: Install Go
-      uses: actions/setup-go@4d34df0c2316fe8122ab82dc22947d607c0c91f9
-      with:
-        go-version: 1.20.2
-    - name: Checkout code
-      uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@f3feb00acb00f31a6f60280e6ace9ca31d91c76a
-      with:
-        languages: go
-    - name: Autobuild
-      uses: github/codeql-action/autobuild@f3feb00acb00f31a6f60280e6ace9ca31d91c76a
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@f3feb00acb00f31a6f60280e6ace9ca31d91c76a
+    code-ql:
+        runs-on: ubuntu-latest
+        defaults:
+            run:
+                working-directory: ${{ github.workspace }}/src
+        steps:
+            - name: Install Go
+              uses: actions/setup-go@4d34df0c2316fe8122ab82dc22947d607c0c91f9
+              with:
+                  go-version: 1.20.2
+            - name: Checkout code
+              uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+            - name: Initialize CodeQL
+              uses: github/codeql-action/init@f3feb00acb00f31a6f60280e6ace9ca31d91c76a
+              with:
+                  languages: go
+            - name: Autobuild
+              uses: github/codeql-action/autobuild@f3feb00acb00f31a6f60280e6ace9ca31d91c76a
+            - name: Perform CodeQL Analysis
+              uses: github/codeql-action/analyze@f3feb00acb00f31a6f60280e6ace9ca31d91c76a

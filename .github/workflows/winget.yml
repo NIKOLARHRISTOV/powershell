@@ -7,17 +7,17 @@ on:
                 required: true
 
 jobs:
-  publish:
-    runs-on: windows-latest
-    defaults:
-      run:
-        shell: pwsh
-        working-directory: ${{ github.workspace }}/packages/winget
-    env:
-      WINGETCREATE_TOKEN: ${{ secrets.WINGETCREATE_TOKEN }}
-    steps:
-    - name: Checkout code 👋
-      uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
-    - name: Create manifest and submit PR 📦
-      run: |
-        ./build.ps1 -Version "${{ github.event.inputs.version }}" -Token $env:WINGETCREATE_TOKEN
+    publish:
+        runs-on: windows-latest
+        defaults:
+            run:
+                shell: pwsh
+                working-directory: ${{ github.workspace }}/packages/winget
+        env:
+            WINGETCREATE_TOKEN: ${{ secrets.WINGETCREATE_TOKEN }}
+        steps:
+            - name: Checkout code 👋
+              uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+            - name: Create manifest and submit PR 📦
+              run: |
+                  ./build.ps1 -Version "${{ github.event.inputs.version }}" -Token $env:WINGETCREATE_TOKEN
