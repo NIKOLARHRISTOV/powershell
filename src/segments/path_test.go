@@ -199,6 +199,14 @@ func TestAgnosterPathStyles(t *testing.T) {
 			PathSeparator:       "\\",
 			FolderSeparatorIcon: " > ",
 		},
+		{
+			Style:               Unique,
+			Expected:            "a",
+			HomePath:            homeDir,
+			Pwd:                 "/ab",
+			PathSeparator:       "/",
+			FolderSeparatorIcon: " > ",
+		},
 
 		{
 			Style:               Powerlevel,
@@ -349,6 +357,14 @@ func TestAgnosterPathStyles(t *testing.T) {
 			Pwd:                 homeDirWindows + "\\something\\man",
 			GOOS:                platform.WINDOWS,
 			PathSeparator:       "\\",
+			FolderSeparatorIcon: " > ",
+		},
+		{
+			Style:               Letter,
+			Expected:            "w",
+			HomePath:            homeDir,
+			Pwd:                 "/whatever",
+			PathSeparator:       "/",
 			FolderSeparatorIcon: " > ",
 		},
 
@@ -1092,6 +1108,13 @@ func TestAgnosterPath(t *testing.T) {
 			PathSeparator:  "/",
 			Cycle:          []string{"blue", "yellow"},
 			ColorSeparator: true,
+		},
+		{
+			Case:          "Unix one level",
+			Expected:      "mnt",
+			Home:          homeDir,
+			PWD:           "/mnt",
+			PathSeparator: "/",
 		},
 	}
 
