@@ -1,44 +1,51 @@
 name: Social
 on:
-    release:
-        types: [published]
+  release:
+    types: [published]
+  workflow_dispatch:
 
 jobs:
-    release-notes:
-        runs-on: ubuntu-latest
-        outputs:
-            notes: ${{ steps.notes.outputs.result }}
-        steps:
-            - name: Notes 📝
-              id: notes
-              uses: actions/github-script@d7906e4ad0b1822421a7e6a35d5ca353c962f410
-              with:
-                  result-encoding: string
-                  script: |
-                      notes = context.payload.release.body
+  bluesky:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Node ⬇️
+        uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c
+        with:
+          node-version: 18
+      - name: Install dependencies 📦
+        run: npm install @atproto/api node-fetch
+      - name: Skeet 🌤️
+        id: bluesky
+        uses: actions/github-script@d7906e4ad0b1822421a7e6a35d5ca353c962f410
+        with:
+          script: |
+            const { BskyAgent } = require("@atproto/api");
+            // not including this makes atproto/api fail on posting
+            // const fetch = require("node-fetch");
 
-                      // replace all non-supported characters
-                      notes = notes.replaceAll('###', '')
-                      notes = notes.replaceAll('**', '')
-                      notes = notes.replace(/ \(\[[0-9a-z]+\]\(.*\)/g, '')
-                      notes = notes.trim()
-                      return notes
-    bluesky:
-        runs-on: ubuntu-latest
-        needs: release-notes
-        steps:
-            - name: Post 🌤️
-              id: bluesky
-              uses: actions/github-script@d7906e4ad0b1822421a7e6a35d5ca353c962f410
-              with:
-                  script: |
-                      const { BskyAgent } = require('@atproto/api')
+            let release = context.payload.release;
 
-                                const agent = new BskyAgent({ service: 'https://bsky.social' })
-                                await agent.login({identifier: '${{ secrets.BLUESKY_IDENTIFIER }}', password: '${{ secrets.BLUESKY_PASSWORD }}'})
+            if (release === null || release === undefined) {
+                console.log("No release data found, fetching latest release")
+                const response = await github.rest.repos.getLatestRelease({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                });
+                release = response.data;
+            }
 
-                      const version = '${{ github.event.release.name }}';
-                      const notes = `${{ needs.release-notes.outputs.notes }}`;
+            let notes = release.body;
+
+            // replace all non-supported characters
+            notes = notes.replaceAll('###', '');
+            notes = notes.replaceAll('**', '');
+            notes = notes.replace(/ \(\[[0-9a-z]+\]\(.*\)/g, '');
+            notes = notes.trim();
+
+            const agent = new BskyAgent({ service: 'https://bsky.social' });
+            await agent.login({identifier: '${{ secrets.BLUESKY_IDENTIFIER }}', password: '${{ secrets.BLUESKY_PASSWORD }}'});
+
+            const version = release.name;
 
                                 const text = `📦 ${version}
 
@@ -46,33 +53,16 @@ jobs:
 
                                 #ohmyposh #oss #cli #opensource`;
 
-                      await agent.post({
-                          text: text,
-                          embed: {
-                              $type: 'app.bsky.embed.external',
-                              external: {
-                                  uri: `https://github.com/JanDeDobbeleer/oh-my-posh/releases/tag/${version}`,
-                                  title: "GitHub release",
-                                  description: version,
-                              },
-                          },
-                      });
-    mastodon:
-        runs-on: ubuntu-latest
-        needs: release-notes
-        steps:
-            - name: Toot 🐘
-              uses: cbrgm/mastodon-github-action@d98ab3376f941df14d37d5737961de431c0838c6
-              with:
-                  message: |
-                      📦 ${{ github.event.release.name }}
+            console.log(`Posting to Bluesky:\n\n${text}`);
 
-                      ${{ needs.release-notes.outputs.notes }}
-
-                                          ${{ github.event.release.html_url }}
-
-                                #ohmyposh #oss #cli #opensource
-                            visibility: "public"
-                        env:
-                            MASTODON_URL: "https://hachyderm.io/"
-                            MASTODON_ACCESS_TOKEN: ${{ secrets.MASTODON_ACCESS_TOKEN }}
+            await agent.post({
+                text: text,
+                embed: {
+                    $type: 'app.bsky.embed.external',
+                    external: {
+                        uri: `https://github.com/JanDeDobbeleer/oh-my-posh/releases/tag/${version}`,
+                        title: "The best release yet 🚀",
+                        description: version,
+                    },
+                },
+            });
