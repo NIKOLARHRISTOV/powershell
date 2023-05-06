@@ -10,6 +10,7 @@ InstallModes:
     - silent
     - silentWithProgress
 Installers:
+<<<<<<< HEAD
     - Architecture: x64
       InstallerUrl: https://github.com/JanDeDobbeleer/oh-my-posh/releases/download/v<VERSION>/install-amd64.exe
       InstallerSha256: <HASH-AMD64>
@@ -46,5 +47,43 @@ Installers:
       Scope: user
       InstallerSwitches:
           Custom: /CURRENTUSER
+=======
+- Architecture: x64
+  InstallerUrl: https://github.com/JanDeDobbeleer/oh-my-posh/releases/download/v<VERSION>/install-amd64.exe
+  InstallerSha256: <HASH-AMD64>
+  Scope: machine
+  InstallerSwitches:
+     Custom: /INSTALLER=winget
+- Architecture: x64
+  InstallerUrl: https://github.com/JanDeDobbeleer/oh-my-posh/releases/download/v<VERSION>/install-amd64.exe
+  InstallerSha256: <HASH-AMD64>
+  Scope: user
+  InstallerSwitches:
+     Custom: /INSTALLER=winget
+- Architecture: x86
+  InstallerUrl: https://github.com/JanDeDobbeleer/oh-my-posh/releases/download/v<VERSION>/install-386.exe
+  InstallerSha256: <HASH-386>
+  Scope: machine
+  InstallerSwitches:
+     Custom: /INSTALLER=winget
+- Architecture: x86
+  InstallerUrl: https://github.com/JanDeDobbeleer/oh-my-posh/releases/download/v<VERSION>/install-386.exe
+  InstallerSha256: <HASH-386>
+  Scope: user
+  InstallerSwitches:
+     Custom: /INSTALLER=winget
+- Architecture: arm64
+  InstallerUrl: https://github.com/JanDeDobbeleer/oh-my-posh/releases/download/v<VERSION>/install-arm64.exe
+  InstallerSha256: <HASH-ARM64>
+  Scope: machine
+  InstallerSwitches:
+     Custom: /INSTALLER=winget
+- Architecture: arm64
+  InstallerUrl: https://github.com/JanDeDobbeleer/oh-my-posh/releases/download/v<VERSION>/install-arm64.exe
+  InstallerSha256: <HASH-ARM64>
+  Scope: user
+  InstallerSwitches:
+     Custom: /INSTALLER=winget
+>>>>>>> upstream/main
 ManifestType: installer
-ManifestVersion: 1.1.0
+ManifestVersion: 1.4.0
