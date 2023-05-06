@@ -10,64 +10,6 @@ jobs:
     steps:
       - name: Install Node ⬇️
         uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c
-<<<<<<< HEAD
-        with:
-          node-version: 18
-      - name: Install dependencies 📦
-        run: npm install @atproto/api node-fetch
-      - name: Skeet 🌤️
-        id: bluesky
-        uses: actions/github-script@d7906e4ad0b1822421a7e6a35d5ca353c962f410
-        with:
-          script: |
-            const { BskyAgent } = require("@atproto/api");
-            // not including this makes atproto/api fail on posting
-            // const fetch = require("node-fetch");
-
-            let release = context.payload.release;
-
-            if (release === null || release === undefined) {
-                console.log("No release data found, fetching latest release")
-                const response = await github.rest.repos.getLatestRelease({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                });
-                release = response.data;
-            }
-
-            let notes = release.body;
-
-            // replace all non-supported characters
-            notes = notes.replaceAll('###', '');
-            notes = notes.replaceAll('**', '');
-            notes = notes.replace(/ \(\[[0-9a-z]+\]\(.*\)/g, '');
-            notes = notes.trim();
-
-            const agent = new BskyAgent({ service: 'https://bsky.social' });
-            await agent.login({identifier: '${{ secrets.BLUESKY_IDENTIFIER }}', password: '${{ secrets.BLUESKY_PASSWORD }}'});
-
-            const version = release.name;
-
-                                const text = `📦 ${version}
-
-                                ${notes}
-
-                                #ohmyposh #oss #cli #opensource`;
-
-            console.log(`Posting to Bluesky:\n\n${text}`);
-
-            await agent.post({
-                text: text,
-                embed: {
-                    $type: 'app.bsky.embed.external',
-                    external: {
-                        uri: `https://github.com/JanDeDobbeleer/oh-my-posh/releases/tag/${version}`,
-                        title: "The best release yet 🚀",
-                        description: version,
-                    },
-                },
-            });
-=======
         with:
           node-version: 18
       - name: Checkout code 👋
@@ -82,4 +24,3 @@ jobs:
         run: |
           npm install
           node main.cjs
->>>>>>> upstream/main
