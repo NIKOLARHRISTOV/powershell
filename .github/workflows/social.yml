@@ -10,6 +10,7 @@ jobs:
     steps:
       - name: Install Node ⬇️
         uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c
+<<<<<<< HEAD
         with:
           node-version: 18
       - name: Install dependencies 📦
@@ -66,3 +67,19 @@ jobs:
                     },
                 },
             });
+=======
+        with:
+          node-version: 18
+      - name: Checkout code 👋
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+      - name: Skyt 🌤️
+        working-directory: scripts/bluesky
+        env:
+          BLUESKY_IDENTIFIER: ${{ secrets.BLUESKY_IDENTIFIER }}
+          BLUESKY_PASSWORD: ${{ secrets.BLUESKY_PASSWORD }}
+          OWNER: JanDeDobbeleer
+          REPO: oh-my-posh
+        run: |
+          npm install
+          node main.cjs
+>>>>>>> upstream/main
