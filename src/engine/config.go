@@ -329,7 +329,7 @@ func defaultConfig(env platform.Environment, warning bool) *Config {
 						TrailingDiamond: "\ue0b0",
 						Background:      "p:yellow",
 						Foreground:      "p:black",
-						Template:        " {{ if .SSHSession }}\uf817 {{ end }}{{ .UserName }} ",
+						Template:        " {{ if .SSHSession }}\ueba9 {{ end }}{{ .UserName }} ",
 					},
 					{
 						Type:            PATH,
@@ -340,7 +340,7 @@ func defaultConfig(env platform.Environment, warning bool) *Config {
 						Properties: properties.Map{
 							properties.Style: "folder",
 						},
-						Template: " \uf74a {{ path .Path .Location }} ",
+						Template: " \uea83 {{ path .Path .Location }} ",
 					},
 					{
 						Type:            GIT,
@@ -400,7 +400,7 @@ func defaultConfig(env platform.Environment, warning bool) *Config {
 						Style:      Plain,
 						Background: "transparent",
 						Foreground: "p:green",
-						Template:   "\uf898 ",
+						Template:   "\ue718 ",
 						Properties: properties.Map{
 							segments.HomeEnabled:         false,
 							segments.FetchPackageManager: false,
@@ -412,7 +412,7 @@ func defaultConfig(env platform.Environment, warning bool) *Config {
 						Style:      Plain,
 						Background: "transparent",
 						Foreground: "p:blue",
-						Template:   "\ufcd1 ",
+						Template:   "\ue626 ",
 						Properties: properties.Map{
 							properties.FetchVersion: false,
 						},

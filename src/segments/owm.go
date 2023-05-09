@@ -113,13 +113,13 @@ func (d *Owm) setStatus() error {
 	icon := ""
 	switch id {
 	case "01n":
-		fallthrough
+		icon = "\ue32b"
 	case "01d":
-		icon = "\ufa98"
+		icon = "\ue30d"
 	case "02n":
-		fallthrough
+		icon = "\ue37e"
 	case "02d":
-		icon = "\ufa94"
+		icon = "\ue302"
 	case "03n":
 		fallthrough
 	case "03d":
@@ -131,15 +131,15 @@ func (d *Owm) setStatus() error {
 	case "09n":
 		fallthrough
 	case "09d":
-		icon = "\ufa95"
+		icon = "\ue319"
 	case "10n":
-		fallthrough
+		icon = "\ue325"
 	case "10d":
 		icon = "\ue308"
 	case "11n":
-		fallthrough
+		icon = "\ue32a"
 	case "11d":
-		icon = "\ue31d"
+		icon = "\ue30f"
 	case "13n":
 		fallthrough
 	case "13d":
@@ -160,7 +160,7 @@ func (d *Owm) setStatus() error {
 	case "":
 		fallthrough
 	case "standard":
-		d.UnitIcon = "°K" // \ufa05"
+		d.UnitIcon = "°K" // <b>K</b>"
 	}
 
 	return nil
