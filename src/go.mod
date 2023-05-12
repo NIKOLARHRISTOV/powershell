@@ -19,13 +19,13 @@ require (
 	github.com/mitchellh/copystructure v1.2.0 // indirect
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/sergi/go-diff v1.3.1 // indirect
-	github.com/shirou/gopsutil/v3 v3.23.3
+	github.com/shirou/gopsutil/v3 v3.23.4
 	github.com/stretchr/objx v0.5.0 // indirect
 	github.com/stretchr/testify v1.8.2
 	github.com/wayneashleyberry/terminal-dimensions v1.1.0
 	golang.org/x/crypto v0.8.0 // indirect
 	golang.org/x/image v0.7.0
-	golang.org/x/sys v0.7.0
+	golang.org/x/sys v0.8.0
 	golang.org/x/text v0.9.0
 	gopkg.in/ini.v1 v1.67.0
 )
@@ -33,7 +33,7 @@ require (
 require (
 	github.com/ConradIrwin/font v0.0.0-20210318200717-ce8d41cc0732
 	github.com/charmbracelet/bubbles v0.15.0
-	github.com/charmbracelet/bubbletea v0.23.2
+	github.com/charmbracelet/bubbletea v0.24.0
 	github.com/charmbracelet/lipgloss v0.7.1
 	github.com/hashicorp/hcl/v2 v2.16.2
 	github.com/mattn/go-runewidth v0.0.14
@@ -66,7 +66,7 @@ require (
 	github.com/apparentlymart/go-textseg/v13 v13.0.0 // indirect
 	github.com/atotto/clipboard v0.1.4 // indirect
 	github.com/aymanbagabas/go-osc52/v2 v2.0.1 // indirect
-	github.com/containerd/console v1.0.3 // indirect
+	github.com/containerd/console v1.0.4-0.20230313162750-1ae8d489ac81 // indirect
 	github.com/dsnet/compress v0.0.1 // indirect
 	github.com/fatih/color v1.15.0 // indirect
 	github.com/goccy/go-json v0.10.2 // indirect

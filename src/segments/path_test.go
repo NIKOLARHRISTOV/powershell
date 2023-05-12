@@ -14,7 +14,7 @@ import (
 	mock2 "github.com/stretchr/testify/mock"
 )
 
-func renderTemplate(env *mock.MockedEnvironment, segmentTemplate string, context interface{}) string {
+func renderTemplateNoTrimSpace(env *mock.MockedEnvironment, segmentTemplate string, context interface{}) string {
 	found := false
 	for _, call := range env.Mock.ExpectedCalls {
 		if call.Method == "TemplateCache" {
@@ -38,8 +38,11 @@ func renderTemplate(env *mock.MockedEnvironment, segmentTemplate string, context
 	if err != nil {
 		return err.Error()
 	}
+	return text
+}
 
-	return strings.TrimSpace(text)
+func renderTemplate(env *mock.MockedEnvironment, segmentTemplate string, context interface{}) string {
+	return strings.TrimSpace(renderTemplateNoTrimSpace(env, segmentTemplate, context))
 }
 
 const (
@@ -334,7 +337,7 @@ func TestAgnosterPathStyles(t *testing.T) {
 		},
 		{
 			Style:               Letter,
-			Expected:            "C:\\",
+			Expected:            "C: > ",
 			HomePath:            homeDirWindows,
 			Pwd:                 "C:\\",
 			GOOS:                platform.WINDOWS,
@@ -611,7 +614,7 @@ func TestAgnosterPathStyles(t *testing.T) {
 		},
 		{
 			Style:               AgnosterShort,
-			Expected:            "C:/",
+			Expected:            "C: | ",
 			HomePath:            homeDir,
 			Pwd:                 "/mnt/c",
 			Pswd:                "C:",
@@ -642,7 +645,7 @@ func TestAgnosterPathStyles(t *testing.T) {
 		},
 		{
 			Style:               AgnosterShort,
-			Expected:            "C:\\",
+			Expected:            "C: > ",
 			HomePath:            homeDirWindows,
 			Pwd:                 "C:",
 			GOOS:                platform.WINDOWS,
@@ -748,7 +751,7 @@ func TestAgnosterPathStyles(t *testing.T) {
 		}
 		path.setPaths()
 		path.setStyle()
-		got := renderTemplate(env, "{{ .Path }}", path)
+		got := renderTemplateNoTrimSpace(env, "{{ .Path }}", path)
 		assert.Equal(t, tc.Expected, got)
 	}
 }
@@ -878,7 +881,7 @@ func TestFullAndFolderPath(t *testing.T) {
 		}
 		path.setPaths()
 		path.setStyle()
-		got := renderTemplate(env, tc.Template, path)
+		got := renderTemplateNoTrimSpace(env, tc.Template, path)
 		assert.Equal(t, tc.Expected, got)
 	}
 }
@@ -933,7 +936,7 @@ func TestFullPathCustomMappedLocations(t *testing.T) {
 		}
 		path.setPaths()
 		path.setStyle()
-		got := renderTemplate(env, "{{ .Path }}", path)
+		got := renderTemplateNoTrimSpace(env, "{{ .Path }}", path)
 		assert.Equal(t, tc.Expected, got)
 	}
 }
@@ -961,7 +964,7 @@ func TestFolderPathCustomMappedLocations(t *testing.T) {
 	}
 	path.setPaths()
 	path.setStyle()
-	got := renderTemplate(env, "{{ .Path }}", path)
+	got := renderTemplateNoTrimSpace(env, "{{ .Path }}", path)
 	assert.Equal(t, "#", got)
 }
 
@@ -1142,7 +1145,7 @@ func TestAgnosterPath(t *testing.T) {
 		}
 		path.setPaths()
 		path.setStyle()
-		got := renderTemplate(env, "{{ .Path }}", path)
+		got := renderTemplateNoTrimSpace(env, "{{ .Path }}", path)
 		assert.Equal(t, tc.Expected, got, tc.Case)
 	}
 }
@@ -1296,7 +1299,7 @@ func TestAgnosterLeftPath(t *testing.T) {
 		}
 		path.setPaths()
 		path.setStyle()
-		got := renderTemplate(env, "{{ .Path }}", path)
+		got := renderTemplateNoTrimSpace(env, "{{ .Path }}", path)
 		assert.Equal(t, tc.Expected, got, tc.Case)
 	}
 }

@@ -16,7 +16,7 @@ updates:
 
     # Maintain dependencies for Go modules
     - package-ecosystem: "gomod"
-      directory: "/"
+      directory: "/src"
       target-branch: "main"
       schedule:
           interval: "daily"
