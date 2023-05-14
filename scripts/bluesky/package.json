@@ -1,7 +1,7 @@
 {
   "type": "module",
   "dependencies": {
-    "@atproto/api": "^0.2.11",
-    "@octokit/rest": "^19.0.7"
+    "@atproto/api": "^0.3.3",
+    "@octokit/rest": "^19.0.8"
   }
 }
