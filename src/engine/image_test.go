@@ -48,7 +48,11 @@ func runImageTest(config, content string) (string, error) {
 		},
 	}
 
-	_ = image.Init(env)
+	err = image.Init(env)
+	if err != nil {
+		return "", err
+	}
+
 	err = image.SavePNG()
 	if err == nil {
 		os.Remove(image.Path)
@@ -60,6 +64,10 @@ func runImageTest(config, content string) (string, error) {
 func TestStringImageFileWithText(t *testing.T) {
 	for _, tc := range cases {
 		filename, err := runImageTest(tc.Config, "foobar")
+		if connectionError, ok := err.(*ConnectionError); ok {
+			t.Log(connectionError.Error())
+			continue
+		}
 		assert.Equal(t, "jandedobbeleer.png", filename, tc.Case)
 		assert.NoError(t, err)
 	}
@@ -69,6 +77,10 @@ func TestStringImageFileWithANSI(t *testing.T) {
 	prompt := `[38;2;40;105;131m[0m[48;2;40;105;131m[38;2;224;222;244m jan [0m[38;2;40;105;131m[0m[38;2;224;222;244m [0m`
 	for _, tc := range cases {
 		filename, err := runImageTest(tc.Config, prompt)
+		if connectionError, ok := err.(*ConnectionError); ok {
+			t.Log(connectionError.Error())
+			continue
+		}
 		assert.Equal(t, "jandedobbeleer.png", filename, tc.Case)
 		assert.NoError(t, err)
 	}

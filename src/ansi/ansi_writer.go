@@ -54,7 +54,7 @@ const (
 	// Foreground takes the current segment's foreground color
 	Foreground = "foreground"
 
-	anchorRegex    = `^(?P<ANCHOR><(?P<FG>[^,>]+)?,?(?P<BG>[^>]+)?>)`
+	AnchorRegex    = `^(?P<ANCHOR><(?P<FG>[^,>]+)?,?(?P<BG>[^>]+)?>)`
 	colorise       = "\x1b[%sm"
 	transparent    = "\x1b[0m\x1b[%s;49m\x1b[7m"
 	transparentEnd = "\x1b[27m"
@@ -122,6 +122,7 @@ type Writer struct {
 func (w *Writer) Init(shellName string) {
 	w.hyperlinkState = OTHER
 	w.shell = shellName
+	w.format = "%s"
 	switch w.shell {
 	case shell.BASH:
 		w.format = "\\[%s\\]"
@@ -274,6 +275,22 @@ func (w *Writer) RestoreCursorPosition() string {
 	return w.restoreCursorPosition
 }
 
+func (w *Writer) PromptStart() string {
+	return fmt.Sprintf(w.format, "\x1b]133;A\007")
+}
+
+func (w *Writer) CommandStart() string {
+	return fmt.Sprintf(w.format, "\x1b]133;B\007")
+}
+
+func (w *Writer) CommandFinished(code int, ignore bool) string {
+	if ignore {
+		return fmt.Sprintf(w.format, "\x1b]133;D\007")
+	}
+	mark := fmt.Sprintf("\x1b]133;D;%d\007", code)
+	return fmt.Sprintf(w.format, mark)
+}
+
 func (w *Writer) LineBreak() string {
 	cr := fmt.Sprintf(w.left, 1000)
 	lf := fmt.Sprintf(w.linechange, 1, "B")
@@ -291,7 +308,7 @@ func (w *Writer) Write(background, foreground, text string) {
 		w.foreground = w.AnsiColors.ToColor("white", false, w.TrueColor)
 	}
 	// validate if we start with a color override
-	match := regex.FindNamedRegexMatch(anchorRegex, text)
+	match := regex.FindNamedRegexMatch(AnchorRegex, text)
 	if len(match) != 0 {
 		colorOverride := true
 		for _, style := range knownStyles {
@@ -323,7 +340,7 @@ func (w *Writer) Write(background, foreground, text string) {
 
 		// color/end overrides first
 		text = string(w.runes[i:])
-		match = regex.FindNamedRegexMatch(anchorRegex, text)
+		match = regex.FindNamedRegexMatch(AnchorRegex, text)
 		if len(match) > 0 {
 			i = w.writeColorOverrides(match, background, i)
 			continue

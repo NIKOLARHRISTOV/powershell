@@ -14,6 +14,7 @@ import (
 	"github.com/jandedobbeleer/oh-my-posh/src/platform"
 	"github.com/jandedobbeleer/oh-my-posh/src/properties"
 	"github.com/jandedobbeleer/oh-my-posh/src/segments"
+	"github.com/jandedobbeleer/oh-my-posh/src/shell"
 	"github.com/jandedobbeleer/oh-my-posh/src/template"
 
 	"github.com/gookit/config/v2"
@@ -48,6 +49,7 @@ type Config struct {
 	Palette              ansi.Palette           `json:"palette,omitempty"`
 	Palettes             *ansi.Palettes         `json:"palettes,omitempty"`
 	Cycle                ansi.Cycle             `json:"cycle,omitempty"`
+	ShellIntegration     bool                   `json:"shell_integration,omitempty"`
 	PWD                  string                 `json:"pwd,omitempty"`
 	Var                  map[string]interface{} `json:"var,omitempty"`
 
@@ -91,9 +93,28 @@ func (cfg *Config) getPalette() ansi.Palette {
 // LoadConfig returns the default configuration including possible user overrides
 func LoadConfig(env platform.Environment) *Config {
 	cfg := loadConfig(env)
+
 	// only migrate automatically when the switch isn't set
 	if !env.Flags().Migrate && cfg.Version < configVersion {
 		cfg.BackupAndMigrate()
+	}
+
+	if !cfg.ShellIntegration {
+		return cfg
+	}
+
+	// bash  - ok
+	// fish  - ok
+	// pwsh  - ok
+	// zsh   - ok
+	// cmd   - ok, as of v1.4.25 (chrisant996/clink#457, fixed in chrisant996/clink@8a5d7ea)
+	// nu    - built-in (and bugged) feature - nushell/nushell#5585, https://www.nushell.sh/blog/2022-08-16-nushell-0_67.html#shell-integration-fdncred-and-tyriar
+	// elv   - broken OSC sequences
+	// xonsh - broken OSC sequences
+	// tcsh  - overall broken, FTCS_COMMAND_EXECUTED could be added to POSH_POSTCMD in the future
+	switch env.Shell() {
+	case shell.ELVISH, shell.XONSH, shell.TCSH, shell.NU:
+		cfg.ShellIntegration = false
 	}
 
 	return cfg
@@ -273,8 +294,12 @@ func escapeGlyphs(s string, migrate bool) string {
 	}
 
 	var cp codePoints
+	var err error
 	if migrate {
-		cp = getGlyphCodePoints()
+		cp, err = getGlyphCodePoints()
+		if err != nil {
+			migrate = false
+		}
 	}
 
 	var builder strings.Builder
@@ -363,7 +388,6 @@ func defaultConfig(env platform.Environment, warning bool) *Config {
 							segments.BranchMaxLength:   25,
 							segments.FetchStatus:       true,
 							segments.FetchUpstreamIcon: true,
-							segments.GithubIcon:        "\uf7a3",
 						},
 						Template: " {{ if .UpstreamURL }}{{ url .UpstreamIcon .UpstreamURL }} {{ end }}{{ .HEAD }}{{if .BranchStatus }} {{ .BranchStatus }}{{ end }}{{ if .Working.Changed }} \uf044 {{ .Working.String }}{{ end }}{{ if .Staging.Changed }} \uf046 {{ .Staging.String }}{{ end }} ", //nolint:lll
 					},
