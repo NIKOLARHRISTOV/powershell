@@ -212,6 +212,8 @@ const (
 	SESSION SegmentType = "session"
 	// SHELL writes which shell we're currently in
 	SHELL SegmentType = "shell"
+	// SITECORE displays the current context for the Sitecore CLI
+	SITECORE SegmentType = "sitecore"
 	// SPOTIFY writes the SPOTIFY status for Mac
 	SPOTIFY SegmentType = "spotify"
 	// STRAVA is a sports activity tracker
@@ -232,6 +234,8 @@ const (
 	UI5TOOLING SegmentType = "ui5tooling"
 	// UNITY writes which Unity version is currently active
 	UNITY SegmentType = "unity"
+	// UPGRADE lets you know if you can upgrade Oh My Posh
+	UPGRADE SegmentType = "upgrade"
 	// VALA writes the active vala version
 	VALA SegmentType = "vala"
 	// WAKATIME writes tracked time spend in dev editors
@@ -306,6 +310,7 @@ var Segments = map[SegmentType]func() SegmentWriter{
 	SAPLING:       func() SegmentWriter { return &segments.Sapling{} },
 	SESSION:       func() SegmentWriter { return &segments.Session{} },
 	SHELL:         func() SegmentWriter { return &segments.Shell{} },
+	SITECORE:      func() SegmentWriter { return &segments.Sitecore{} },
 	SPOTIFY:       func() SegmentWriter { return &segments.Spotify{} },
 	STRAVA:        func() SegmentWriter { return &segments.Strava{} },
 	SVN:           func() SegmentWriter { return &segments.Svn{} },
@@ -316,6 +321,7 @@ var Segments = map[SegmentType]func() SegmentWriter{
 	TIME:          func() SegmentWriter { return &segments.Time{} },
 	UI5TOOLING:    func() SegmentWriter { return &segments.UI5Tooling{} },
 	UNITY:         func() SegmentWriter { return &segments.Unity{} },
+	UPGRADE:       func() SegmentWriter { return &segments.Upgrade{} },
 	VALA:          func() SegmentWriter { return &segments.Vala{} },
 	WAKATIME:      func() SegmentWriter { return &segments.Wakatime{} },
 	WINREG:        func() SegmentWriter { return &segments.WindowsRegistry{} },
