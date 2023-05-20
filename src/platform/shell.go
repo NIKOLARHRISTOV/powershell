@@ -191,6 +191,7 @@ type TemplateCache struct {
 	SHLVL        int
 	Segments     SegmentsCache
 
+	initialized bool
 	sync.RWMutex
 }
 
@@ -313,6 +314,7 @@ func (env *Shell) Init() {
 	env.cmdCache = &commandCache{
 		commands: NewConcurrentMap(),
 	}
+	env.tmplCache = &TemplateCache{}
 	env.SetPromptCount()
 }
 
@@ -782,6 +784,7 @@ func (env *Shell) LoadTemplateCache() {
 		env.Error(err)
 		return
 	}
+	templateCache.initialized = true
 	env.tmplCache = &templateCache
 }
 
@@ -791,19 +794,21 @@ func (env *Shell) Logs() string {
 
 func (env *Shell) TemplateCache() *TemplateCache {
 	defer env.Trace(time.Now())
-	if env.tmplCache != nil {
-		return env.tmplCache
+	tmplCache := env.tmplCache
+	tmplCache.Lock()
+	defer tmplCache.Unlock()
+
+	if tmplCache.initialized {
+		return tmplCache
 	}
 
-	tmplCache := &TemplateCache{
-		Root:         env.Root(),
-		Shell:        env.Shell(),
-		ShellVersion: env.CmdFlags.ShellVersion,
-		Code:         env.ErrorCode(),
-		WSL:          env.IsWsl(),
-		Segments:     make(map[string]interface{}),
-		PromptCount:  env.CmdFlags.PromptCount,
-	}
+	tmplCache.Root = env.Root()
+	tmplCache.Shell = env.Shell()
+	tmplCache.ShellVersion = env.CmdFlags.ShellVersion
+	tmplCache.Code = env.ErrorCode()
+	tmplCache.WSL = env.IsWsl()
+	tmplCache.Segments = make(map[string]interface{})
+	tmplCache.PromptCount = env.CmdFlags.PromptCount
 	tmplCache.Env = make(map[string]string)
 	tmplCache.Var = make(map[string]interface{})
 
@@ -844,7 +849,7 @@ func (env *Shell) TemplateCache() *TemplateCache {
 		tmplCache.SHLVL = shlvl
 	}
 
-	env.tmplCache = tmplCache
+	tmplCache.initialized = true
 	return tmplCache
 }
 
