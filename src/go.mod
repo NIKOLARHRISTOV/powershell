@@ -32,10 +32,10 @@ require (
 
 require (
 	github.com/ConradIrwin/font v0.0.0-20210318200717-ce8d41cc0732
-	github.com/charmbracelet/bubbles v0.15.0
+	github.com/charmbracelet/bubbles v0.16.1
 	github.com/charmbracelet/bubbletea v0.24.1
 	github.com/charmbracelet/lipgloss v0.7.1
-	github.com/hashicorp/hcl/v2 v2.16.2
+	github.com/hashicorp/hcl/v2 v2.17.0
 	github.com/mattn/go-runewidth v0.0.14
 	github.com/spf13/cobra v1.7.0
 	github.com/spf13/pflag v1.0.5
