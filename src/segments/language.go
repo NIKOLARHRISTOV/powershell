@@ -141,7 +141,11 @@ func (l *language) Enabled() bool {
 	}
 
 	if l.matchesVersionFile != nil {
-		l.version.Expected, l.Mismatch = l.matchesVersionFile()
+		expected, match := l.matchesVersionFile()
+		if !match {
+			l.Mismatch = true
+			l.Expected = expected
+		}
 	}
 
 	return enabled
