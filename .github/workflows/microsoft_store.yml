@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Configure Store Credentials 🔑
-        uses: jandedobbeleer/store-submission@submission-status
+        uses: jandedobbeleer/store-submission@v1
         with:
           command: configure
           type: win32
@@ -23,7 +23,7 @@ jobs:
           client-secret: ${{ secrets.CLIENT_SECRET }}
           only-on-ready: true
       - name: Update draft submission
-        uses: jandedobbeleer/store-submission@submission-status
+        uses: jandedobbeleer/store-submission@v1
         with:
           command: update
           product-update: '{
@@ -52,6 +52,6 @@ jobs:
               ]
             }'
       - name: Publish Submission
-        uses: jandedobbeleer/store-submission@submission-status
+        uses: jandedobbeleer/store-submission@v1
         with:
           command: publish

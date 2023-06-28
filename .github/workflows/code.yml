@@ -10,24 +10,24 @@ on:
 
 name: Validate Code
 jobs:
-  test:
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-    runs-on: ${{ matrix.os }}
-    defaults:
-      run:
-        working-directory: ${{ github.workspace }}/src
-    steps:
-    - name: Install Go
-      uses: actions/setup-go@fac708d6674e30b6ba41289acaab6d4b75aa0753
-      with:
-        go-version: 1.20.2
-    - name: Checkout code
-      uses: actions/checkout@v3.5.3
-    - name: Golang CI
-      uses: golangci/golangci-lint-action@639cd343e1d3b897ff35927a75193d57cfcba299
-      with:
-        working-directory: src
-    - name: Unit Tests
-      run: go test -v ./...
+    test:
+        strategy:
+            matrix:
+                os: [ubuntu-latest, macos-latest, windows-latest]
+        runs-on: ${{ matrix.os }}
+        defaults:
+            run:
+                working-directory: ${{ github.workspace }}/src
+        steps:
+            - name: Install Go
+              uses: actions/setup-go@v4.0.1
+              with:
+                  go-version: 1.20.2
+            - name: Checkout code
+              uses: actions/checkout@v3.5.3
+            - name: Golang CI
+              uses: golangci/golangci-lint-action@v3.6.0
+              with:
+                  working-directory: src
+            - name: Unit Tests
+              run: go test -v ./...

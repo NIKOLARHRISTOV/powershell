@@ -25,7 +25,7 @@ jobs:
                   $version = $env:GITHUB_REF.TrimStart("refs/tags/v")
                   ./build.ps1 -Architecture ${{ matrix.arch }}  -Version $version
             - name: Upload artifacts 🆙
-              uses: actions/github-script@d7906e4ad0b1822421a7e6a35d5ca353c962f410
+              uses: actions/github-script@v6.4.1
               with:
                   github-token: ${{secrets.GITHUB_TOKEN}}
                   script: |
@@ -51,7 +51,7 @@ jobs:
                       needs: publish
                       steps:
                           - name: Notify Winget Build 🙋🏾‍♀️
-                            uses: actions/github-script@d7906e4ad0b1822421a7e6a35d5ca353c962f410
+                            uses: actions/github-script@v6.4.1
                             with:
                                 github-token: ${{ secrets.GH_PAT }}
                                 script: |
@@ -63,7 +63,7 @@ jobs:
                                       inputs: {"version": process.env.GITHUB_REF.replace('refs/tags/v', '')}
                                     })
                           - name: Notify Windows Store Build 👋
-                            uses: actions/github-script@d7906e4ad0b1822421a7e6a35d5ca353c962f410
+                            uses: actions/github-script@v6.4.1
                             with:
                                 github-token: ${{ secrets.GH_PAT }}
                                 script: |
@@ -75,7 +75,7 @@ jobs:
                                       inputs: {"version": process.env.GITHUB_REF.replace('refs/tags/v', '')}
                                     })
                           - name: Notify Scoop Build 🤙
-                            uses: actions/github-script@d7906e4ad0b1822421a7e6a35d5ca353c962f410
+                            uses: actions/github-script@v6.4.1
                             with:
                                 github-token: ${{ secrets.GH_PAT }}
                                 script: |
@@ -99,7 +99,7 @@ jobs:
                                                 needs: publish
                                                 steps:
                                                     - name: Notify Winget Build 🙋🏾‍♀️
-                                                      uses: actions/github-script@v6.3.3
+                                                      uses: actions/github-script@v6.4.1
                                                       with:
                                                           github-token: ${{ secrets.GH_PAT }}
                                                           script: |
@@ -111,7 +111,7 @@ jobs:
                                                                 inputs: {"version": process.env.GITHUB_REF.replace('refs/tags/v', '')}
                                                               })
                                                     - name: Notify Windows Store Build 👋
-                                                      uses: actions/github-script@v6.3.3
+                                                      uses: actions/github-script@v6.4.1
                                                       with:
                                                           github-token: ${{ secrets.GH_PAT }}
                                                           script: |
@@ -123,7 +123,7 @@ jobs:
                                                                 inputs: {"version": process.env.GITHUB_REF.replace('refs/tags/v', '')}
                                                               })
                                                     - name: Notify Scoop Build 🤙
-                                                      uses: actions/github-script@v6.3.3
+                                                      uses: actions/github-script@v6.4.1
                                                       with:
                                                           github-token: ${{ secrets.GH_PAT }}
                                                           script: |
