@@ -56,6 +56,10 @@ donation?
 
 [![Documentation][docs-badge]][docs]
 
+## Reviews
+
+* [Repo review][repo-review] by [TameWizard][tamewizard]
+
 ## Thanks
 
 -   [Chris Benti][chrisbenti-psconfig] for providing the first influence to
@@ -99,3 +103,5 @@ donation?
 [justjanne]: https://github.com/justjanne
 [powerline-go]: https://github.com/justjanne/powerline-go
 [starship]: https://github.com/starship/starship/blob/master/src/init/mod.rs
+[repo-review]: https://repo-reviews.github.io//reviews/2023-06-21_TameWizard_JanDeDobbeleer_oh-my-posh
+[tamewizard]: https://github.com/TameWizard
