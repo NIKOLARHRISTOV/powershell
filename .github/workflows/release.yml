@@ -19,10 +19,10 @@ jobs:
             skipped: ${{ steps.changelog.outputs.skipped }}
         steps:
             - name: Checkout code 👋
-              uses: actions/checkout@v3.5.3
+              uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9
             - name: Create changelog ✍️
               id: changelog
-              uses: TriPSs/conventional-changelog-action@v3.19.0
+              uses: TriPSs/conventional-changelog-action@dd19d7c07e5f620b2d6f48d547148a4b6b29e92f
               with:
                   github-token: ${{ secrets.github_token }}
                   skip-version-file: "true"
@@ -41,7 +41,7 @@ jobs:
                 working-directory: ${{ github.workspace }}/src
         steps:
             - name: Checkout code 👋
-              uses: actions/checkout@v3.5.3
+              uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9
             - name: Install Go 🗳
               uses: ./.github/workflows/composite/bootstrap-go
             - name: Tag HEAD 😸
@@ -50,7 +50,7 @@ jobs:
                   git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
                   git tag ${{ needs.changelog.outputs.tag }}
             - name: Install cosign 🔑
-              uses: sigstore/cosign-installer@v3.1.1
+              uses: sigstore/cosign-installer@6e04d228eb30da1757ee4e1dd75a0ec73a653e06
               with:
                   cosign-release: "v1.4.0"
             - name: Private Key 🔐
@@ -58,87 +58,39 @@ jobs:
                   $PSDefaultParameterValues['Out-File:Encoding']='UTF8'
                   $env:COSIGN_KEY > $env:COSIGN_KEY_LOCATION
               env:
-                  COSIGN_KEY_LOCATION: "/tmp/cosign.key"
-              defaults:
-                  run:
-                      shell: pwsh
-                      working-directory: ${{ github.workspace }}/src
-              steps:
-                  - name: Checkout code 👋
-                    uses: actions/checkout@v3.5.3
-                  - name: Install Go 🗳
-                    uses: ./.github/workflows/composite/bootstrap-go
-                  - name: Tag HEAD 😸
-                    run: |
-                        git config --global user.name "GitHub Actions"
-                        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-                        git tag ${{ needs.changelog.outputs.tag }}
-                  - name: Install cosign 🔑
-                    uses: sigstore/cosign-installer@v3.1.1
-                    with:
-                        cosign-release: "v1.4.0"
-                  - name: Private Key 🔐
-                    run: |
-                        $PSDefaultParameterValues['Out-File:Encoding']='UTF8'
-                        $env:COSIGN_KEY > $env:COSIGN_KEY_LOCATION
-                    env:
-                        COSIGN_KEY_LOCATION: "/tmp/cosign.key"
-                    defaults:
-                        run:
-                            shell: pwsh
-                            working-directory: ${{ github.workspace }}/src
-                    steps:
-                        - name: Checkout code 👋
-                          uses: actions/checkout@v3.5.3
-                        - name: Install Go 🗳
-                          uses: ./.github/workflows/composite/bootstrap-go
-                        - name: Tag HEAD 😸
-                          run: |
-                              git config --global user.name "GitHub Actions"
-                              git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-                              git tag ${{ needs.changelog.outputs.tag }}
-                        - name: Install cosign 🔑
-                          uses: sigstore/cosign-installer@v3.1.1
-                          with:
-                              cosign-release: "v1.4.0"
-                        - name: Private Key 🔐
-                          run: |
-                              $PSDefaultParameterValues['Out-File:Encoding']='UTF8'
-                              $env:COSIGN_KEY > $env:COSIGN_KEY_LOCATION
-                          env:
-                              COSIGN_KEY: ${{secrets.COSIGN_KEY}}
-                        - name: Run GoReleaser 🚀
-                          uses: goreleaser/goreleaser-action@v4.3.0
-                          with:
-                              distribution: goreleaser
-                              version: latest
-                              args: build --rm-dist
-                              workdir: src
-                          env:
-                              COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
-                        - name: Zip theme files 🤐
-                          run: |
-                              $compress = @{
-                                Path = "../themes/*.omp.*"
-                                CompressionLevel = "Fastest"
-                                DestinationPath = "./dist/themes.zip"
-                              }
-                              Compress-Archive @compress
-                        - name: Add hashes 🤫
-                          run: |
-                              Get-ChildItem ./dist -Exclude *.yaml,*.sig | Get-Unique |
-                              Foreach-Object {
-                                $zipHash = Get-FileHash $_.FullName -Algorithm SHA256
-                                $zipHash.Hash | Out-File -Encoding 'UTF8' "./dist/$($_.Name).sha256"
-                              }
-                          shell: pwsh
-                        - name: Release 🎓
-                          uses: softprops/action-gh-release@v1
-                          with:
-                              tag_name: ${{ needs.changelog.outputs.tag }}
-                              body: ${{ needs.changelog.outputs.body }}
-                              fail_on_unmatched_files: true
-                              token: ${{ secrets.GH_PAT }}
-                              files: |
-                                  src/dist/posh-*
-                                  src/dist/themes.*
+                  COSIGN_KEY: ${{secrets.COSIGN_KEY}}
+            - name: Run GoReleaser 🚀
+              uses: goreleaser/goreleaser-action@336e29918d653399e599bfca99fadc1d7ffbc9f7
+              with:
+                  distribution: goreleaser
+                  version: latest
+                  args: build --rm-dist
+                  workdir: src
+              env:
+                  COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
+            - name: Zip theme files 🤐
+              run: |
+                  $compress = @{
+                    Path = "../themes/*.omp.*"
+                    CompressionLevel = "Fastest"
+                    DestinationPath = "./dist/themes.zip"
+                  }
+                  Compress-Archive @compress
+            - name: Add hashes 🤫
+              run: |
+                  Get-ChildItem ./dist -Exclude *.yaml,*.sig | Get-Unique |
+                  Foreach-Object {
+                    $zipHash = Get-FileHash $_.FullName -Algorithm SHA256
+                    $zipHash.Hash | Out-File -Encoding 'UTF8' "./dist/$($_.Name).sha256"
+                  }
+              shell: pwsh
+            - name: Release 🎓
+              uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844
+              with:
+                  tag_name: ${{ needs.changelog.outputs.tag }}
+                  body: ${{ needs.changelog.outputs.body }}
+                  fail_on_unmatched_files: true
+                  token: ${{ secrets.GH_PAT }}
+                  files: |
+                      src/dist/posh-*
+                      src/dist/themes.*
