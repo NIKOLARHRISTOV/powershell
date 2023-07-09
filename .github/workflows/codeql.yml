@@ -13,28 +13,6 @@ on:
 
 name: Code QL
 jobs:
-<<<<<<< HEAD
-    code-ql:
-        runs-on: ubuntu-latest
-        defaults:
-            run:
-                working-directory: ${{ github.workspace }}/src
-        steps:
-            - name: Install Go
-              uses: actions/setup-go@v4.0.1
-              with:
-                  go-version: 1.20.2
-            - name: Checkout code
-              uses: actions/checkout@v3.5.3
-            - name: Initialize CodeQL
-              uses: github/codeql-action/init@v2.20.1
-              with:
-                  languages: go
-            - name: Autobuild
-              uses: github/codeql-action/autobuild@v2.20.1
-            - name: Perform CodeQL Analysis
-              uses: github/codeql-action/analyze@v2.20.1
-=======
   code-ql:
     runs-on: ubuntu-latest
     defaults:
@@ -55,4 +33,3 @@ jobs:
       uses: github/codeql-action/autobuild@cdcdbb579706841c47f7063dda365e292e5cad7a
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@cdcdbb579706841c47f7063dda365e292e5cad7a
->>>>>>> upstream/main

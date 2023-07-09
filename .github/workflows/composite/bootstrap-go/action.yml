@@ -5,17 +5,6 @@ branding:
     icon: download
     color: purple
 runs:
-<<<<<<< HEAD
-    using: "composite"
-    steps:
-        - name: Install Go 🚀
-          env:
-              VERSION: "1.20.3"
-          shell: pwsh
-          run: |
-              # Delete conflicting go versions first
-              Remove-Item -Path "$env:RUNNER_TOOL_CACHE/go" -Recurse -Force -ErrorAction Ignore
-=======
   using: "composite"
   steps:
     - name: Install Go 🚀
@@ -25,7 +14,6 @@ runs:
       run: |
         # Delete conflicting go versions first
         Remove-Item -Path "$env:RUNNER_TOOL_CACHE/go" -Recurse -Force -ErrorAction Ignore
->>>>>>> upstream/main
 
               # Download source
               $tempZip = "$env:RUNNER_TEMP/source.zip"
