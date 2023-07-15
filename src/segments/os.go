@@ -77,8 +77,6 @@ func (oi *Os) getDistroIcon(distro string) string {
 		"android":             "\uf17b",
 	}
 
-<<<<<<< HEAD
-=======
 	if icon, ok := iconMap[distro]; ok {
 		return oi.props.GetString(properties.Property(distro), icon)
 	}
@@ -88,7 +86,6 @@ func (oi *Os) getDistroIcon(distro string) string {
 		return icon
 	}
 
->>>>>>> upstream/main
 	return oi.props.GetString(Linux, "\uF17C")
 }
 
