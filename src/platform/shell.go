@@ -777,14 +777,14 @@ func (env *Shell) LoadTemplateCache() {
 	if !OK {
 		return
 	}
-	var templateCache TemplateCache
-	err := json.Unmarshal([]byte(val), &templateCache)
+	var tmplCache TemplateCache
+	err := json.Unmarshal([]byte(val), &tmplCache)
 	if err != nil {
 		env.Error(err)
 		return
 	}
-	templateCache.initialized = true
-	env.tmplCache = &templateCache
+	tmplCache.initialized = true
+	env.tmplCache = &tmplCache
 }
 
 func (env *Shell) Logs() string {
@@ -817,6 +817,7 @@ func (env *Shell) TemplateCache() *TemplateCache {
 
 	const separator = "="
 	values := os.Environ()
+	env.DebugF("environment: %v", values)
 	for value := range values {
 		key, val, valid := strings.Cut(values[value], separator)
 		if !valid {
