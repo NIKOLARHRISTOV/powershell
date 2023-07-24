@@ -53,6 +53,7 @@ var (
 
 type Flags struct {
 	ErrorCode     int
+	PipeStatus    string
 	Config        string
 	Shell         string
 	ShellVersion  string
@@ -216,7 +217,7 @@ type Environment interface {
 	GOOS() string
 	Shell() string
 	Platform() string
-	ErrorCode() int
+	StatusCodes() (int, string)
 	PathSeparator() string
 	HasFiles(pattern string) bool
 	HasFilesInDir(dir, pattern string) bool
@@ -614,9 +615,9 @@ func (env *Shell) HasCommand(command string) bool {
 	return false
 }
 
-func (env *Shell) ErrorCode() int {
+func (env *Shell) StatusCodes() (int, string) {
 	defer env.Trace(time.Now())
-	return env.CmdFlags.ErrorCode
+	return env.CmdFlags.ErrorCode, env.CmdFlags.PipeStatus
 }
 
 func (env *Shell) ExecutionTime() float64 {
@@ -804,7 +805,7 @@ func (env *Shell) TemplateCache() *TemplateCache {
 	tmplCache.Root = env.Root()
 	tmplCache.Shell = env.Shell()
 	tmplCache.ShellVersion = env.CmdFlags.ShellVersion
-	tmplCache.Code = env.ErrorCode()
+	tmplCache.Code, _ = env.StatusCodes()
 	tmplCache.WSL = env.IsWsl()
 	tmplCache.Segments = make(map[string]interface{})
 	tmplCache.PromptCount = env.CmdFlags.PromptCount

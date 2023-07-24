@@ -55,29 +55,27 @@ blocks:
             template: " 羽{{ .FormattedMs }} "
             type: executiontime
 
-          # Exit code
-          - background: p:blue
-            background_templates:
-                - "{{ if gt .Code 0 }}p:red{{ end }}"
-            foreground: p:white
-            powerline_symbol: 
-            properties:
-                always_enabled: true
-            style: diamond
-            template:
-                " {{ if gt .Code 0 }} {{ .Meaning }}{{ else }}{{ end }} "
-            trailing_diamond: 
-            type: exit
-      type: prompt
-    - alignment: right
-      segments:
-          # Shell
-          - background: p:black
-            foreground: p:white
-            style: plain
-            template:
-                <p:black,transparent></> {{ .Name }}<transparent,p:black></>
-            type: shell
+      # Exit code
+      - background: p:blue
+        background_templates:
+          - "{{ if gt .Code 0 }}p:red{{ end }}"
+        foreground: p:white
+        powerline_symbol: 
+        properties:
+          always_enabled: true
+        style: diamond
+        template: " {{ if gt .Code 0 }} {{ reason .Code }}{{ else }}{{ end }} "
+        trailing_diamond: 
+        type: exit
+    type: prompt
+  - alignment: right
+    segments:
+      # Shell
+      - background: p:black
+        foreground: p:white
+        style: plain
+        template: <p:black,transparent></> {{ .Name }}<transparent,p:black></>
+        type: shell
 
           # Battery
           - background_templates:
