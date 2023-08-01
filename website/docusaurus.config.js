@@ -152,7 +152,7 @@ module.exports = {
         theme: {
           customCss: [
             require.resolve('./src/css/prism-rose-pine-moon.css'),
-            require.resolve('./src/css/custom.css')
+            require.resolve('./src/css/Custom.css')
           ],
         },
       },
