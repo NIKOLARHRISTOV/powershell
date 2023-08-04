@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@atproto/api": "0.5.1",
+    "@atproto/api": "0.5.2",
     "@octokit/rest": "20.0.1"
   }
 }
