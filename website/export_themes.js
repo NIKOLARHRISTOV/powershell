@@ -6,7 +6,7 @@ const util = require('util');
 const exec = util.promisify(require('child_process').exec);
 
 const themesConfigDir = "./../themes";
-const themesStaticDir = "./static/img/themes";
+const themesStaticDir = "./static/Images/themes";
 
 function newThemeConfig(rpromptOffset = 40, cursorPadding = 30, author = "", bgColor = "#151515") {
   var config = {
@@ -108,7 +108,7 @@ themeConfigOverrrides.set('catppuccin_mocha.omp.json', newThemeConfig(40, 40, 'I
     const themeData = `
 ### [${themeName}]
 
-[![${themeName}](/img/themes/${themeName}.png)][${themeName}]
+[![${themeName}](/Images/themes/${themeName}.png)][${themeName}]
 `;
 
     await fs.promises.appendFile('./docs/themes.md', themeData);
