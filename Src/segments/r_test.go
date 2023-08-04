@@ -25,11 +25,9 @@ func TestR(t *testing.T) {
 		{Case: "Rscript 4.1.3 patched", ExpectedString: "4.1.3", HasRscript: true, Version: "R scripting front-end version 4.1.3 Patched (2022-03-10 r81896)"},
 		{Case: "Rscript 4.0.0", ExpectedString: "4.0.0", HasRscript: true, Version: "R scripting front-end version 4.0.0 (2020-04-24)"},
 		{Case: "Rscript devel", ExpectedString: "4.2.0", HasRscript: true, Version: "R scripting front-end version 4.2.0 Under development (unstable) (2022-03-14 r81896)"},
-
 		{Case: "R 4.1.2", ExpectedString: "4.1.2", HasR: true, Version: "R version 4.1.2 (2021-11-01) -- \"Bird Hippie\""},
 		{Case: "R 4.1.3 patched", ExpectedString: "4.1.3", HasR: true, Version: "R version 4.1.3 Patched (2022-03-10 r81896) -- \"One Push-Up\""},
 		{Case: "R 4.0.0", ExpectedString: "4.0.0", HasR: true, Version: "R version 4.0.0 (2020-04-24) -- \"Arbor Day\""},
-
 		{Case: "R.exe 4.1.2", ExpectedString: "4.1.2", HasRexe: true, Version: "R version 4.1.2 (2021-11-01) -- \"Bird Hippie\""},
 		{Case: "R.exe 4.1.3 patched", ExpectedString: "4.1.3", HasRexe: true, Version: "R version 4.1.3 Patched (2022-03-10 r81896) -- \"One Push-Up\""},
 		{Case: "R.exe 4.0.0", ExpectedString: "4.0.0", HasRexe: true, Version: "R version 4.0.0 (2020-04-24) -- \"Arbor Day\""},

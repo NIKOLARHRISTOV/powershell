@@ -41,7 +41,6 @@ func TestWriteANSIColors(t *testing.T) {
 			Expected: "\x1b[38;2;255;255;255m\x1b[1mtest\x1b[22m\x1b[0m",
 			Colors:   &Colors{Foreground: "black", Background: ParentBackground},
 		},
-
 		{
 			Case:     "Double override",
 			Input:    "<#ffffff>jan</>@<#ffffff>Jans-MBP</>",

@@ -185,7 +185,6 @@ func TestOWMSegmentIcons(t *testing.T) {
 			IconID:             "50d",
 			ExpectedIconString: "\ue313",
 		},
-
 		{
 			Case:               "Sunny Display night",
 			IconID:             "01n",

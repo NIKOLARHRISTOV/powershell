@@ -118,7 +118,6 @@ func TestTruncateBranch(t *testing.T) {
 		{Case: "No limit - smaller", Expected: "all-your-base", Branch: "/all-your-base", FullBranch: false, MaxLength: 13.0},
 		{Case: "Invalid setting", Expected: "all-your-base", Branch: "/all-your-base", FullBranch: false, MaxLength: "burp"},
 		{Case: "Lower than limit", Expected: "all-your-base", Branch: "/all-your-base", FullBranch: false, MaxLength: 20.0},
-
 		{Case: "No limit - full branch", Expected: "/all-your-base/are-belong-to-us", Branch: "/all-your-base/are-belong-to-us", FullBranch: true},
 		{Case: "No limit - larger - full branch", Expected: "/all-your-base", Branch: "/all-your-base/are-belong-to-us", FullBranch: true, MaxLength: 14.0},
 		{Case: "No limit - smaller - full branch ", Expected: "/all-your-base", Branch: "/all-your-base", FullBranch: true, MaxLength: 14.0},
@@ -154,7 +153,6 @@ func TestTruncateBranchWithSymbol(t *testing.T) {
 		{Case: "No limit - smaller", Expected: "all-your-base", Branch: "/all-your-base", FullBranch: false, MaxLength: 13.0, TruncateSymbol: "..."},
 		{Case: "Invalid setting", Expected: "all-your-base", Branch: "/all-your-base", FullBranch: false, MaxLength: "burp", TruncateSymbol: "..."},
 		{Case: "Lower than limit", Expected: "all-your-base", Branch: "/all-your-base", FullBranch: false, MaxLength: 20.0, TruncateSymbol: "..."},
-
 		{Case: "No limit - full branch", Expected: "/all-your-base/are-belong-to-us", Branch: "/all-your-base/are-belong-to-us", FullBranch: true, TruncateSymbol: "..."},
 		{Case: "No limit - larger - full branch", Expected: "/all-your-base...", Branch: "/all-your-base/are-belong-to-us", FullBranch: true, MaxLength: 14.0, TruncateSymbol: "..."},
 		{Case: "No limit - smaller - full branch ", Expected: "/all-your-base", Branch: "/all-your-base", FullBranch: true, MaxLength: 14.0, TruncateSymbol: "..."},

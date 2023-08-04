@@ -210,7 +210,6 @@ func TestAgnosterPathStyles(t *testing.T) {
 			PathSeparator:       "/",
 			FolderSeparatorIcon: " > ",
 		},
-
 		{
 			Style:               Powerlevel,
 			Expected:            "t > w > o > a > v > l > p > wh > we > i > wa > th > the > d > f > u > it > c > to > a > co > stream",
@@ -238,7 +237,6 @@ func TestAgnosterPathStyles(t *testing.T) {
 			FolderSeparatorIcon: "/",
 			MaxWidth:            50,
 		},
-
 		{
 			Style:               Letter,
 			Expected:            "~",
@@ -370,7 +368,6 @@ func TestAgnosterPathStyles(t *testing.T) {
 			PathSeparator:       "/",
 			FolderSeparatorIcon: " > ",
 		},
-
 		{
 			Style:               Mixed,
 			Expected:            "~ > .. > man",
@@ -412,7 +409,6 @@ func TestAgnosterPathStyles(t *testing.T) {
 			PathSeparator:       "\\",
 			FolderSeparatorIcon: " > ",
 		},
-
 		{
 			Style:               AgnosterFull,
 			Expected:            "usr > location > whatever",
@@ -430,7 +426,6 @@ func TestAgnosterPathStyles(t *testing.T) {
 			PathSeparator:       "/",
 			FolderSeparatorIcon: " | ",
 		},
-
 		{
 			Style:               AgnosterShort,
 			Expected:            ".. | src | init",
@@ -479,7 +474,6 @@ func TestAgnosterPathStyles(t *testing.T) {
 			PathSeparator:       "\\",
 			FolderSeparatorIcon: " > ",
 		},
-
 		{
 			Style:               AgnosterShort,
 			Expected:            "~",
@@ -776,31 +770,26 @@ func TestFullAndFolderPath(t *testing.T) {
 		{Style: Full, Pwd: homeDir + "/abc", Expected: "~/abc"},
 		{Style: Full, Pwd: homeDir + "/abc", Expected: homeDir + "/abc", DisableMappedLocations: true},
 		{Style: Full, Pwd: "/a/b/c/d", Expected: "/a/b/c/d"},
-
 		{Style: Full, FolderSeparatorIcon: "|", Pwd: homeDir, Expected: "~"},
 		{Style: Full, FolderSeparatorIcon: "|", Pwd: homeDir, Expected: "/home|someone", DisableMappedLocations: true},
 		{Style: Full, FolderSeparatorIcon: "|", Pwd: homeDir + "/abc", Expected: "~|abc"},
 		{Style: Full, FolderSeparatorIcon: "|", Pwd: "/a/b/c/d", Expected: "/a|b|c|d"},
-
 		{Style: Folder, Pwd: "/", Expected: "/"},
 		{Style: Folder, Pwd: homeDir, Expected: "~"},
 		{Style: Folder, Pwd: homeDir, Expected: "someone", DisableMappedLocations: true},
 		{Style: Folder, Pwd: homeDir + "/abc", Expected: "abc"},
 		{Style: Folder, Pwd: "/a/b/c/d", Expected: "d"},
-
 		{Style: Folder, FolderSeparatorIcon: "|", Pwd: "/", Expected: "/"},
 		{Style: Folder, FolderSeparatorIcon: "|", Pwd: homeDir, Expected: "~"},
 		{Style: Folder, FolderSeparatorIcon: "|", Pwd: homeDir, Expected: "someone", DisableMappedLocations: true},
 		{Style: Folder, FolderSeparatorIcon: "|", Pwd: homeDir + "/abc", Expected: "abc"},
 		{Style: Folder, FolderSeparatorIcon: "|", Pwd: "/a/b/c/d", Expected: "d"},
-
 		// for Windows paths
 		{Style: Folder, FolderSeparatorIcon: "\\", Pwd: "C:\\", Expected: "C:\\", PathSeparator: "\\", GOOS: platform.WINDOWS},
 		{Style: Folder, FolderSeparatorIcon: "\\", Pwd: homeDirWindows, Expected: "~", PathSeparator: "\\", GOOS: platform.WINDOWS},
 		{Style: Full, FolderSeparatorIcon: "\\", Pwd: homeDirWindows, Expected: "~", PathSeparator: "\\", GOOS: platform.WINDOWS},
 		{Style: Full, FolderSeparatorIcon: "\\", Pwd: homeDirWindows + "\\abc", Expected: "~\\abc", PathSeparator: "\\", GOOS: platform.WINDOWS},
 		{Style: Full, FolderSeparatorIcon: "\\", Pwd: "C:\\Users\\posh", Expected: "C:\\Users\\posh", PathSeparator: "\\", GOOS: platform.WINDOWS},
-
 		// StackCountEnabled=true and StackCount=2
 		{Style: Full, FolderSeparatorIcon: "|", Pwd: "/", StackCount: 2, Expected: "2 /"},
 		{Style: Full, Pwd: "/", StackCount: 2, Expected: "2 /"},
@@ -808,15 +797,12 @@ func TestFullAndFolderPath(t *testing.T) {
 		{Style: Full, Pwd: homeDir + "/abc", StackCount: 2, Expected: "2 ~/abc"},
 		{Style: Full, Pwd: homeDir + "/abc", StackCount: 2, Expected: "2 " + homeDir + "/abc", DisableMappedLocations: true},
 		{Style: Full, Pwd: "/a/b/c/d", StackCount: 2, Expected: "2 /a/b/c/d"},
-
 		// StackCountEnabled=false and StackCount=2
 		{Style: Full, FolderSeparatorIcon: "|", Pwd: "/", Template: "{{ .Path }}", StackCount: 2, Expected: "/"},
 		{Style: Full, Pwd: "/", Template: "{{ .Path }}", StackCount: 2, Expected: "/"},
 		{Style: Full, Pwd: homeDir, Template: "{{ .Path }}", StackCount: 2, Expected: "~"},
-
 		{Style: Full, Pwd: homeDir + "/abc", Template: "{{ .Path }}", StackCount: 2, Expected: homeDir + "/abc", DisableMappedLocations: true},
 		{Style: Full, Pwd: "/a/b/c/d", Template: "{{ .Path }}", StackCount: 2, Expected: "/a/b/c/d"},
-
 		// StackCountEnabled=true and StackCount=0
 		{Style: Full, FolderSeparatorIcon: "|", Pwd: "/", StackCount: 0, Expected: "/"},
 		{Style: Full, Pwd: "/", StackCount: 0, Expected: "/"},
@@ -824,7 +810,6 @@ func TestFullAndFolderPath(t *testing.T) {
 		{Style: Full, Pwd: homeDir + "/abc", StackCount: 0, Expected: "~/abc"},
 		{Style: Full, Pwd: homeDir + "/abc", StackCount: 0, Expected: homeDir + "/abc", DisableMappedLocations: true},
 		{Style: Full, Pwd: "/a/b/c/d", StackCount: 0, Expected: "/a/b/c/d"},
-
 		// StackCountEnabled=true and StackCount<0
 		{Style: Full, FolderSeparatorIcon: "|", Pwd: "/", StackCount: -1, Expected: "/"},
 		{Style: Full, Pwd: "/", StackCount: -1, Expected: "/"},
@@ -832,7 +817,6 @@ func TestFullAndFolderPath(t *testing.T) {
 		{Style: Full, Pwd: homeDir + "/abc", StackCount: -1, Expected: "~/abc"},
 		{Style: Full, Pwd: homeDir + "/abc", StackCount: -1, Expected: homeDir + "/abc", DisableMappedLocations: true},
 		{Style: Full, Pwd: "/a/b/c/d", StackCount: -1, Expected: "/a/b/c/d"},
-
 		// StackCountEnabled=true and StackCount not set
 		{Style: Full, FolderSeparatorIcon: "|", Pwd: "/", Expected: "/"},
 		{Style: Full, Pwd: "/", Expected: "/"},
@@ -1319,13 +1303,11 @@ func TestGetPwd(t *testing.T) {
 		{MappedLocationsEnabled: true, Pwd: "/a/b/c/d", Expected: "#"},
 		{MappedLocationsEnabled: true, Pwd: "/a/b/c/d/e/f/g", Expected: "#/e/f/g"},
 		{MappedLocationsEnabled: true, Pwd: "/z/y/x/w", Expected: "/z/y/x/w"},
-
 		{MappedLocationsEnabled: false},
 		{MappedLocationsEnabled: false, Pwd: homeDir + "/abc", Expected: homeDir + "/abc"},
 		{MappedLocationsEnabled: false, Pwd: "/a/b/c/d/e/f/g", Expected: "#/e/f/g"},
 		{MappedLocationsEnabled: false, Pwd: homeDir + "/c/d/e/f/g", Expected: homeDir + "/c/d/e/f/g"},
 		{MappedLocationsEnabled: true, Pwd: homeDir + "/c/d/e/f/g", Expected: "~/c/d/e/f/g"},
-
 		{MappedLocationsEnabled: true, Pwd: "/w/d/x/w", Pswd: "/z/y/x/w", Expected: "/z/y/x/w"},
 		{MappedLocationsEnabled: false, Pwd: "/f/g/k/d/e/f/g", Pswd: "/a/b/c/d/e/f/g", Expected: "#/e/f/g"},
 	}
