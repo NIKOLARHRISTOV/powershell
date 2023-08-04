@@ -5,7 +5,7 @@ on:
         branches:
             - main
         paths:
-            - "Src/**"
+            - "Source/**"
             - "packages/**"
             - ".github/workflows/**"
 jobs:

@@ -13,19 +13,8 @@ func (cm *ConcurrentMap) Set(key string, value any) {
 	(*sync.Map)(cm).Store(key, value)
 }
 
-<<<<<<< HEAD:Src/platform/concurrent_map.go
-func (c *ConcurrentMap) Get(key string) (interface{}, bool) {
-	c.RLock()
-	defer c.RUnlock()
-	if val, ok := c.values[key]; ok {
-		return val, true
-	}
-
-	return "", false
-=======
 func (cm *ConcurrentMap) Get(key string) (any, bool) {
 	return (*sync.Map)(cm).Load(key)
->>>>>>> upstream/main:src/platform/concurrent_map.go
 }
 
 func (cm *ConcurrentMap) Delete(key string) {
