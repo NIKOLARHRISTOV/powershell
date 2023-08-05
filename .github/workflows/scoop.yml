@@ -38,5 +38,5 @@ jobs:
                                                                         owner, repo,
                                                                         release_id: ${{ github.event.inputs.release }},
                                                                         name: 'oh-my-posh.json',
-                                                                        data: await fs.readFile('./packages/scoop/dist/oh-my-posh.json')
+                                                                        data: await fs.readFile('./packages/scoop/Target/oh-my-posh.json')
                                                                       });

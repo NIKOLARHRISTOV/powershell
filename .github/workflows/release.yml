@@ -96,7 +96,7 @@ jobs:
                   $compress = @{
                     Path = "../themes/*.omp.*"
                     CompressionLevel = "Fastest"
-                    DestinationPath = "./dist/themes.zip"
+                    DestinationPath = "./Target/themes.zip"
                   }
                   Compress-Archive @compress
             - name: Add hashes 🤫
@@ -104,7 +104,7 @@ jobs:
                   Get-ChildItem ./dist -Exclude *.yaml,*.sig | Get-Unique |
                   Foreach-Object {
                     $zipHash = Get-FileHash $_.FullName -Algorithm SHA256
-                    $zipHash.Hash | Out-File -Encoding 'UTF8' "./dist/$($_.Name).sha256"
+                    $zipHash.Hash | Out-File -Encoding 'UTF8' "./Target/$($_.Name).sha256"
                   }
               shell: pwsh
             - name: Release 🎓
@@ -115,5 +115,5 @@ jobs:
                   fail_on_unmatched_files: true
                   token: ${{ secrets.GH_PAT }}
                   files: |
-                      src/dist/posh-*
-                      src/dist/themes.*
+                      src/Target/posh-*
+                      src/Target/themes.*
