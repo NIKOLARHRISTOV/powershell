@@ -76,7 +76,7 @@ builds:
       hooks:
           post:
               - sh -c "cosign sign-blob --key $COSIGN_KEY_LOCATION {{ .Path }} >
-                dist/{{ .Name }}.sig"
+                Target/{{ .Name }}.sig"
 archives:
     - id: oh-my-posh
       format: binary
