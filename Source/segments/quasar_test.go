@@ -14,7 +14,7 @@ import (
 func TestQuasar(t *testing.T) {
 	packageLockFile := `{
 		"name": "quasar-project",
-		"version": "0.0.1",
+		"version": "2.0.0",
 		"lockfileVersion": 2,
 		"requires": true,
 		"dependencies": {
