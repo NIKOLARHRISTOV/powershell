@@ -12,10 +12,10 @@ onlyLabels: []
 
 # Issues or Pull Requests with these labels will never be considered stale. Set to `[]` to disable
 exemptLabels:
-    - "🚀 feat"
-    - "🐛 bug"
-    - "🤩 enhancement"
-    - "😵‍💫 help wanted"
+  - "🚀 feat"
+  - "🐛 bug"
+  - "🤩 enhancement"
+  - "😵‍💫 help wanted"
 
 # Set to true to ignore issues in a project (defaults to false)
 exemptProjects: false
@@ -31,9 +31,9 @@ staleLabel: "💤 stale"
 
 # Comment to post when marking as stale. Set to `false` to disable
 markComment: >
-    This issue has been automatically marked as stale because it has not had
-    recent activity. It will be closed in 7 days if no further activity occurs.
-    Thank you for your contributions.
+  This issue has been automatically marked as stale because it has not had
+  recent activity. It will be closed in 7 days if no further activity occurs.
+  Thank you for your contributions.
 
 # Limit the number of actions per hour, from 1-30. Default is 30
 limitPerRun: 30

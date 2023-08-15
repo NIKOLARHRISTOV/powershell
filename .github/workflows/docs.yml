@@ -1,17 +1,17 @@
 name: Azure Static Web Apps CI/CD
 
 on:
-    push:
-        branches:
-            - main
-        paths:
-            - "website/**"
-            - "themes/**"
-    workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "website/**"
+      - "themes/**"
+  workflow_dispatch:
 
 permissions:
-    id-token: write
-    contents: read
+  id-token: write
+  contents: read
 
 jobs:
   build_and_deploy:
@@ -23,11 +23,11 @@ jobs:
           submodules: true
           persist-credentials: false
       - name: Install Go
-        uses: actions/setup-go@fac708d6674e30b6ba41289acaab6d4b75aa0753
+        uses: actions/setup-go@93397bea11091df50f3d7e59dc26a7711a8bcfbe
         with:
           go-version: 1.20.5
           cache-dependency-path: src/go.sum
-      - uses: actions/setup-node@e33196f7422957bea03ed53f6fbb155025ffc7b8
+      - uses: actions/setup-node@bea5baf987ba7aa777a8a0b4ace377a21c45c381
         with:
           node-version: 17.6.0
         # Create Kind cluster to have a Kubernetes context for cloud-native-azure theme

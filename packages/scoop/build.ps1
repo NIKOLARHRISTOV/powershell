@@ -18,7 +18,7 @@ function Get-HashForArchitecture {
     return $hash.Trim()
 }
 
-New-Item -Path "." -Name "Target" -ItemType "directory"
+New-Item -Path "." -Name "dist" -ItemType "directory"
 
 $HashAmd64 = Get-HashForArchitecture -Architecture 'amd64' -Version $Version
 $Hash386 = Get-HashForArchitecture -Architecture '386' -Version $Version
@@ -27,4 +27,4 @@ $content = Get-Content '.\oh-my-posh.json' -Raw
 $content = $content.Replace('<VERSION>', $Version)
 $content = $content.Replace('<HASH-AMD64>', $HashAmd64)
 $content = $content.Replace('<HASH-386>', $Hash386)
-$content | Out-File -Encoding 'UTF8' './Target/oh-my-posh.json'
+$content | Out-File -Encoding 'UTF8' './dist/oh-my-posh.json'

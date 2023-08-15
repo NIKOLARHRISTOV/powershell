@@ -112,7 +112,7 @@ typings/
 
 # Nuxt.js build / generate output
 .nuxt
-Target
+dist
 
 # Gatsby files
 .cache/
@@ -121,7 +121,7 @@ Target
 # public
 
 # vuepress build output
-.vuepress/Target
+.vuepress/dist
 
 # Serverless directories
 .serverless/
@@ -164,7 +164,8 @@ Output/
 *.png
 
 # go releaser
-/src/Target
+/src/dist
+
 
 # Created by https://www.toptal.com/developers/gitignore/api/windows,linux,macos
 # Edit at https://www.toptal.com/developers/gitignore?templates=windows,linux,macos
@@ -192,6 +193,7 @@ Output/
 
 # Icon must end with two \r
 Icon
+
 
 # Thumbnails
 ._*

@@ -1,0 +1,50 @@
+# This is an example .goreleaser.yml file with some sensible defaults.
+# Make sure to check the documentation at https://goreleaser.com
+before:
+  hooks:
+    - go mod tidy
+    - go install github.com/tc-hib/go-winres@latest
+    - go-winres make --product-version=git-tag --file-version=git-tag --arch="amd64,386,arm64"
+builds:
+  -
+    binary: "posh-{{ .Os }}-{{ .Arch }}"
+    no_unique_dist_dir: true
+    flags:
+      - -a
+    ldflags:
+      - -s -w -X github.com/jandedobbeleer/oh-my-posh/src/build.Version={{ .Version }} -X github.com/jandedobbeleer/oh-my-posh/src/build.Date={{ .Date }} -extldflags "-static"
+    tags:
+      - netgo
+      - osusergo
+      - static_build
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - windows
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+      - arm
+      - "386"
+    ignore:
+      - goos: darwin
+        goarch: "386"
+      - goos: linux
+        goarch: "386"
+      - goos: darwin
+        goarch: arm
+      - goos: windows
+        goarch: arm
+    hooks:
+      post:
+      - sh -c "cosign sign-blob --key $COSIGN_KEY_LOCATION {{ .Path }} > dist/{{ .Name }}.sig"
+archives:
+  - id: oh-my-posh
+    format: binary
+    name_template: "posh-{{ .Os }}-{{ .Arch }}"
+checksum:
+  name_template: 'checksums.txt'
+changelog:
+  skip: true

@@ -164,11 +164,12 @@
   ],
   "console_title": true,
   "console_title_style": "template",
-	"console_title_template": "{{ .Folder }}",
-	"transient_prompt": {
-		"background": "transparent",
-		"foreground": "#FEF5ED",
-		"template": "\ue285 "
-	},
-	"version": 2
+
+  "console_title_template": "{{ .Folder }}",
+  "transient_prompt": {
+    "background": "transparent",
+    "foreground": "#FEF5ED",
+    "template": "\ue285 "
+  },
+  "version": 2
 }

@@ -32,5 +32,5 @@ jobs:
             owner, repo,
             release_id: ${{ github.event.release.id }},
             name: 'posh-android-arm',
-            data: await fs.readFile('./src/Target/posh-android-arm')
+            data: await fs.readFile('./src/dist/posh-android-arm')
           });
