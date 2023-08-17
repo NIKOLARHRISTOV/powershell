@@ -1,7 +1,17 @@
 {
-	"license": "MIT",
-	"dependencies": {
-		"@atproto/api": "0.6.4",
-		"@octokit/rest": "20.0.1"
-	}
+  "private": "false",
+  "license": "MIT",
+  "author": {
+    "name": "Nikola Hristov",
+    "email": "nikola@nikolahristov.tech",
+    "url": "https://nikolahristov.tech"
+  },
+  "type": "module",
+  "dependencies": {
+    "@atproto/api": "0.6.4",
+    "@octokit/rest": "20.0.1"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
 }
