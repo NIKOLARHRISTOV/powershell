@@ -29,6 +29,7 @@ func renderTemplateNoTrimSpace(env *mock.MockedEnvironment, segmentTemplate stri
 	}
 	env.On("Error", mock2.Anything)
 	env.On("Debug", mock2.Anything)
+	env.On("DebugF", mock2.Anything, mock2.Anything).Return(nil)
 	tmpl := &template.Text{
 		Template: segmentTemplate,
 		Context:  context,
@@ -908,11 +909,11 @@ func TestFullPathCustomMappedLocations(t *testing.T) {
 		env := new(mock.MockedEnvironment)
 		env.On("Home").Return(homeDir)
 		env.On("Pwd").Return(tc.Pwd)
-		if tc.GOOS == "" {
+		if len(tc.GOOS) == 0 {
 			tc.GOOS = platform.DARWIN
 		}
 		env.On("GOOS").Return(tc.GOOS)
-		if tc.PathSeparator == "" {
+		if len(tc.PathSeparator) == 0 {
 			tc.PathSeparator = "/"
 		}
 		env.On("PathSeparator").Return(tc.PathSeparator)
@@ -921,6 +922,7 @@ func TestFullPathCustomMappedLocations(t *testing.T) {
 		}
 		env.On("Flags").Return(args)
 		env.On("Shell").Return(shell.GENERIC)
+		env.On("DebugF", mock2.Anything, mock2.Anything).Return(nil)
 		env.On("TemplateCache").Return(&platform.TemplateCache{
 			Env: map[string]string{
 				"HOME": "/a/b/c",
@@ -932,6 +934,37 @@ func TestFullPathCustomMappedLocations(t *testing.T) {
 				properties.Style:       Full,
 				MappedLocationsEnabled: false,
 				MappedLocations:        tc.MappedLocations,
+			},
+		}
+		path.setPaths()
+		path.setStyle()
+		got := renderTemplateNoTrimSpace(env, "{{ .Path }}", path)
+		assert.Equal(t, tc.Expected, got)
+	}
+}
+
+func TestPowerlevelMappedLocations(t *testing.T) {
+	cases := []struct {
+		Pwd             string
+		MappedLocations map[string]string
+		Expected        string
+	}{
+		{Pwd: "/Users/michal/Applications", MappedLocations: map[string]string{"~": "#"}, Expected: "#/Applications"},
+	}
+
+	for _, tc := range cases {
+		env := new(mock.MockedEnvironment)
+		env.On("Home").Return("/Users/michal")
+		env.On("Pwd").Return(tc.Pwd)
+		env.On("GOOS").Return(platform.DARWIN)
+		env.On("PathSeparator").Return("/")
+		env.On("Shell").Return(shell.GENERIC)
+		env.On("DebugF", mock2.Anything, mock2.Anything).Return(nil)
+		path := &Path{
+			env: env,
+			props: properties.Map{
+				properties.Style: Powerlevel,
+				MappedLocations:  tc.MappedLocations,
 			},
 		}
 		path.setPaths()
@@ -953,6 +986,7 @@ func TestFolderPathCustomMappedLocations(t *testing.T) {
 	}
 	env.On("Flags").Return(args)
 	env.On("Shell").Return(shell.GENERIC)
+	env.On("DebugF", mock2.Anything, mock2.Anything).Return(nil)
 	path := &Path{
 		env: env,
 		props: properties.Map{
@@ -1341,6 +1375,7 @@ func TestGetPwd(t *testing.T) {
 		}
 		env.On("Flags").Return(args)
 		env.On("Shell").Return(shell.PWSH)
+		env.On("DebugF", mock2.Anything, mock2.Anything).Return(nil)
 		path := &Path{
 			env: env,
 			props: properties.Map{
@@ -1374,6 +1409,7 @@ func TestGetFolderSeparator(t *testing.T) {
 		env.On("PathSeparator").Return("/")
 		env.On("Error", mock2.Anything)
 		env.On("Debug", mock2.Anything)
+		env.On("DebugF", mock2.Anything, mock2.Anything).Return(nil)
 		path := &Path{
 			env: env,
 		}
@@ -1445,6 +1481,7 @@ func TestReplaceMappedLocations(t *testing.T) {
 		env.On("Shell").Return(shell.FISH)
 		env.On("GOOS").Return(platform.DARWIN)
 		env.On("Home").Return("/a/b/k")
+		env.On("DebugF", mock2.Anything, mock2.Anything).Return(nil)
 		path := &Path{
 			env: env,
 			props: properties.Map{

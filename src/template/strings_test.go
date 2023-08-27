@@ -10,15 +10,19 @@ import (
 	mock2 "github.com/stretchr/testify/mock"
 )
 
-func TestHResult(t *testing.T) {
+func TestTrunc(t *testing.T) {
 	cases := []struct {
 		Case        string
 		Expected    string
 		Template    string
 		ShouldError bool
 	}{
-		{Case: "Windows exit code", Expected: "0x8A150014", Template: `{{ hresult -1978335212 }}`},
-		{Case: "Not a number", Template: `{{ hresult "no number" }}`, ShouldError: true},
+		{Case: "5 length integer", Expected: "Hello", Template: `{{ trunc 5 "Hello World" }}`},
+		{Case: "5 length stringteger", Expected: "Hello", Template: `{{ trunc "5" "Hello World" }}`},
+		{Case: "5 length float", Expected: "Hello", Template: `{{ trunc 5.0 "Hello World" }}`},
+		{Case: "invalid", ShouldError: true, Template: `{{ trunc "foo" "Hello World" }}`},
+		{Case: "smaller than length", Expected: "Hello World", Template: `{{ trunc 20 "Hello World" }}`},
+		{Case: "negative", Expected: "ld", Template: `{{ trunc -2 "Hello World" }}`},
 	}
 
 	env := &mock.MockedEnvironment{}
