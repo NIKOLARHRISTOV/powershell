@@ -44,7 +44,7 @@ func (s *GitStatus) add(code string) {
 		s.Added++
 	case "?":
 		s.Untracked++
-	case "U":
+	case "U", "AA":
 		s.Unmerged++
 	case "M", "R", "C", "m":
 		s.Modified++
@@ -93,12 +93,14 @@ const (
 	MergeIcon properties.Property = "merge_icon"
 	// UpstreamIcons allows to add custom upstream icons
 	UpstreamIcons properties.Property = "upstream_icons"
-	// GithubIcon shows√ when upstream is github
+	// GithubIcon shows when upstream is github
 	GithubIcon properties.Property = "github_icon"
 	// BitbucketIcon shows  when upstream is bitbucket
 	BitbucketIcon properties.Property = "bitbucket_icon"
 	// AzureDevOpsIcon shows  when upstream is azure devops
 	AzureDevOpsIcon properties.Property = "azure_devops_icon"
+	// CodeCommit shows  when upstream is aws codecommit
+	CodeCommit properties.Property = "codecommit_icon"
 	// GitlabIcon shows when upstream is gitlab
 	GitlabIcon properties.Property = "gitlab_icon"
 	// GitIcon shows when the upstream can't be identified
@@ -133,6 +135,11 @@ type Git struct {
 	IsWorkTree     bool
 	IsBare         bool
 	User           *User
+	Detached       bool
+	Merge          bool
+	Rebase         bool
+	CherryPick     bool
+	Revert         bool
 
 	// needed for posh-git support
 	poshgit       bool
@@ -242,6 +249,10 @@ func (g *Git) StashCount() int {
 
 func (g *Git) Kraken() string {
 	root := g.getGitCommandOutput("rev-list", "--max-parents=0", "HEAD")
+	if strings.Contains(root, "\n") {
+		root = strings.Split(root, "\n")[0]
+	}
+
 	if len(g.RawUpstreamURL) == 0 {
 		if len(g.Upstream) == 0 {
 			g.Upstream = "origin"
@@ -425,6 +436,11 @@ func (g *Git) cleanUpstreamURL(url string) string {
 		path = strings.TrimSuffix(path, ".git")
 		return fmt.Sprintf("https://%s/%s", match["URL"], path)
 	}
+	// codecommit::region-identifier-id://repo-name
+	match = regex.FindNamedRegexMatch(`codecommit::(?P<URL>[a-z0-9-]+)://(?P<PATH>[\w\.@\:/\-~]+)`, url)
+	if len(match) != 0 {
+		return fmt.Sprintf("https://%s.console.aws.amazon.com/codesuite/codecommit/repositories/%s/browse?region=%s", match["URL"], match["PATH"], match["URL"])
+	}
 	// user@host.xz:/path/to/repo.git
 	match = regex.FindNamedRegexMatch(`.*@(?P<URL>.*):(?P<PATH>.*).git`, url)
 	if len(match) == 0 {
@@ -457,6 +473,7 @@ func (g *Git) getUpstreamIcon() string {
 		"bitbucket":        {BitbucketIcon, "\uF171 "},
 		"dev.azure.com":    {AzureDevOpsIcon, "\uEBE8 "},
 		"visualstudio.com": {AzureDevOpsIcon, "\uEBE8 "},
+		"codecommit":       {CodeCommit, "\uF270 "},
 	}
 	for key, value := range defaults {
 		if strings.Contains(g.UpstreamURL, key) {
@@ -476,6 +493,17 @@ func (g *Git) setGitStatus() {
 		if len(status) <= 4 {
 			return
 		}
+
+		// map conflicts separately when in a merge or rebase
+		if g.Rebase || g.Merge {
+			conflict := "AA"
+			full := status[2:4]
+			if full == conflict {
+				g.Staging.add(conflict)
+				return
+			}
+		}
+
 		workingCode := status[3:4]
 		stagingCode := status[2:3]
 		g.Working.add(workingCode)
@@ -543,6 +571,7 @@ func (g *Git) getGitCommandOutput(args ...string) string {
 func (g *Git) setGitHEADContext() {
 	branchIcon := g.props.GetString(BranchIcon, "\uE0A0")
 	if g.Ref == DETACHED {
+		g.Detached = true
 		g.setPrettyHEADName()
 	} else {
 		head := g.formatHEAD(g.Ref)
@@ -569,6 +598,7 @@ func (g *Git) setGitHEADContext() {
 	}
 
 	if g.env.HasFolder(g.workingDir + "/rebase-merge") {
+		g.Rebase = true
 		origin := getPrettyNameOrigin("rebase-merge/head-name")
 		onto := g.getGitRefFileSymbolicName("rebase-merge/onto")
 		onto = g.formatHEAD(onto)
@@ -578,7 +608,9 @@ func (g *Git) setGitHEADContext() {
 		g.HEAD = fmt.Sprintf("%s%s onto %s%s (%s/%s) at %s", icon, origin, branchIcon, onto, step, total, g.HEAD)
 		return
 	}
+
 	if g.env.HasFolder(g.workingDir + "/rebase-apply") {
+		g.Rebase = true
 		origin := getPrettyNameOrigin("rebase-apply/head-name")
 		step := g.FileContents(g.workingDir, "rebase-apply/next")
 		total := g.FileContents(g.workingDir, "rebase-apply/last")
@@ -586,9 +618,12 @@ func (g *Git) setGitHEADContext() {
 		g.HEAD = fmt.Sprintf("%s%s (%s/%s) at %s", icon, origin, step, total, g.HEAD)
 		return
 	}
+
 	// merge
 	commitIcon := g.props.GetString(CommitIcon, "\uF417")
+
 	if g.hasGitFile("MERGE_MSG") {
+		g.Merge = true
 		icon := g.props.GetString(MergeIcon, "\uE727 ")
 		mergeContext := g.FileContents(g.workingDir, "MERGE_MSG")
 		matches := regex.FindNamedRegexMatch(`Merge (remote-tracking )?(?P<type>branch|commit|tag) '(?P<theirs>.*)'`, mergeContext)
@@ -610,23 +645,28 @@ func (g *Git) setGitHEADContext() {
 			return
 		}
 	}
+
 	// sequencer status
 	// see if a cherry-pick or revert is in progress, if the user has committed a
 	// conflict resolution with 'git commit' in the middle of a sequence of picks or
 	// reverts then CHERRY_PICK_HEAD/REVERT_HEAD will not exist so we have to read
 	// the todo file.
 	if g.hasGitFile("CHERRY_PICK_HEAD") {
+		g.CherryPick = true
 		sha := g.FileContents(g.workingDir, "CHERRY_PICK_HEAD")
 		cherry := g.props.GetString(CherryPickIcon, "\uE29B ")
 		g.HEAD = fmt.Sprintf("%s%s%s onto %s", cherry, commitIcon, g.formatSHA(sha), formatDetached())
 		return
 	}
+
 	if g.hasGitFile("REVERT_HEAD") {
+		g.Revert = true
 		sha := g.FileContents(g.workingDir, "REVERT_HEAD")
 		revert := g.props.GetString(RevertIcon, "\uF0E2 ")
 		g.HEAD = fmt.Sprintf("%s%s%s onto %s", revert, commitIcon, g.formatSHA(sha), formatDetached())
 		return
 	}
+
 	if g.hasGitFile("sequencer/todo") {
 		todo := g.FileContents(g.workingDir, "sequencer/todo")
 		matches := regex.FindNamedRegexMatch(`^(?P<action>p|pick|revert)\s+(?P<sha>\S+)`, todo)
@@ -635,16 +675,19 @@ func (g *Git) setGitHEADContext() {
 			sha := matches["sha"]
 			switch action {
 			case "p", "pick":
+				g.CherryPick = true
 				cherry := g.props.GetString(CherryPickIcon, "\uE29B ")
 				g.HEAD = fmt.Sprintf("%s%s%s onto %s", cherry, commitIcon, g.formatSHA(sha), formatDetached())
 				return
 			case "revert":
+				g.Revert = true
 				revert := g.props.GetString(RevertIcon, "\uF0E2 ")
 				g.HEAD = fmt.Sprintf("%s%s%s onto %s", revert, commitIcon, g.formatSHA(sha), formatDetached())
 				return
 			}
 		}
 	}
+
 	g.HEAD = formatDetached()
 }
 

@@ -91,6 +91,12 @@ func (e *Engine) pwd() {
 	}
 
 	cwd := e.Env.Pwd()
+
+	// in BASH, we need to escape the path
+	if e.Env.Shell() == shell.BASH {
+		cwd = strings.ReplaceAll(cwd, `\`, `\\`)
+	}
+
 	// Backwards compatibility for deprecated OSC99
 	if e.Config.OSC99 {
 		e.write(e.Writer.ConsolePwd(ansi.OSC99, "", "", cwd))
@@ -158,8 +164,21 @@ func (e *Engine) getTitleTemplateText() string {
 	return ""
 }
 
-func (e *Engine) renderBlock(block *Block, cancelNewline bool) {
+func (e *Engine) renderBlock(block *Block, cancelNewline bool) bool {
 	defer e.patchPowerShellBleed()
+
+	// This is deprecated but we leave it in to not break configs
+	// It is encouraged to used "newline": true on block level
+	// rather than the standalone the linebreak block
+	if block.Type == LineBreak {
+		// do not print a newline to avoid a leading space
+		// when we're printin the first primary prompt in
+		// the shell
+		if !cancelNewline {
+			e.newline()
+		}
+		return false
+	}
 
 	// when in bash, for rprompt blocks we need to write plain
 	// and wrap in escaped mode or the prompt will not render correctly
@@ -170,7 +189,7 @@ func (e *Engine) renderBlock(block *Block, cancelNewline bool) {
 	}
 
 	if !block.Enabled() {
-		return
+		return false
 	}
 
 	// do not print a newline to avoid a leading space
@@ -180,35 +199,28 @@ func (e *Engine) renderBlock(block *Block, cancelNewline bool) {
 		e.newline()
 	}
 
-	switch block.Type {
-	// This is deprecated but we leave it in to not break configs
-	// It is encouraged to used "newline": true on block level
-	// rather than the standalone the linebreak block
-	case LineBreak:
-		// do not print a newline to avoid a leading space
-		// when we're printin the first primary prompt in
-		// the shell
-		if !cancelNewline {
-			return
-		}
-		e.newline()
+	text, length := block.RenderSegments()
+
+	// do not print anything when we don't have any text
+	if length == 0 {
+		return false
+	}
+
+	switch block.Type { //nolint:exhaustive
 	case Prompt:
 		if block.VerticalOffset != 0 {
 			e.write(e.Writer.ChangeLine(block.VerticalOffset))
 		}
 
 		if block.Alignment == Left {
-			text, length := block.RenderSegments()
 			e.currentLineLength += length
 			e.write(text)
-			return
+			return true
 		}
 
 		if block.Alignment != Right {
-			return
+			return false
 		}
-
-		text, length := block.RenderSegments()
 
 		space, OK := e.canWriteRightBlock(false)
 		// we can't print the right block as there's not enough room available
@@ -222,7 +234,7 @@ func (e *Engine) renderBlock(block *Block, cancelNewline bool) {
 					e.write(padText)
 				}
 				e.currentLineLength = 0
-				return
+				return true
 			}
 		}
 
@@ -234,7 +246,7 @@ func (e *Engine) renderBlock(block *Block, cancelNewline bool) {
 		if padText, OK := e.shouldFill(block.Filler, space, length); OK {
 			e.write(padText)
 			e.write(text)
-			return
+			return true
 		}
 
 		var prompt string
@@ -247,8 +259,11 @@ func (e *Engine) renderBlock(block *Block, cancelNewline bool) {
 		prompt += text
 		e.write(prompt)
 	case RPrompt:
-		e.rprompt, e.rpromptLength = block.RenderSegments()
+		e.rprompt = text
+		e.rpromptLength = length
 	}
+
+	return true
 }
 
 func (e *Engine) patchPowerShellBleed() {

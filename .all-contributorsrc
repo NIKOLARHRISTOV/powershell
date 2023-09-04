@@ -1651,7 +1651,9 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/54537427?v=4",
       "profile": "http://www.kemadev.fr/fr/",
       "contributions": [
-        "code"
+        "code",
+        "design",
+        "doc"
       ]
     },
     {
@@ -1868,6 +1870,17 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/2829438?v=4",
       "profile": "https://carlwa.com",
       "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "ercpereda",
+      "name": "Ernesto R. C. Pereda",
+      "avatar_url": "https://avatars.githubusercontent.com/u/13546685?v=4",
+      "profile": "https://github.com/ercpereda",
+      "contributions": [
+        "code",
+        "design",
         "doc"
       ]
     }
