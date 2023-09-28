@@ -32,7 +32,7 @@ func TestWriteANSIColors(t *testing.T) {
 		{
 			Case:     "Bold with color override",
 			Input:    "<b><#ffffff>test</></b>",
-			Expected: "\x1b[1m\x1b[30m\x1b[38;2;255;255;255mtest\x1b[49m\x1b[30m\x1b[22m\x1b[0m",
+			Expected: "\x1b[1m\x1b[30m\x1b[38;2;255;255;255mtest\x1b[30m\x1b[22m\x1b[0m",
 			Colors:   &Colors{Foreground: "black", Background: ParentBackground},
 		},
 		{
@@ -41,7 +41,6 @@ func TestWriteANSIColors(t *testing.T) {
 			Expected: "\x1b[38;2;255;255;255m\x1b[1mtest\x1b[22m\x1b[0m",
 			Colors:   &Colors{Foreground: "black", Background: ParentBackground},
 		},
-
 		{
 			Case:     "Double override",
 			Input:    "<#ffffff>jan</>@<#ffffff>Jans-MBP</>",
@@ -199,6 +198,12 @@ func TestWriteANSIColors(t *testing.T) {
 			Case:     "Nested override",
 			Input:    "hello, <red>world, <white>rabbit</> hello</>",
 			Expected: "\x1b[47m\x1b[30mhello, \x1b[31mworld, \x1b[37mrabbit\x1b[31m hello\x1b[0m",
+			Colors:   &Colors{Foreground: "black", Background: "white"},
+		},
+		{
+			Case:     "Transparent override",
+			Input:    "home<transparent> / </>code<transparent> / </>src ",
+			Expected: "\x1b[47m\x1b[30mhome\x1b[0m\x1b[37;49m\x1b[7m / \x1b[27m\x1b[47m\x1b[30mcode\x1b[0m\x1b[37;49m\x1b[7m / \x1b[27m\x1b[47m\x1b[30msrc \x1b[0m",
 			Colors:   &Colors{Foreground: "black", Background: "white"},
 		},
 	}
