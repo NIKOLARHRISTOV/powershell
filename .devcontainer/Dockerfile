@@ -2,7 +2,7 @@
 
 # [Choice] Go version (use -bullseye variants on local arm64/Apple Silicon): 1, 1.16, 1.17, 1-bullseye, 1.16-bullseye, 1.17-bullseye, 1-buster, 1.16-buster, 1.17-buster
 ARG VARIANT=1-bullseye
-FROM mcr.microsoft.com/vscode/devcontainers/go:0-${VARIANT}
+FROM mcr.microsoft.com/vscode/devcontainers/go:${VARIANT}
 
 # [Choice] Node.js version: none, lts/*, 16, 14, 12, 10
 ARG NODE_VERSION="none"
@@ -38,11 +38,6 @@ RUN echo 'deb http://download.opensuse.org/repositories/shells:/fish:/release:/3
 
 ARG USERNAME=vscode
 
-# Download the oh-my-posh binary
-RUN mkdir /home/${USERNAME}/bin; \
-    wget https://github.com/JanDeDobbeleer/oh-my-posh/releases/latest/download/posh-linux-$(dpkg --print-architecture) -O /home/${USERNAME}/bin/oh-my-posh; \
-    chmod +x /home/${USERNAME}/bin/oh-my-posh; \
-    chown ${USERNAME}: /home/${USERNAME}/bin;
 
 # NOTE: devcontainers are Linux-only at this time but when
 # Windows or Darwin is supported someone will need to improve

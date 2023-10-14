@@ -1946,6 +1946,33 @@
       "contributions": [
         "design"
       ]
+    },
+    {
+      "login": "deepak-dev-96",
+      "name": "Deepak Dev",
+      "avatar_url": "https://avatars.githubusercontent.com/u/134447761?v=4",
+      "profile": "https://github.com/deepak-dev-96",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "warrenbuckley",
+      "name": "Warren Buckley",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1389894?v=4",
+      "profile": "http://creativewebspecialist.co.uk",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "LunarMarathon",
+      "name": "LunarMarathon",
+      "avatar_url": "https://avatars.githubusercontent.com/u/113847439?v=4",
+      "profile": "https://github.com/LunarMarathon",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
