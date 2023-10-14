@@ -12,6 +12,7 @@ func BenchmarkInit(b *testing.B) {
 	// needs to be a non-existing file as we panic otherwise
 	cmd.SetArgs([]string{"init", "fish", "--print", "--config", "err.omp.json"})
 	out := bytes.NewBufferString("")
+
 	cmd.SetOut(out)
 
 	for i := 0; i < b.N; i++ {
