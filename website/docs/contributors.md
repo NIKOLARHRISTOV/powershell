@@ -297,8 +297,8 @@ Thanks goes to these wonderful people ([emoji key][acek]):
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
-This project follows the [all-contributors][ac] specification.
-Contributions of any kind welcome!
+This project follows the [all-contributors][ac] specification. Contributions of
+any kind welcome!
 
 [acek]: https://allcontributors.org/docs/en/emoji-key
 [ac]: https://github.com/all-contributors/all-contributors
