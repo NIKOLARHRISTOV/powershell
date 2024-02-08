@@ -9,7 +9,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Install Node ⬇️
-              uses: actions/setup-node@v4.0.1
+              uses: actions/setup-node@v4.0.2
               with:
                   node-version: 18
             - name: Checkout code 👋
