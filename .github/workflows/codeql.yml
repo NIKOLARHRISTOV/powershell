@@ -1,36 +1,36 @@
 on:
-  pull_request:
-    paths-ignore:
-      - 'README.md'
-      - 'CONTRIBUTING.md'
-      - 'COPYING'
-      - 'website/**'
-      - '.github/*.md'
-      - '.github/FUNDING.yml'
-  push:
-    branches:
-      - main
+    pull_request:
+        paths-ignore:
+            - "README.md"
+            - "CONTRIBUTING.md"
+            - "COPYING"
+            - "website/**"
+            - ".github/*.md"
+            - ".github/FUNDING.yml"
+    push:
+        branches:
+            - main
 
 name: Code QL
 jobs:
-  code-ql:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ${{ github.workspace }}/src
-    steps:
-    - name: Install Go
-      uses: actions/setup-go@93397bea11091df50f3d7e59dc26a7711a8bcfbe
-      with:
-        go-version: 1.21
-        cache-dependency-path: src/go.sum
-    - name: Checkout code
-      uses: actions/checkout@v4.1.2
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@cdcdbb579706841c47f7063dda365e292e5cad7a
-      with:
-        languages: go
-    - name: Autobuild
-      uses: github/codeql-action/autobuild@cdcdbb579706841c47f7063dda365e292e5cad7a
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@cdcdbb579706841c47f7063dda365e292e5cad7a
+    code-ql:
+        runs-on: ubuntu-latest
+        defaults:
+            run:
+                working-directory: ${{ github.workspace }}/src
+        steps:
+            - name: Install Go
+              uses: actions/setup-go@93397bea11091df50f3d7e59dc26a7711a8bcfbe
+              with:
+                  go-version: 1.21
+                  cache-dependency-path: src/go.sum
+            - name: Checkout code
+              uses: actions/checkout@v4.1.2
+            - name: Initialize CodeQL
+              uses: github/codeql-action/init@cdcdbb579706841c47f7063dda365e292e5cad7a
+              with:
+                  languages: go
+            - name: Autobuild
+              uses: github/codeql-action/autobuild@cdcdbb579706841c47f7063dda365e292e5cad7a
+            - name: Perform CodeQL Analysis
+              uses: github/codeql-action/analyze@cdcdbb579706841c47f7063dda365e292e5cad7a
