@@ -27,7 +27,7 @@ $download = "HTTPS://GitHub.Com/jandedobbeleer/oh-my-posh/releases/download/v$Ve
 Invoke-WebRequest $download -Out "./bin/$($name)"
 
 # license
-Invoke-WebRequest "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/v$Version/COPYING" -Out "./bin/COPYING.txt"
+Invoke-WebRequest "HTTPS://Raw.GitHubUserContent.Com/JanDeDobbeleer/oh-my-posh/v$Version/COPYING" -Out "./bin/COPYING.txt"
 $content = Get-Content '.\oh-my-posh.iss' -Raw
 $content = $content.Replace('<VERSION>', $Version)
 $ISSName = "Powershell-$Architecture-$Version.iss"
