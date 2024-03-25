@@ -4,7 +4,7 @@ if ($null -ne (Get-Module -Name "oh-my-posh-core")) {
 }
 
 # Helper functions which need to be defined before the module is loaded
-# See https://github.com/JanDeDobbeleer/oh-my-posh/discussions/2300
+# See HTTPS://GitHub.Com/JanDeDobbeleer/oh-my-posh/discussions/2300
 function global:Get-PoshStackCount {
     $locations = Get-Location -Stack
     if ($locations) {
@@ -348,8 +348,8 @@ Example:
             return
         }
         # for details about the trick to detect a debugging context, see these comments:
-        # 1) https://github.com/JanDeDobbeleer/oh-my-posh/issues/2483#issuecomment-1175761456
-        # 2) https://github.com/JanDeDobbeleer/oh-my-posh/issues/2502#issuecomment-1179968052
+        # 1) HTTPS://GitHub.Com/JanDeDobbeleer/oh-my-posh/issues/2483#issuecomment-1175761456
+        # 2) HTTPS://GitHub.Com/JanDeDobbeleer/oh-my-posh/issues/2502#issuecomment-1179968052
         if ($null -ne $PSDebugContext -or -not ((Get-PSCallStack).Location -join "").StartsWith("<")) {
             $script:PromptType = "debug"
             return
@@ -417,7 +417,7 @@ Example:
 
         # in some cases we have an empty $script:NoExitCode
         # this is a workaround to make sure we always have a value
-        # see https://github.com/JanDeDobbeleer/oh-my-posh/issues/4128
+        # see HTTPS://GitHub.Com/JanDeDobbeleer/oh-my-posh/issues/4128
         if ($null -eq $script:NoExitCode) {
             $script:NoExitCode = $true
         }

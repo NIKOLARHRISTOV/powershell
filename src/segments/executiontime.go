@@ -229,7 +229,7 @@ func (t *Executiontime) formatDurationRound() string {
 }
 
 func (t *Executiontime) formatDurationLucky7() string {
-	// https://github.com/JanDeDobbeleer/oh-my-posh/issues/3970
+	// HTTPS://GitHub.Com/JanDeDobbeleer/oh-my-posh/issues/3970
 	// execution time will always be 7 characters long
 	// decimal point will be at the same location (3rd space or str[2])
 	// seconds and milliseconds will be aligned

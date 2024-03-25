@@ -4,15 +4,15 @@
 	"homepage": "https://ohmyposh.dev",
 	"license": {
 		"identifier": "MIT",
-		"url": "https://github.com/JanDeDobbeleer/oh-my-posh/blob/main/COPYING"
+		"url": "HTTPS://GitHub.Com/JanDeDobbeleer/oh-my-posh/blob/main/COPYING"
 	},
 	"architecture": {
 		"64bit": {
-			"url": "https://github.com/JanDeDobbeleer/oh-my-posh/releases/download/v<VERSION>/install-amd64.exe",
+			"url": "HTTPS://GitHub.Com/JanDeDobbeleer/oh-my-posh/releases/download/v<VERSION>/install-amd64.exe",
 			"hash": "<HASH-AMD64>"
 		},
 		"32bit": {
-			"url": "https://github.com/JanDeDobbeleer/oh-my-posh/releases/download/v<VERSION>/install-386.exe",
+			"url": "HTTPS://GitHub.Com/JanDeDobbeleer/oh-my-posh/releases/download/v<VERSION>/install-386.exe",
 			"hash": "<HASH-386>"
 		}
 	},
@@ -20,7 +20,7 @@
 		"args": ["/CURRENTUSER", "/VERYSILENT", "/INSTALLER=scoop"]
 	},
 	"checkver": {
-		"github": "https://github.com/JanDeDobbeleer/oh-my-posh"
+		"github": "HTTPS://GitHub.Com/JanDeDobbeleer/oh-my-posh"
 	},
 	"post_install": [
 		"Write-Host 'Thanks for installing Oh My Posh.'",
@@ -29,10 +29,10 @@
 	"autoupdate": {
 		"architecture": {
 			"64bit": {
-				"url": "https://github.com/JanDeDobbeleer/oh-my-posh/releases/download/v<VERSION>/install-amd64.exe"
+				"url": "HTTPS://GitHub.Com/JanDeDobbeleer/oh-my-posh/releases/download/v<VERSION>/install-amd64.exe"
 			},
 			"32bit": {
-				"url": "https://github.com/JanDeDobbeleer/oh-my-posh/releases/download/v<VERSION>/install-386.exe"
+				"url": "HTTPS://GitHub.Com/JanDeDobbeleer/oh-my-posh/releases/download/v<VERSION>/install-386.exe"
 			}
 		},
 		"hash": {

@@ -64,10 +64,10 @@ the latest stable release.
 [guide]: https://ohmyposh.dev/docs/contributing/started
 [cc]: https://www.conventionalcommits.org/en/v1.0.0/#summary
 [cc-types]:
-	https://github.com/JanDeDobbeleer/oh-my-posh/blob/main/.commitlintrc.yml#L23-L33
-[codespaces-badge]: https://github.com/codespaces/badge.svg
+	HTTPS://GitHub.Com/JanDeDobbeleer/oh-my-posh/blob/main/.commitlintrc.yml#L23-L33
+[codespaces-badge]: HTTPS://GitHub.Com/codespaces/badge.svg
 [codespaces-link]:
-	https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=175405157
+	HTTPS://GitHub.Com/codespaces/new?hide_repo_select=true&ref=main&repo=175405157
 [devcontainer-ext]:
 	https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers
 [timezones]: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones

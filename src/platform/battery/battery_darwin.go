@@ -42,7 +42,7 @@ func parseBatteryOutput(output string) (*Info, error) {
 	}
 
 	// sometimes it reports discharging when at 100, so let's force it to Full
-	// https://github.com/JanDeDobbeleer/oh-my-posh/issues/3729
+	// HTTPS://GitHub.Com/JanDeDobbeleer/oh-my-posh/issues/3729
 	if percentage == 100 {
 		return &Info{
 			Percentage: percentage,

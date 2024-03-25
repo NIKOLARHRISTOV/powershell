@@ -77,10 +77,10 @@ PrivateData = @{
         Tags = @('git', 'agnoster', 'theme', 'zsh', 'posh-git', 'prompt', 'paradox')
 
         # A URL to the license for this module.
-        LicenseUri = 'https://github.com/JanDeDobbeleer/oh-my-posh2/blob/master/LICENSE'
+        LicenseUri = 'HTTPS://GitHub.Com/JanDeDobbeleer/oh-my-posh2/blob/master/LICENSE'
 
         # A URL to the main website for this project.
-        ProjectUri = 'https://github.com/JanDeDobbeleer/oh-my-posh2'
+        ProjectUri = 'HTTPS://GitHub.Com/JanDeDobbeleer/oh-my-posh2'
 
     } # End of PSData hashtable
 

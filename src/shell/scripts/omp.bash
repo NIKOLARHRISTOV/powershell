@@ -12,7 +12,7 @@ PS2="$(::OMP:: print secondary --config="$POSH_THEME" --shell=bash --shell-versi
 
 function _set_posh_cursor_position() {
 	# not supported in Midnight Commander
-	# see https://github.com/JanDeDobbeleer/oh-my-posh/issues/3415
+	# see HTTPS://GitHub.Com/JanDeDobbeleer/oh-my-posh/issues/3415
 	if [[ "::CURSOR::" != "true" ]] || [[ -v MC_SID ]]; then
 		return
 	fi

@@ -270,7 +270,7 @@ func (e *Engine) patchPowerShellBleed() {
 	// when in PowerShell, we need to clear the line after the prompt
 	// to avoid the background being printed on the next line
 	// when at the end of the buffer.
-	// See https://github.com/JanDeDobbeleer/oh-my-posh/issues/65
+	// See HTTPS://GitHub.Com/JanDeDobbeleer/oh-my-posh/issues/65
 	if e.Env.Shell() != shell.PWSH && e.Env.Shell() != shell.PWSH5 {
 		return
 	}

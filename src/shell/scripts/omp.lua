@@ -209,7 +209,7 @@ local function command_executed_mark(input)
 end
 
 -- set priority lower than z.lua
--- https://github.com/skywind3000/z.lua/pull/125/commits/48a77adf3575952b2e951aa820a1ce11ed4ce56b
+-- HTTPS://GitHub.Com/skywind3000/z.lua/pull/125/commits/48a77adf3575952b2e951aa820a1ce11ed4ce56b
 local zl_prompt_priority = get_priority_number('_ZL_CLINK_PROMPT_PRIORITY', 0)
 local p = clink.promptfilter(zl_prompt_priority + 1)
 function p:filter(prompt)

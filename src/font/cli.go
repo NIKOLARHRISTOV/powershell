@@ -141,7 +141,7 @@ func (m *main) Init() tea.Cmd {
 	if len(m.font) != 0 && !isLocalZipFile() {
 		m.state = downloadFont
 		if !strings.HasPrefix(m.font, "https") {
-			m.font = fmt.Sprintf("https://github.com/ryanoasis/nerd-fonts/releases/latest/download/%s.zip", m.font)
+			m.font = fmt.Sprintf("HTTPS://GitHub.Com/ryanoasis/nerd-fonts/releases/latest/download/%s.zip", m.font)
 		}
 		defer func() {
 			go downloadFontZip(m.font)

@@ -10,7 +10,7 @@ PS2="$(::OMP:: print secondary --config="$POSH_THEME" --shell=zsh)"
 
 function _set_posh_cursor_position() {
   # not supported in Midnight Commander
-  # see https://github.com/JanDeDobbeleer/oh-my-posh/issues/3415
+  # see HTTPS://GitHub.Com/JanDeDobbeleer/oh-my-posh/issues/3415
   if [[ "::CURSOR::" != "true" ]] || [[ -v MC_SID ]]; then
       return
   fi
@@ -74,7 +74,7 @@ if [[ "$(zle -lL zle-line-init)" = *"_posh-zle-line-init"* ]]; then
 fi
 
 function _posh-tooltip() {
-  # https://github.com/zsh-users/zsh-autosuggestions - clear suggestion to avoid keeping it after the newly inserted space
+  # HTTPS://GitHub.Com/zsh-users/zsh-autosuggestions - clear suggestion to avoid keeping it after the newly inserted space
   if [[ -n "$(zle -lL autosuggest-clear)" ]]; then
     # only if suggestions not disabled (variable not set)
     if ! [[ -v _ZSH_AUTOSUGGEST_DISABLED ]]; then
@@ -82,7 +82,7 @@ function _posh-tooltip() {
     fi
   fi
   zle .self-insert
-  # https://github.com/zsh-users/zsh-autosuggestions - fetch new suggestion after the space
+  # HTTPS://GitHub.Com/zsh-users/zsh-autosuggestions - fetch new suggestion after the space
   if [[ -n "$(zle -lL autosuggest-fetch)" ]]; then
     # only if suggestions not disabled (variable not set)
     if ! [[ -v _ZSH_AUTOSUGGEST_DISABLED ]]; then
@@ -141,7 +141,7 @@ function enable_poshtransientprompt() {
   zle -N zle-line-init _posh-zle-line-init
 
   # restore broken key bindings
-  # https://github.com/JanDeDobbeleer/oh-my-posh/discussions/2617#discussioncomment-3911044
+  # HTTPS://GitHub.Com/JanDeDobbeleer/oh-my-posh/discussions/2617#discussioncomment-3911044
   bindkey '^[[F' end-of-line
   bindkey '^[[H' beginning-of-line
   _widgets=$(zle -la)

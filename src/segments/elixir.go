@@ -30,7 +30,7 @@ func (e *Elixir) Init(props properties.Properties, env platform.Environment) {
 				regex:      `Elixir (?P<version>((?P<major>[0-9]+).(?P<minor>[0-9]+).(?P<patch>[0-9]+)))`,
 			},
 		},
-		versionURLTemplate: "https://github.com/elixir-lang/elixir/releases/tag/v{{ .Full }}",
+		versionURLTemplate: "HTTPS://GitHub.Com/elixir-lang/elixir/releases/tag/v{{ .Full }}",
 	}
 }
 

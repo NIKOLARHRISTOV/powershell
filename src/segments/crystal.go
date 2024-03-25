@@ -25,7 +25,7 @@ func (c *Crystal) Init(props properties.Properties, env platform.Environment) {
 				regex:      `Crystal (?P<version>((?P<major>[0-9]+).(?P<minor>[0-9]+).(?P<patch>[0-9]+)))`,
 			},
 		},
-		versionURLTemplate: "https://github.com/crystal-lang/crystal/releases/tag/{{ .Full }}",
+		versionURLTemplate: "HTTPS://GitHub.Com/crystal-lang/crystal/releases/tag/{{ .Full }}",
 	}
 }
 

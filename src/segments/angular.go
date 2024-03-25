@@ -26,7 +26,7 @@ func (a *Angular) Init(props properties.Properties, env platform.Environment) {
 				getVersion: a.getVersion,
 			},
 		},
-		versionURLTemplate: "https://github.com/angular/angular/releases/tag/{{.Full}}",
+		versionURLTemplate: "HTTPS://GitHub.Com/angular/angular/releases/tag/{{.Full}}",
 	}
 }
 

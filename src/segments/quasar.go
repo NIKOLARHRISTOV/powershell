@@ -53,7 +53,7 @@ func (q *Quasar) Init(props properties.Properties, env platform.Environment) {
 				regex:      `(?P<version>((?P<major>[0-9]+).(?P<minor>[0-9]+).(?P<patch>[0-9]+)))`,
 			},
 		},
-		versionURLTemplate: "https://github.com/quasarframework/quasar/releases/tag/quasar-v{{ .Full }}",
+		versionURLTemplate: "HTTPS://GitHub.Com/quasarframework/quasar/releases/tag/quasar-v{{ .Full }}",
 	}
 }
 

@@ -26,7 +26,7 @@ func (f *Flutter) Init(props properties.Properties, env platform.Environment) {
 				regex:      `Flutter (?P<version>((?P<major>[0-9]+).(?P<minor>[0-9]+).(?P<patch>[0-9]+)))`,
 			},
 		},
-		versionURLTemplate: "https://github.com/flutter/flutter/releases/tag/{{ .Major }}.{{ .Minor }}.{{ .Patch }}",
+		versionURLTemplate: "HTTPS://GitHub.Com/flutter/flutter/releases/tag/{{ .Major }}.{{ .Minor }}.{{ .Patch }}",
 	}
 }
 

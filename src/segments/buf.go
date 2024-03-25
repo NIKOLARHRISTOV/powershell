@@ -25,7 +25,7 @@ func (b *Buf) Init(props properties.Properties, env platform.Environment) {
 				regex:      `(?:(?P<version>((?P<major>[0-9]+).(?P<minor>[0-9]+).(?P<patch>[0-9]+))))`,
 			},
 		},
-		versionURLTemplate: "https://github.com/bufbuild/buf/releases/tag/v{{.Full}}",
+		versionURLTemplate: "HTTPS://GitHub.Com/bufbuild/buf/releases/tag/v{{.Full}}",
 	}
 }
 

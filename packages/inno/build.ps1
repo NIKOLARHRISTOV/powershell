@@ -23,7 +23,7 @@ Copy-Item -Path "../../themes" -Destination "./bin" -Recurse
 # download the executable
 $file = "posh-windows-$Architecture.exe"
 $name = "oh-my-posh.exe"
-$download = "https://github.com/jandedobbeleer/oh-my-posh/releases/download/v$Version/$($file)"
+$download = "HTTPS://GitHub.Com/jandedobbeleer/oh-my-posh/releases/download/v$Version/$($file)"
 Invoke-WebRequest $download -Out "./bin/$($name)"
 
 # license

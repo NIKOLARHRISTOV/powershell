@@ -26,7 +26,7 @@ func (c *Cf) Init(props properties.Properties, env platform.Environment) {
 			},
 		},
 		displayMode:        props.GetString(DisplayMode, DisplayModeFiles),
-		versionURLTemplate: "https://github.com/cloudfoundry/cli/releases/tag/v{{ .Full }}",
+		versionURLTemplate: "HTTPS://GitHub.Com/cloudfoundry/cli/releases/tag/v{{ .Full }}",
 	}
 }
 

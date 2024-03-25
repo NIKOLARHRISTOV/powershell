@@ -8,7 +8,7 @@
     <owners>Microsoft Corporation</owners>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <licenseUrl>https://aka.ms/azps-license</licenseUrl>
-    <projectUrl>https://github.com/Azure/azure-powershell</projectUrl>
+    <projectUrl>HTTPS://GitHub.Com/Azure/azure-powershell</projectUrl>
     <description>Microsoft Azure PowerShell: $(service-name) cmdlets</description>
     <releaseNotes></releaseNotes>
     <copyright>Microsoft Corporation. All rights reserved.</copyright>
@@ -21,7 +21,7 @@
     <file src="Az.Compute.format.ps1xml" />
     <file src="Az.Compute.psd1" />
     <file src="Az.Compute.psm1" />
-    <!-- https://github.com/NuGet/Home/issues/3584 -->
+    <!-- HTTPS://GitHub.Com/NuGet/Home/issues/3584 -->
     <file src="bin/Az.Compute.private.dll" target="bin" />
     <file src="bin\Az.Compute.private.deps.json" target="bin" />
     <file src="internal\**\*.*" exclude="internal\README.md" target="internal" />
