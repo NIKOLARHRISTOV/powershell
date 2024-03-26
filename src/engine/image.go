@@ -18,7 +18,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-// HTTPS://GitHub.Com/homeport/termshot
+// https://github.com/homeport/termshot
 
 package engine
 
@@ -216,7 +216,7 @@ func (ir *ImageRenderer) loadFonts() error {
 
 	// Download font if not cached
 	if data == nil {
-		url := "HTTPS://GitHub.Com/ryanoasis/nerd-fonts/releases/download/v3.0.0/Hack.zip"
+		url := "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.0/Hack.zip"
 		var err error
 
 		data, err = fontCLI.Download(url)

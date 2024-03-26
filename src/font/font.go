@@ -1,4 +1,4 @@
-// Derived from HTTPS://GitHub.Com/Crosse/font-install
+// Derived from https://github.com/Crosse/font-install
 // Copyright 2020 Seth Wright <seth@crosse.org>
 package font
 

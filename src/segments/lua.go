@@ -34,7 +34,7 @@ func (l *Lua) Init(props properties.Properties, env platform.Environment) {
 				executable:         "luajit",
 				args:               []string{"-v"},
 				regex:              `LuaJIT (?P<version>((?P<major>[0-9]+).(?P<minor>[0-9]+)(.(?P<patch>[0-9]+))?))`,
-				versionURLTemplate: "HTTPS://GitHub.Com/LuaJIT/LuaJIT/tree/v{{ .Major}}.{{ .Minor}}",
+				versionURLTemplate: "https://github.com/LuaJIT/LuaJIT/tree/v{{ .Major}}.{{ .Minor}}",
 			},
 		},
 	}

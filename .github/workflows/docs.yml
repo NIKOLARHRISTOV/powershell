@@ -32,7 +32,7 @@ jobs:
                   node-version: 17.6.0
               # Create Kind cluster to have a Kubernetes context for cloud-native-azure theme
               # Images are defined on every Kind release
-              # See HTTPS://GitHub.Com/kubernetes-sigs/kind/releases
+              # See https://github.com/kubernetes-sigs/kind/releases
             - name: Create k8s v1.23 Kind Cluster
               uses: helm/kind-action@dda0770415bac9fc20092cacbc54aa298604d140
               with:

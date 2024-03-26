@@ -17,7 +17,7 @@ runs:
 
               # Download source
               $tempZip = "$env:RUNNER_TEMP/source.zip"
-              Invoke-WebRequest "HTTPS://GitHub.Com/jandedobbeleer/go/releases/download/$env:VERSION/go.zip" -OutFile $tempZip
+              Invoke-WebRequest "https://github.com/jandedobbeleer/go/releases/download/$env:VERSION/go.zip" -OutFile $tempZip
 
               # Extract to correct location
               Expand-Archive $tempZip -DestinationPath $env:RUNNER_TEMP -Force

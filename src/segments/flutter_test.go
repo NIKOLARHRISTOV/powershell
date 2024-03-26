@@ -13,7 +13,7 @@ func TestFlutter(t *testing.T) {
 		ExpectedString string
 		Version        string
 	}{
-		{Case: "Flutter 2.10.4", ExpectedString: "2.10.4", Version: "Flutter 2.10.4 • channel stable • HTTPS://GitHub.Com/flutter/flutter.git"},
+		{Case: "Flutter 2.10.4", ExpectedString: "2.10.4", Version: "Flutter 2.10.4 • channel stable • https://github.com/flutter/flutter.git"},
 	}
 	for _, tc := range cases {
 		params := &mockedLanguageParams{

@@ -164,7 +164,7 @@ func (w *Writer) Init(shellName string) {
 		w.title = "\x1b]0;%s\007"
 		// when in fish on Linux, it seems hyperlinks ending with \\ print a \
 		// unlike on macOS. However, this is a fish bug, so do not try to fix it here:
-		// HTTPS://GitHub.Com/JanDeDobbeleer/oh-my-posh/pull/3288#issuecomment-1369137068
+		// https://github.com/JanDeDobbeleer/oh-my-posh/pull/3288#issuecomment-1369137068
 		w.hyperlink = "\x1b]8;;%s\x1b\\%s\x1b]8;;\x1b\\"
 		w.hyperlinkRegex = "(?P<STR>\x1b]8;;(.+)\x1b\\\\\\\\?(?P<TEXT>.+)\x1b]8;;\x1b\\\\)"
 		w.osc99 = "\x1b]9;9;%s\x1b\\"

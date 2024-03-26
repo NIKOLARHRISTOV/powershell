@@ -98,7 +98,7 @@ func (e *Engine) Primary() string {
 			break
 		}
 		// in bash, the entire rprompt needs to be escaped for the prompt to be interpreted correctly
-		// see HTTPS://GitHub.Com/jandedobbeleer/oh-my-posh/pull/2398
+		// see https://github.com/jandedobbeleer/oh-my-posh/pull/2398
 		writer := &ansi.Writer{
 			TrueColor: e.Env.Flags().TrueColor,
 		}
@@ -198,7 +198,7 @@ func (e *Engine) ExtraPrompt(promptType ExtraPromptType) string {
 	case shell.PWSH, shell.PWSH5:
 		// Return the string and empty our buffer
 		// clear the line afterwards to prevent text from being written on the same line
-		// see HTTPS://GitHub.Com/JanDeDobbeleer/oh-my-posh/issues/3628
+		// see https://github.com/JanDeDobbeleer/oh-my-posh/issues/3628
 		return str + e.Writer.ClearAfter()
 	case shell.CMD, shell.BASH, shell.FISH, shell.NU, shell.GENERIC:
 		// Return the string and empty our buffer

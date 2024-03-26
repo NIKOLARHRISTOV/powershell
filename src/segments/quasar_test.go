@@ -21,13 +21,13 @@ func TestQuasar(t *testing.T) {
 		"dependencies": {
 			"@quasar/app-vite": {
 				"version": "1.4.3",
-				"resolved": "HTTPS://Registry.NPMJS.Org/@quasar/app-vite/-/app-vite-1.4.3.tgz",
+				"resolved": "https://Registry.NPMJS.Org/@quasar/app-vite/-/app-vite-1.4.3.tgz",
 				"integrity": "sha512-5iMs1sk6fyYTFoRVySwFXWL/PS23UEsdk+YSFejhXnSs5fVDmb2GQMguCHwDl3jPIHjZ7A+XKkb2iWx9pjiPXw==",
 				"dev": true
 			},
 			"vite": {
 				"version": "2.9.16",
-				"resolved": "HTTPS://Registry.NPMJS.Org/vite/-/vite-2.9.16.tgz",
+				"resolved": "https://Registry.NPMJS.Org/vite/-/vite-2.9.16.tgz",
 				"integrity": "sha512-X+6q8KPyeuBvTQV8AVSnKDvXoBMnTx8zxh54sOwmmuOdxkjMmEJXH2UEchA+vTMps1xw9vL64uwJOWryULg7nA==",
 				"dev": true,
 				"requires": {

@@ -25,7 +25,7 @@ func (d *Deno) Init(props properties.Properties, env platform.Environment) {
 				regex:      `(?:(?P<version>((?P<major>[0-9]+).(?P<minor>[0-9]+).(?P<patch>[0-9]+))))`,
 			},
 		},
-		versionURLTemplate: "HTTPS://GitHub.Com/denoland/deno/releases/tag/v{{.Full}}",
+		versionURLTemplate: "https://github.com/denoland/deno/releases/tag/v{{.Full}}",
 	}
 }
 

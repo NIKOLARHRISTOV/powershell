@@ -25,7 +25,7 @@ func (s *Swift) Init(props properties.Properties, env platform.Environment) {
 				regex:      `Swift version (?P<version>((?P<major>[0-9]+).(?P<minor>[0-9]+)((.|-)(?P<patch>[0-9]+|dev))?))`,
 			},
 		},
-		versionURLTemplate: "HTTPS://GitHub.Com/apple/swift/releases/tag/swift-{{ .Full }}-RELEASE",
+		versionURLTemplate: "https://github.com/apple/swift/releases/tag/swift-{{ .Full }}-RELEASE",
 	}
 }
 

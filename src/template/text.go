@@ -92,7 +92,7 @@ func (t *Text) Render() (string, error) {
 	}
 	text := buffer.String()
 	// issue with missingkey=zero ignored for map[string]any
-	// HTTPS://GitHub.Com/golang/go/issues/24963
+	// https://github.com/golang/go/issues/24963
 	text = strings.ReplaceAll(text, "<no value>", "")
 	return text, nil
 }

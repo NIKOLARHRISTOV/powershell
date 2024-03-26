@@ -124,7 +124,7 @@ install() {
 	info "\nℹ️  Installing oh-my-posh for ${target} in ${install_dir}"
 
 	executable=${install_dir}/oh-my-posh
-	url=HTTPS://GitHub.Com/JanDeDobbeleer/oh-my-posh/releases/latest/download/posh-${target}
+	url=https://github.com/JanDeDobbeleer/oh-my-posh/releases/latest/download/posh-${target}
 
 	info "⬇️  Downloading oh-my-posh from ${url}"
 
@@ -145,7 +145,7 @@ install() {
 	mkdir -p $theme_dir
 	zip_file="${cache_dir}/themes.zip"
 
-	url="HTTPS://GitHub.Com/JanDeDobbeleer/oh-my-posh/releases/latest/download/themes.zip"
+	url="https://github.com/JanDeDobbeleer/oh-my-posh/releases/latest/download/themes.zip"
 
 	http_response=$(curl -s -f -L $url -o $zip_file -w "%{http_code}")
 

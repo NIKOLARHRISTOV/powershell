@@ -18,7 +18,7 @@ function Get-HashForArchitecture {
         [string]
         $Version
     )
-    $hash = (new-object Net.WebClient).DownloadString("HTTPS://GitHub.Com/JanDeDobbeleer/oh-my-posh/releases/download/v$Version/install-$Architecture.exe.sha256")
+    $hash = (new-object Net.WebClient).DownloadString("https://github.com/JanDeDobbeleer/oh-my-posh/releases/download/v$Version/install-$Architecture.exe.sha256")
     return $hash.Trim()
 }
 
@@ -62,7 +62,7 @@ if (-not $Token) {
     return
 }
 # Install the latest wingetcreate exe
-# Need to do things this way, see HTTPS://GitHub.Com/PowerShell/PowerShell/issues/13138
+# Need to do things this way, see https://github.com/PowerShell/PowerShell/issues/13138
 Import-Module Appx -UseWindowsPowerShell
 
 # Download and install C++ Runtime framework package.

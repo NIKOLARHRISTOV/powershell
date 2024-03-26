@@ -209,7 +209,7 @@ func (cfg *Config) Export(format string) string {
 		jsonEncoder.SetEscapeHTML(false)
 		jsonEncoder.SetIndent("", "  ")
 		_ = jsonEncoder.Encode(cfg)
-		prefix := "{\n  \"$schema\": \"HTTPS://Raw.GitHubUserContent.Com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json\","
+		prefix := "{\n  \"$schema\": \"https://Raw.GitHubUserContent.Com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json\","
 		data := strings.Replace(result.String(), "{", prefix, 1)
 		return escapeGlyphs(data, cfg.MigrateGlyphs)
 	}
@@ -218,9 +218,9 @@ func (cfg *Config) Export(format string) string {
 	var prefix string
 	switch cfg.Format {
 	case YAML:
-		prefix = "# yaml-language-server: $schema=HTTPS://Raw.GitHubUserContent.Com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json\n\n"
+		prefix = "# yaml-language-server: $schema=https://Raw.GitHubUserContent.Com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json\n\n"
 	case TOML:
-		prefix = "#:schema HTTPS://Raw.GitHubUserContent.Com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json\n\n"
+		prefix = "#:schema https://Raw.GitHubUserContent.Com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json\n\n"
 	}
 	return prefix + escapeGlyphs(result.String(), cfg.MigrateGlyphs)
 }

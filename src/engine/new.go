@@ -46,7 +46,7 @@ func patchPowerShellBleed(sh string, flags *platform.Flags) {
 	// when in PowerShell, and force patching the bleed bug
 	// we need to reduce the terminal width by 1 so the last
 	// character isn't cut off by the ANSI escape sequences
-	// See HTTPS://GitHub.Com/JanDeDobbeleer/oh-my-posh/issues/65
+	// See https://github.com/JanDeDobbeleer/oh-my-posh/issues/65
 	if sh != shell.PWSH && sh != shell.PWSH5 {
 		return
 	}

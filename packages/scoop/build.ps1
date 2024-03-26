@@ -14,7 +14,7 @@ function Get-HashForArchitecture {
         [string]
         $Version
     )
-    $hash = (new-object Net.WebClient).DownloadString("HTTPS://GitHub.Com/JanDeDobbeleer/oh-my-posh/releases/download/v$Version/install-$Architecture.exe.sha256")
+    $hash = (new-object Net.WebClient).DownloadString("https://github.com/JanDeDobbeleer/oh-my-posh/releases/download/v$Version/install-$Architecture.exe.sha256")
     return $hash.Trim()
 }
 

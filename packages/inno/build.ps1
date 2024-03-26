@@ -23,11 +23,11 @@ Copy-Item -Path "../../themes" -Destination "./bin" -Recurse
 # download the executable
 $file = "posh-windows-$Architecture.exe"
 $name = "oh-my-posh.exe"
-$download = "HTTPS://GitHub.Com/jandedobbeleer/oh-my-posh/releases/download/v$Version/$($file)"
+$download = "https://github.com/jandedobbeleer/oh-my-posh/releases/download/v$Version/$($file)"
 Invoke-WebRequest $download -Out "./bin/$($name)"
 
 # license
-Invoke-WebRequest "HTTPS://Raw.GitHubUserContent.Com/JanDeDobbeleer/oh-my-posh/v$Version/COPYING" -Out "./bin/COPYING.txt"
+Invoke-WebRequest "https://Raw.GitHubUserContent.Com/JanDeDobbeleer/oh-my-posh/v$Version/COPYING" -Out "./bin/COPYING.txt"
 $content = Get-Content '.\oh-my-posh.iss' -Raw
 $content = $content.Replace('<VERSION>', $Version)
 $ISSName = "Powershell-$Architecture-$Version.iss"

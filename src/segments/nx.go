@@ -28,7 +28,7 @@ func (a *Nx) Init(props properties.Properties, env platform.Environment) {
 				getVersion: a.getVersion,
 			},
 		},
-		versionURLTemplate: "HTTPS://GitHub.Com/nrwl/nx/releases/tag/{{.Full}}",
+		versionURLTemplate: "https://github.com/nrwl/nx/releases/tag/{{.Full}}",
 	}
 }
 

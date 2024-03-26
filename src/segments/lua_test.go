@@ -46,7 +46,7 @@ func TestLua(t *testing.T) {
 			Version:        "LuaJIT 2.0.5 -- Copyright (C) 2005-2017 Mike Pall. http://luajit.org/",
 			HasLuaJit:      true,
 			HasLua:         true,
-			ExpectedURL:    "HTTPS://GitHub.Com/LuaJIT/LuaJIT/tree/v2.0",
+			ExpectedURL:    "https://github.com/LuaJIT/LuaJIT/tree/v2.0",
 			Prefer:         "luajit",
 		},
 		{
@@ -54,7 +54,7 @@ func TestLua(t *testing.T) {
 			ExpectedString: "2.1.0",
 			Version:        "LuaJIT 2.1.0-beta3 -- Copyright (C) 2005-2017 Mike Pall. http://luajit.org/",
 			HasLuaJit:      true,
-			ExpectedURL:    "HTTPS://GitHub.Com/LuaJIT/LuaJIT/tree/v2.1",
+			ExpectedURL:    "https://github.com/LuaJIT/LuaJIT/tree/v2.1",
 			Prefer:         "lua",
 		},
 	}

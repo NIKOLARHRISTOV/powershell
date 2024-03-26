@@ -39,7 +39,7 @@ ${notes}
 		embed: {
 			$type: "app.bsky.embed.external",
 			external: {
-				uri: `HTTPS://GitHub.Com/JanDeDobbeleer/oh-my-posh/releases/tag/${version}`,
+				uri: `https://github.com/JanDeDobbeleer/oh-my-posh/releases/tag/${version}`,
 				title: "The best release yet 🚀",
 				description: version,
 			},

@@ -17,7 +17,7 @@ function fish_prompt
     set --local omp_pipestatus_cache_temp $pipestatus
     # clear from cursor to end of screen as
     # commandline --function repaint does not do this
-    # see HTTPS://GitHub.Com/fish-shell/fish-shell/issues/8418
+    # see https://github.com/fish-shell/fish-shell/issues/8418
     printf \e\[0J
     if test "$omp_transient" = "1"
       ::OMP:: print transient --config $POSH_THEME --shell fish --status $omp_status_cache --pipestatus="$omp_pipestatus_cache" --execution-time $omp_duration --stack-count $omp_stack_count --shell-version $FISH_VERSION --no-status=$omp_no_exit_code

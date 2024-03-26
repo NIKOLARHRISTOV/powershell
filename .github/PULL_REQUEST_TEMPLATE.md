@@ -24,5 +24,5 @@ Oh My Posh advises GitKraken (https://www.gitkraken.com/invite/nQmDPR9D) as your
 -->
 
 [CONTRIBUTING.md]:
-	HTTPS://GitHub.Com/JanDeDobbeleer/oh-my-posh/blob/main/CONTRIBUTING.md
+	https://github.com/JanDeDobbeleer/oh-my-posh/blob/main/CONTRIBUTING.md
 [cc]: https://www.conventionalcommits.org/en/v1.0.0/#summary
