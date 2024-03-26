@@ -73,29 +73,29 @@ donation?
 -   [Starship][starship] for creating an amazing way to initialize the prompt
 
 [release-status]:
-	https://IMG.Shields.IO/github/actions/workflow/status/jandedobbeleer/oh-my-posh/release.yml?branch=main
-[license]: https://IMG.Shields.IO/github/license/JanDeDobbeleer/oh-my-posh.svg
+	https://img.shields.io/github/actions/workflow/status/jandedobbeleer/oh-my-posh/release.yml?branch=main
+[license]: https://img.shields.io/github/license/JanDeDobbeleer/oh-my-posh.svg
 [gh-downloads]:
-	https://IMG.Shields.IO/github/downloads/jandedobbeleer/oh-my-posh/total?color=pink&label=GitHub%20Downloads
+	https://img.shields.io/github/downloads/jandedobbeleer/oh-my-posh/total?color=pink&label=GitHub%20Downloads
 [mastodon]:
-	https://IMG.Shields.IO/mastodon/follow/110275292073181892?domain=https%3A%2F%2Fhachyderm.io&label=Mastodon&style=social
-[discord]: https://IMG.Shields.IO/discord/1023597603331526656
+	https://img.shields.io/mastodon/follow/110275292073181892?domain=https%3A%2F%2Fhachyderm.io&label=Mastodon&style=social
+[discord]: https://img.shields.io/discord/1023597603331526656
 [kraken]:
-	https://IMG.Shields.IO/badge/GitKraken-Legendary%20Git%20Tools-teal?style=plastic&logo=gitkraken
+	https://img.shields.io/badge/GitKraken-Legendary%20Git%20Tools-teal?style=plastic&logo=gitkraken
 [kraken-ref]: https://www.gitkraken.com/invite/nQmDPR9D
 [oh-my-posh2]: https://github.com/JanDeDobbeleer/oh-my-posh2
-[swag-badge]: https://IMG.Shields.IO/badge/Swag-Get%20some!-blue
+[swag-badge]: https://img.shields.io/badge/Swag-Get%20some!-blue
 [swag]: https://swag.ohmyposh.dev
 [github-badge]:
-	https://IMG.Shields.IO/badge/-Sponsor-fafbfc?logo=GitHub%20Sponsors
+	https://img.shields.io/badge/-Sponsor-fafbfc?logo=GitHub%20Sponsors
 [github-sponsors]: https://github.com/sponsors/JanDeDobbeleer
 [kofi-badge]:
-	https://IMG.Shields.IO/badge/Ko--fi-Buy%20me%20a%20coffee!-%2346b798.svg
+	https://img.shields.io/badge/Ko--fi-Buy%20me%20a%20coffee!-%2346b798.svg
 [kofi]: https://ko-fi.com/jandedobbeleer
-[docs-badge]: https://IMG.Shields.IO/badge/Docs-ohmyposh.dev-blue
+[docs-badge]: https://img.shields.io/badge/Docs-ohmyposh.dev-blue
 [docs]: https://ohmyposh.dev
 [release-badge]:
-	https://IMG.Shields.IO/github/v/release/jandedobbeleer/oh-my-posh?label=Release
+	https://img.shields.io/github/v/release/jandedobbeleer/oh-my-posh?label=Release
 [release]: https://github.com/JanDeDobbeleer/oh-my-posh/releases/latest
 [chrisbenti-psconfig]: https://github.com/chrisbenti/PS-Config
 [keithdahlby-poshgit]: https://github.com/dahlbyk/posh-git
