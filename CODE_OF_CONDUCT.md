@@ -124,9 +124,9 @@ enforcement ladder][moz-div].
 For answers to common questions about this code of conduct, see the [FAQ][faq].
 Translations are available [here][translations].
 
-[homepage]: https://WWW.Contributor-Covenant.Org
+[homepage]: https://www.contributor-covenant.org
 [moz-div]: https://github.com/mozilla/diversity
 [version-2]:
-	https://WWW.Contributor-Covenant.Org/version/2/0/code_of_conduct.html
-[faq]: https://WWW.Contributor-Covenant.Org/faq
-[translations]: https://WWW.Contributor-Covenant.Org/translations
+	https://www.contributor-covenant.org/version/2/0/code_of_conduct.html
+[faq]: https://www.contributor-covenant.org/faq
+[translations]: https://www.contributor-covenant.org/translations
