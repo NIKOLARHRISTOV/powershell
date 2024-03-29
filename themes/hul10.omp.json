@@ -1,5 +1,5 @@
 {
-	"$schema": "https://Raw.GitHubUserContent.Com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+	"$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
 	"palette": {
 		"white": "#f7f7f7",
 		"black": "#111111"
