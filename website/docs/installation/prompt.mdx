@@ -10,7 +10,7 @@ import TabItem from "@theme/TabItem";
 :::tip If you have no idea which shell you're currently using, Oh My Posh has a
 utility switch that can tell that to you. :::
 
-```bash
+```sh
 oh-my-posh get shell
 ```
 
@@ -34,19 +34,19 @@ oh-my-posh get shell
 Add the following to `~/.bashrc` (could be `~/.profile` or `~/.bash_profile`
 depending on your environment):
 
-```bash
+```sh
 eval "$(oh-my-posh init bash)"
 ```
 
 Once added, reload your profile for the changes to take effect.
 
-```bash
+```sh
 exec bash
 ```
 
 Or, when using `~/.profile`.
 
-```bash
+```sh
 . ~/.profile
 ```
 
@@ -73,13 +73,13 @@ Once added, restart cmd for the changes to take effect.
 
 Add the following at the end of `~/.elvish/rc.elv`:
 
-```bash
+```sh
 eval (oh-my-posh init elvish)
 ```
 
 Once added, reload your profile for the changes to take effect.
 
-```bash
+```sh
 exec elvish
 ```
 
@@ -90,13 +90,13 @@ exec elvish
 
 Initialize Oh My Posh in `~/.config/fish/config.fish`:
 
-```bash
+```sh
 oh-my-posh init fish | source
 ```
 
 Once added, reload your config for the changes to take effect.
 
-```bash
+```sh
 exec fish
 ```
 
@@ -107,7 +107,7 @@ exec fish
 
 Add the following line to the Nushell env file (`$nu.env-path`):
 
-```bash
+```sh
 oh-my-posh init nu
 ```
 
@@ -115,20 +115,20 @@ This saves the initialization script to `~/.oh-my-posh.nu`. Now, edit the
 Nushell config file (`$nu.config-path`) and add the following line at the
 bottom:
 
-```bash
+```sh
 source ~/.oh-my-posh.nu
 ```
 
 If you want to save the initialization script elsewhere, you can change the
 first line to something like this:
 
-```bash
+```sh
 oh-my-posh init nu --print | save /mylocation/myscript.nu --force
 ```
 
 And change the `source` line to:
 
-```bash
+```sh
 source /mylocation/myscript.nu
 ```
 
@@ -188,13 +188,13 @@ Once added, reload your profile for the changes to take effect.
 
 Add the following at the end of `~/.tcshrc`:
 
-```bash
+```sh
 eval $(oh-my-posh init tcsh)
 ```
 
 Once added, reload your profile for the changes to take effect.
 
-```bash
+```sh
 exec tcsh
 ```
 
@@ -203,13 +203,13 @@ exec tcsh
 
 Add the following line at the end of `~/.xonshrc`:
 
-```bash
+```sh
 execx($(oh-my-posh init xonsh))
 ```
 
 Once added, reload your profile for the changes to take effect.
 
-```bash
+```sh
 exec xonsh
 ```
 
@@ -218,7 +218,7 @@ exec xonsh
 
 Add the following to `~/.zshrc`:
 
-```bash
+```sh
 eval "$(oh-my-posh init zsh)"
 ```
 
@@ -226,7 +226,7 @@ eval "$(oh-my-posh init zsh)"
 correctly, you might want to skip loading just for that terminal and instead of
 the line above, place this in your `~/.zshrc`:
 
-```bash
+```sh
 if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
 	eval "$(oh-my-posh init zsh)"
 fi
@@ -237,7 +237,7 @@ day macOS terminal that supports ANSI characters. :::
 
 Once added, reload your profile for the changes to take effect.
 
-```bash
+```sh
 exec zsh
 ```
 

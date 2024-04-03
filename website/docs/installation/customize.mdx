@@ -60,7 +60,7 @@ When using homebrew, all themes are installed alongside Oh My Posh in
 `$(brew --prefix oh-my-posh)/themes`. To use any of the themes, use the
 following syntax (`zsh`):
 
-```bash
+```sh
 eval "$(oh-my-posh init zsh --config $(brew --prefix oh-my-posh)/themes/jandedobbeleer.omp.json)"
 ```
 
@@ -96,13 +96,13 @@ Adjust the Oh My Posh init line in `~/.bashrc` (could be `~/.profile` or
 `~/.bash_profile` depending on your environment) by adding the `--config` flag
 with the location of your configuration.
 
-```bash
+```sh
 eval "$(oh-my-posh init bash --config ~/jandedobbeleer.omp.json)"
 ```
 
 Once altered, reload your profile for the changes to take effect.
 
-```bash
+```sh
 exec bash
 ```
 
@@ -127,13 +127,13 @@ Once altered, restart cmd for the changes to take effect.
 Adjust the Oh My Posh init line in `~/.elvish/rc.elv` by adding the `--config`
 flag with the location of your configuration.
 
-```bash
+```sh
 eval (oh-my-posh init elvish --config ~/jandedobbeleer.omp.json)
 ```
 
 Once added, reload your profile for the changes to take effect.
 
-```bash
+```sh
 exec elvish
 ```
 
@@ -145,13 +145,13 @@ exec elvish
 Adjust the Oh My Posh init line in `~/.config/fish/config.fish` by adding the
 `--config` flag with the location of your configuration.
 
-```bash
+```sh
 oh-my-posh init fish --config ~/jandedobbeleer.omp.json | source
 ```
 
 Once altered, reload your config for the changes to take effect.
 
-```bash
+```sh
 . ~/.config/fish/config.fish
 ```
 
@@ -163,7 +163,7 @@ Once altered, reload your config for the changes to take effect.
 Adjust the Oh My Posh init line in the Nushell env file (`$nu.env-path`) by
 adding the `--config` flag with the location of your configuration.
 
-```bash
+```sh
 oh-my-posh init nu --config ~/jandedobbeleer.omp.json
 ```
 
@@ -171,20 +171,20 @@ This saves the initialization script to `~/.oh-my-posh.nu`. Now, edit the
 Nushell config file (`$nu.config-path`) and add the following line at the
 bottom:
 
-```bash
+```sh
 source ~/.oh-my-posh.nu
 ```
 
 If you want to save the initialization script elsewhere, you can change the
 first line to something like this:
 
-```bash
+```sh
 oh-my-posh init nu --config ~/jandedobbeleer.omp.json --print | save /mylocation/myscript.nu --force
 ```
 
 And change the `source` line to:
 
-```bash
+```sh
 source /mylocation/myscript.nu
 ```
 
@@ -223,13 +223,13 @@ To solve that, set PowerShell to only require remote scripts to be signed using
 Adjust the Oh My Posh init line in `~/.tcshrc` by adding the `--config` flag
 with the location of your configuration.
 
-```bash
+```sh
 eval $(oh-my-posh init tcsh --config ~/jandedobbeleer.omp.json)
 ```
 
 Once added, reload your profile for the changes to take effect.
 
-```bash
+```sh
 exec tcsh
 ```
 
@@ -239,13 +239,13 @@ exec tcsh
 Adjust the Oh My Posh init line in `~/.xonshrc` by adding the `--config` flag
 with the location of your configuration.
 
-```bash
+```sh
 execx($(oh-my-posh init xonsh --config ~/jandedobbeleer.omp.json))
 ```
 
 Once added, reload your profile for the changes to take effect.
 
-```bash
+```sh
 exec xonsh
 ```
 
@@ -255,13 +255,13 @@ exec xonsh
 Adjust the Oh My Posh init line in `~/.zshrc` by adding the `--config` flag with
 the location of your configuration.
 
-```bash
+```sh
 eval "$(oh-my-posh init zsh --config ~/jandedobbeleer.omp.json)"
 ```
 
 Once altered, reload your profile for the changes to take effect.
 
-```bash
+```sh
 exec zsh
 ```
 
@@ -286,7 +286,7 @@ You can export the current theme (default, or set via `--config`) to the format
 you like (`json`, `yaml`, or `toml`) which can be used to tweak and store as
 your own custom theme.
 
-```bash
+```sh
 oh-my-posh config export --output ~/.mytheme.omp.json
 ```
 
