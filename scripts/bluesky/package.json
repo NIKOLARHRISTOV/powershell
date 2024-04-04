@@ -10,7 +10,7 @@
 	"type": "module",
 	"dependencies": {
 		"@atproto/api": "0.12.2",
-		"@octokit/rest": "20.0.2"
+		"@octokit/rest": "20.1.0"
 	},
 	"publishConfig": {
 		"access": "public"
