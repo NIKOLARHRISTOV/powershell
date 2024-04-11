@@ -31,10 +31,10 @@ func TestQuasar(t *testing.T) {
 				"integrity": "sha512-X+6q8KPyeuBvTQV8AVSnKDvXoBMnTx8zxh54sOwmmuOdxkjMmEJXH2UEchA+vTMps1xw9vL64uwJOWryULg7nA==",
 				"dev": true,
 				"requires": {
-					"esbuild": "^0.14.27",
-					"fsevents": "~2.3.2",
-					"postcss": "^8.4.13",
-					"resolve": "^1.22.0",
+					"esbuild": "0.14.27",
+					"fsevents": "2.3.2",
+					"postcss": "8.4.13",
+					"resolve": "1.22.0",
 					"rollup": ">=2.59.0 <2.78.0"
 				}
 			}
