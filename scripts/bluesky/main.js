@@ -26,7 +26,7 @@ const { Octokit } = require("@octokit/rest");
 
 	const version = release.name;
 
-	const text = `📦 ${version}
+	const text = `📦 ${version}
 
 ${notes}
 
