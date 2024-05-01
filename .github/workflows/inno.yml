@@ -15,7 +15,7 @@ jobs:
                 working-directory: ${{ github.workspace }}/packages/inno
         steps:
             - name: Checkout code 👋
-              uses: actions/checkout@v4.1.2
+              uses: actions/checkout@v4.1.4
             - name: Build installer 📦
               id: build
               env:

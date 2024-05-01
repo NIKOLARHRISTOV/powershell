@@ -10,7 +10,7 @@ jobs:
         if: github.event.pull_request.merged == true
         steps:
             - name: Checkout code 👋
-              uses: actions/checkout@v4.1.2
+              uses: actions/checkout@v4.1.4
             - name: Check and comment 👩🏾‍💻
               uses: actions/github-script@d7906e4ad0b1822421a7e6a35d5ca353c962f410
               with:
