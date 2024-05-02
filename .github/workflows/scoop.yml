@@ -1,42 +1,42 @@
 name: Scoop
 on:
-    workflow_dispatch:
-        inputs:
-            version:
-                description: "The latest version"
-                required: true
-            release:
-                description: "The release id"
-                required: true
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'The latest version'
+        required: true
+      release:
+        description: 'The release id'
+        required: true
 
 jobs:
-    publish:
-        runs-on: ubuntu-latest
-        defaults:
-            run:
-                shell: pwsh
-                working-directory: ${{ github.workspace }}/packages/scoop
-        steps:
-            - name: Checkout code 👋
-              uses: actions/checkout@v4.1.4
-            - name: Update Template ✍️
-              run: |
-                  ./build.ps1 -Version ${{ github.event.inputs.version }}
-            - name: Upload artifacts 🆙
-              uses: actions/github-script@d7906e4ad0b1822421a7e6a35d5ca353c962f410
-              with:
-                  github-token: ${{secrets.GITHUB_TOKEN}}
-                  script: |
-                      console.log('environment', process.versions);
+  publish:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: pwsh
+        working-directory: ${{ github.workspace }}/packages/scoop
+    steps:
+    - name: Checkout code 👋
+      uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b
+    - name: Update Template ✍️
+      run: |
+        ./build.ps1 -Version ${{ github.event.inputs.version }}
+    - name: Upload artifacts 🆙
+      uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea
+      with:
+        github-token: ${{secrets.GITHUB_TOKEN}}
+        script: |
+          console.log('environment', process.versions);
 
-                      const fs = require('fs').promises;
+          const fs = require('fs').promises;
 
-                      const { repo: { owner, repo }, sha } = context;
-                      console.log({ owner, repo, sha });
+          const { repo: { owner, repo }, sha } = context;
+          console.log({ owner, repo, sha });
 
-                      await github.rest.repos.uploadReleaseAsset({
-                        owner, repo,
-                        release_id: ${{ github.event.inputs.release }},
-                        name: 'oh-my-posh.json',
-                        data: await fs.readFile('./packages/scoop/dist/oh-my-posh.json')
-                      });
+          await github.rest.repos.uploadReleaseAsset({
+            owner, repo,
+            release_id: ${{ github.event.inputs.release }},
+            name: 'oh-my-posh.json',
+            data: await fs.readFile('./packages/scoop/dist/oh-my-posh.json')
+          });

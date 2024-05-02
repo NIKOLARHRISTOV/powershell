@@ -3,8 +3,8 @@
 package platform
 
 import (
-	"errors"
 	"os"
+	"os/exec"
 	"strconv"
 	"strings"
 	"time"
@@ -64,6 +64,16 @@ func (env *Shell) TerminalWidth() (int, error) {
 	width, err := terminal.Width()
 	if err != nil {
 		env.Error(err)
+	}
+
+	// fetch width from the environment variable
+	// in case the terminal width is not available
+	if width == 0 {
+		i, err := strconv.Atoi(env.Getenv("COLUMNS"))
+		if err != nil {
+			env.Error(err)
+		}
+		width = uint(i)
 	}
 
 	env.CmdFlags.TerminalWidth = int(width)
@@ -146,8 +156,8 @@ func (env *Shell) ConvertToLinuxPath(path string) string {
 	return path
 }
 
-func (env *Shell) LookWinAppPath(_ string) (string, error) {
-	return "", errors.New("not relevant")
+func (env *Shell) LookPath(command string) (string, error) {
+	return exec.LookPath(command)
 }
 
 func (env *Shell) DirIsWritable(path string) bool {

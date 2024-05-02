@@ -3,12 +3,5 @@ name: Validate Commits
 on: [pull_request]
 
 jobs:
-    commitlint:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v4.1.4
-              with:
-                  fetch-depth: 0
-            - uses: wagoid/commitlint-github-action@6319f54d83768b60acd6fd60e61007ccc583e62f
-              with:
-                  configFile: "./.commitlintrc.yml"
+  commitlint:
+    uses: jandedobbeleer/workflows/.github/workflows/commits.yml@main

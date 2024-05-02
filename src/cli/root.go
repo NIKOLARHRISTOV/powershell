@@ -21,7 +21,7 @@ var RootCmd = &cobra.Command{
 It can use the same configuration everywhere to offer a consistent
 experience, regardless of where you are. For a detailed guide
 on getting started, have a look at the docs at https://ohmyposh.dev`,
-	Run: func(cmd *cobra.Command, args []string) {
+	Run: func(cmd *cobra.Command, _ []string) {
 		if initialize {
 			runInit(strings.ToLower(shellName))
 			return
@@ -36,7 +36,8 @@ on getting started, have a look at the docs at https://ohmyposh.dev`,
 
 func Execute() {
 	if err := RootCmd.Execute(); err != nil {
-		os.Exit(1)
+		// software error
+		os.Exit(70)
 	}
 }
 

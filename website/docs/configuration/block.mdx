@@ -1,0 +1,79 @@
+---
+id: block
+title: Block
+sidebar_label: Block
+---
+
+Let's take a closer look at what defines a block.
+
+import Config from '@site/src/components/Config.js';
+
+<Config data={{
+  "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+  "blocks": [
+    {
+      "type": "prompt",
+      "alignment": "left",
+      "segments": [
+      ]
+    }
+  ]
+}}/>
+
+## Properties
+
+| Name        | Type      |
+| ----------- | --------- |
+| `type`      | `string`  |
+| `newline`   | `boolean` |
+| `alignment` | `string`  |
+| `filler`    | `string`  |
+| `overflow`  | `string`  |
+| `segments`  | `array`   |
+
+### Type
+
+Tells the engine what to do with the block. There are two options:
+
+- `prompt` renders one or more segments
+- `rprompt` renders one or more segments aligned to the right of the cursor. Only one `rprompt` block is permitted.
+  Supported on zsh, bash, PowerShell, cmd, nu and fish.
+
+### Newline
+
+Start the block on a new line - defaults to `false`. For `bash`, `zsh`, `pwsh` and `cmd` this will not print a newline
+that's defined on the first block when the prompt is on the first line (when using clear), or when the shell session
+starts (1st prompt).
+
+### Alignment
+
+- `left`
+- `right`
+
+Tell the engine if the block should be left or right-aligned.
+
+### Filler
+
+When you want to join a right and left aligned block with a repeated set of characters, add the character(s)
+to be repeated to this property. Add this property to the _right_ aligned block. This supports the use of
+[color overrides][color-overrides].
+
+```json
+"alignment": "right",
+"filler": "."
+```
+
+### Overflow
+
+- `break`
+- `hide`
+
+When the right aligned block is so long it will overflow the left aligned block, the engine will either
+break the block or hide it based on the setting. By default it is printed as is on the same line.
+
+### Segments
+
+Array of one or more [segments][segment].
+
+[color-overrides]: /docs/configuration/colors#color-overrides
+[segment]: segment.mdx

@@ -11,11 +11,12 @@ import Next from "./next.mdx";
 
 ## Set up your terminal
 
-Oh My Posh uses ANSI color codes under the hood, these should work in every
-terminal, but you may have to set the environment variable `$TERM` to
-`xterm-256color` for it to work.
+Oh My Posh uses ANSI color codes under the hood, these should work in every terminal,
+but you may have to set the environment variable `$TERM` to `xterm-256color` for it to work.
 
-:::info To display all icons, we recommend the use of a [Nerd Font][fonts]. :::
+:::info
+To display all icons, we recommend the use of a [Nerd Font][fonts].
+:::
 
 ## Installation
 
@@ -29,20 +30,21 @@ terminal, but you may have to set the environment variable `$TERM` to
 }>
 <TabItem value="manual">
 
-:::info Before running the below commands, make sure that you have updated
-`curl` and the client certificate store on the target machine. :::
+:::info
+Before running the below commands, make sure that you have updated `curl` and the
+client certificate store on the target machine.
+:::
 
 Install the latest version for your system by running the following command:
 
-```sh
+```bash
 curl -s https://ohmyposh.dev/install.sh | bash -s
 ```
 
-By default the script will install to `/usr/local/bin` or the existing Oh My
-Posh executable's installation folder. If you want to install to a different
-location you can specify it using the `-d` flag:
+By default the script will install to `/usr/local/bin` or the existing Oh My Posh executable's installation folder.
+If you want to install to a different location you can specify it using the `-d` flag:
 
-```sh
+```bash
 curl -s https://ohmyposh.dev/install.sh | bash -s -- -d ~/bin
 ```
 

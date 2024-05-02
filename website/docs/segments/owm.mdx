@@ -1,0 +1,77 @@
+---
+id: owm
+title: Open Weather Map
+sidebar_label: Open Weather Map
+---
+
+## What
+
+Shows the current weather of a given location with [Open Weather Map][owm].
+
+:::caution
+You **must** request an API key at the [Open Weather Map][owm-price] website.
+The free tier for _Current weather and forecasts collection_ is sufficient.
+:::
+
+## Sample Configuration
+
+import Config from "@site/src/components/Config.js";
+
+<Config
+  data={{
+    type: "owm",
+    style: "powerline",
+    powerline_symbol: "\uE0B0",
+    foreground: "#ffffff",
+    background: "#FF0000",
+    template: "{{.Weather}} ({{.Temperature}}{{.UnitIcon}})",
+    properties: {
+      api_key: "<YOUR_API_KEY>",
+      location: "AMSTERDAM,NL",
+      units: "metric",
+      http_timeout: 20,
+      cache_timeout: 10,
+    },
+  }}
+/>
+
+## Properties
+
+| Name            | Type      | Default      | Description                                                                                                                                                                                                                                   |
+| --------------- | :-------: | :----------: | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `api_key`       | `string`  | `.`          | Your API key from [Open Weather Map][owm]. Can also be set using the `POSH_OWM_API_KEY` environment variable.                                                                                                                                 |
+| `latitude`      | `float64` | `91`         | The latitude of the requested location, valid between -90 and 90                                                                                                                                                                              |
+| `longitude`     | `float64` | `181`        | The longitude of the requested location, valid between -180 and 180                                                                                                                                                                           |
+| `location`      | `string`  | `De Bilt,NL` | The requested location interpreted only if valid coordinates aren't given. Formatted as \<City,STATE,COUNTRY_CODE\>. City name, state code and country code divided by comma. Please, refer to ISO 3166 for the state codes or country codes |
+| `units`         | `string`  | `standard`   | Units of measurement. Available values are standard (kelvin), metric (celsius), and imperial (fahrenheit)                                                                                                                                     |
+| `http_timeout`  | `int`     | `20`         | in milliseconds, the timeout for http request                                                                                                                                                                                                 |
+| `cache_timeout` | `int`     | `10`         | in minutes, the timeout for request caching. A value of 0 disables the cache.                                                                                                                                                                 |
+
+### Specifying Location
+
+The given location can either be specified through the Latitude and Longitude properties or through the Location property. If both Latitude and Longitude are specified and valid then Location will be ignored if it is included. If Latitude or Longitude are not specified or are invalid then Location will be used.
+
+## Template ([info][templates])
+
+:::note default template
+
+```template
+{{ .Weather }} ({{ .Temperature }}{{ .UnitIcon }})
+```
+
+:::
+
+### Properties
+
+| Name           | Type     | Description                                    |
+| -------------- | -------- | ---------------------------------------------- |
+| `.Weather`     | `string` | the current weather icon                       |
+| `.Temperature` | `int`    | the current temperature                        |
+| `.UnitIcon`    | `string` | the current unit icon(based on units property) |
+| `.URL`         | `string` | the url of the current api call                |
+
+[go-text-template]: https://golang.org/pkg/text/template/
+[sprig]: http://masterminds.github.io/sprig/
+[templates]: /docs/configuration/templates
+[owm]: https://openweathermap.org
+[owm-price]: https://openweathermap.org/price

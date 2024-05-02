@@ -1,0 +1,50 @@
+{
+  "name": "website",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "cross-env NODE_ENV=development docusaurus start --poll 1000",
+    "build": "docusaurus build",
+    "serve": "docusaurus serve",
+    "themes": "node export_themes.js"
+  },
+  "dependencies": {
+    "@docusaurus/core": "^3.0.0",
+    "@docusaurus/preset-classic": "^3.0.0",
+    "@docusaurus/theme-search-algolia": "^3.0.0",
+    "@iarna/toml": "^2.2.5",
+    "@mdx-js/react": "^3.0.0",
+    "classnames": "^2.3.2",
+    "query-string": "8.1.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "yaml": "^2.3.4"
+  },
+  "resolutions": {
+    "trim": "^0.0.3",
+    "got": "^11.8.5"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "docusaurus-node-polyfills": "^1.0.0"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "engines": {
+    "npm": "10.1.0",
+    "node": "20.9.0"
+  },
+  "volta": {
+    "node": "20.9.0"
+  }
+}

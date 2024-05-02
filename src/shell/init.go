@@ -277,7 +277,7 @@ func PrintInit(env platform.Environment) string {
 }
 
 func createNuInit(env platform.Environment) {
-	initPath := filepath.Join(env.Home(), "Powershell.nu")
+	initPath := filepath.Join(env.Home(), ".oh-my-posh.nu")
 	f, err := os.OpenFile(initPath, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0755)
 	if err != nil {
 		return

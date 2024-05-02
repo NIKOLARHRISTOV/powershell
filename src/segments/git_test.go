@@ -165,7 +165,7 @@ func TestEnabledInBareRepo(t *testing.T) {
 	}{
 		{
 			Case:            "Bare repo on main",
-			IsBare:          "true",
+			IsBare:          trueStr,
 			HEAD:            "ref: refs/heads/main",
 			ExpectedEnabled: true,
 			ExpectedHEAD:    "main",
@@ -176,7 +176,7 @@ func TestEnabledInBareRepo(t *testing.T) {
 		},
 		{
 			Case:            "Bare repo on main remote enabled",
-			IsBare:          "true",
+			IsBare:          trueStr,
 			HEAD:            "ref: refs/heads/main",
 			ExpectedEnabled: true,
 			ExpectedHEAD:    "main",
@@ -647,6 +647,7 @@ func TestGitCleanSSHURL(t *testing.T) {
 		{Case: "rsync no port, no user", Expected: "https://host.xz/path/to/repo", Upstream: "rsync://host.xz/path/to/repo.git/"},
 		{Case: "git no port, no user", Expected: "https://host.xz/path/to/repo", Upstream: "git://host.xz/path/to/repo.git"},
 		{Case: "gitea no port, no user", Expected: "https://src.example.com/user/repo", Upstream: "_gitea@src.example.com:user/repo.git"},
+		{Case: "git@ with user", Expected: "https://github.com/JanDeDobbeleer/oh-my-posh", Upstream: "git@github.com:JanDeDobbeleer/oh-my-posh"},
 		{Case: "unsupported", Upstream: "\\test\\repo.git"},
 	}
 	for _, tc := range cases {
@@ -1105,5 +1106,53 @@ func TestGitRemotes(t *testing.T) {
 
 		got := g.Remotes()
 		assert.Equal(t, tc.Expected, len(got), tc.Case)
+	}
+}
+
+func TestGitRepoName(t *testing.T) {
+	cases := []struct {
+		Case       string
+		Expected   string
+		WorkingDir string
+		RealDir    string
+		IsWorkTree bool
+	}{
+		{
+			Case:       "In worktree",
+			Expected:   "oh-my-posh",
+			IsWorkTree: true,
+			WorkingDir: "/Users/jan/Code/oh-my-posh/.git/worktrees/oh-my-posh2",
+		},
+		{
+			Case:       "Not in worktree",
+			Expected:   "oh-my-posh",
+			IsWorkTree: false,
+			RealDir:    "/Users/jan/Code/oh-my-posh",
+		},
+		{
+			Case:       "In worktree, unexpected dir",
+			Expected:   "",
+			IsWorkTree: true,
+			WorkingDir: "/Users/jan/Code/oh-my-posh2",
+		},
+	}
+
+	for _, tc := range cases {
+		env := new(mock.MockedEnvironment)
+		env.On("PathSeparator").Return("/")
+		env.On("GOOS").Return(platform.LINUX)
+
+		g := &Git{
+			scm: scm{
+				props:      properties.Map{},
+				env:        env,
+				realDir:    tc.RealDir,
+				workingDir: tc.WorkingDir,
+			},
+			IsWorkTree: tc.IsWorkTree,
+		}
+
+		got := g.repoName()
+		assert.Equal(t, tc.Expected, got, tc.Case)
 	}
 }

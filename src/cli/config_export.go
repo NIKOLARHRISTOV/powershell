@@ -2,7 +2,9 @@ package cli
 
 import (
 	"fmt"
+	"os"
 	"path/filepath"
+	"slices"
 	"strings"
 
 	"github.com/jandedobbeleer/oh-my-posh/src/engine"
@@ -33,7 +35,7 @@ Exports the ~/myconfig.omp.json config file and prints the result to stdout.
 
 Exports the ~/myconfig.omp.json config file to toml and prints the result to stdout.`,
 	Args: cobra.NoArgs,
-	Run: func(cmd *cobra.Command, args []string) {
+	Run: func(_ *cobra.Command, _ []string) {
 		env := &platform.Shell{
 			CmdFlags: &platform.Flags{
 				Config: config,
@@ -42,15 +44,41 @@ Exports the ~/myconfig.omp.json config file to toml and prints the result to std
 		env.Init()
 		defer env.Close()
 		cfg := engine.LoadConfig(env)
+
+		if len(output) == 0 && len(format) == 0 {
+			// usage error
+			os.Exit(2)
+		}
+
+		formats := []string{"json", "jsonc", "toml", "tml", "yaml", "yml"}
+		if len(format) != 0 && !slices.Contains(formats, format) {
+			// usage error
+			os.Exit(2)
+		}
+
 		if len(output) == 0 {
 			fmt.Print(cfg.Export(format))
 			return
 		}
+
 		cfg.Output = cleanOutputPath(output, env)
-		format := strings.TrimPrefix(filepath.Ext(output), ".")
-		if format == "yml" {
-			format = engine.YAML
+
+		if len(format) == 0 {
+			format = strings.TrimPrefix(filepath.Ext(output), ".")
 		}
+
+		switch format {
+		case "json", "jsonc":
+			format = engine.JSON
+		case "toml", "tml":
+			format = engine.TOML
+		case "yaml", "yml":
+			format = engine.YAML
+		default:
+			// data error
+			os.Exit(65)
+		}
+
 		cfg.Write(format)
 	},
 }

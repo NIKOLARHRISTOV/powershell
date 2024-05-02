@@ -30,7 +30,7 @@ Invoke-WebRequest $download -Out "./bin/$($name)"
 Invoke-WebRequest "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/v$Version/COPYING" -Out "./bin/COPYING.txt"
 $content = Get-Content '.\oh-my-posh.iss' -Raw
 $content = $content.Replace('<VERSION>', $Version)
-$ISSName = "Powershell-$Architecture-$Version.iss"
+$ISSName = ".oh-my-posh-$Architecture-$Version.iss"
 $content | Out-File -Encoding 'UTF8' $ISSName
 
 # package content

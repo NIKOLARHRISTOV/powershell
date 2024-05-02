@@ -11,6 +11,7 @@ import (
 
 	"github.com/alecthomas/assert"
 
+	mock2 "github.com/stretchr/testify/mock"
 	testify_mock "github.com/stretchr/testify/mock"
 )
 
@@ -91,20 +92,36 @@ func TestPackage(t *testing.T) {
 			PackageContents: "[package]\nname=\"test\"\nversion=\"3.2.1\"\n",
 		},
 		{
-			Case:            "1.0.0 poetry",
+			Case:            "1.0.0 python (poetry)",
 			ExpectedEnabled: true,
 			ExpectedString:  "\uf487 1.0.0 test",
-			Name:            "poetry",
+			Name:            "python",
 			File:            "pyproject.toml",
 			PackageContents: "[tool.poetry]\nname=\"test\"\nversion=\"1.0.0\"\n",
 		},
 		{
-			Case:            "3.2.1 poetry",
+			Case:            "3.2.1 python (poetry)",
 			ExpectedEnabled: true,
 			ExpectedString:  "\uf487 3.2.1 test",
-			Name:            "poetry",
+			Name:            "python",
 			File:            "pyproject.toml",
 			PackageContents: "[tool.poetry]\nname=\"test\"\nversion=\"3.2.1\"\n",
+		},
+		{
+			Case:            "1.0.0 python (pep621)",
+			ExpectedEnabled: true,
+			ExpectedString:  "\uf487 1.0.0 test",
+			Name:            "python",
+			File:            "pyproject.toml",
+			PackageContents: "[project]\nname=\"test\"\nversion=\"1.0.0\"\n",
+		},
+		{
+			Case:            "3.2.1 python (pep621)",
+			ExpectedEnabled: true,
+			ExpectedString:  "\uf487 3.2.1 test",
+			Name:            "python",
+			File:            "pyproject.toml",
+			PackageContents: "[project]\nname=\"test\"\nversion=\"3.2.1\"\n",
 		},
 		{
 			Case:            "No version present node.js",
@@ -123,12 +140,20 @@ func TestPackage(t *testing.T) {
 			PackageContents: "[package]\nname=\"test\"\n",
 		},
 		{
-			Case:            "No version present poetry",
+			Case:            "No version present python (poetry)",
 			ExpectedEnabled: true,
 			ExpectedString:  "test",
-			Name:            "poetry",
+			Name:            "python",
 			File:            "pyproject.toml",
 			PackageContents: "[tool.poetry]\nname=\"test\"\n",
+		},
+		{
+			Case:            "No version present python (pep621)",
+			ExpectedEnabled: true,
+			ExpectedString:  "test",
+			Name:            "python",
+			File:            "pyproject.toml",
+			PackageContents: "[project]\nname=\"test\"\n",
 		},
 		{
 			Case:            "No name present node.js",
@@ -147,12 +172,20 @@ func TestPackage(t *testing.T) {
 			PackageContents: "[package]\nversion=\"1.0.0\"\n",
 		},
 		{
-			Case:            "No name present poetry",
+			Case:            "No name present python (poetry)",
 			ExpectedEnabled: true,
 			ExpectedString:  "\uf487 1.0.0",
-			Name:            "poetry",
+			Name:            "python",
 			File:            "pyproject.toml",
 			PackageContents: "[tool.poetry]\nversion=\"1.0.0\"\n",
+		},
+		{
+			Case:            "No name present python (pep621)",
+			ExpectedEnabled: true,
+			ExpectedString:  "\uf487 1.0.0",
+			Name:            "python",
+			File:            "pyproject.toml",
+			PackageContents: "[project]\nversion=\"1.0.0\"\n",
 		},
 		{
 			Case:            "Empty project package node.js",
@@ -169,9 +202,9 @@ func TestPackage(t *testing.T) {
 			PackageContents: "",
 		},
 		{
-			Case:            "Empty project package poetry",
+			Case:            "Empty project package python",
 			ExpectedEnabled: true,
-			Name:            "poetry",
+			Name:            "python",
 			File:            "pyproject.toml",
 			PackageContents: "",
 		},
@@ -343,8 +376,8 @@ func TestDotnetProject(t *testing.T) {
 			Case:            "invalid or empty contents",
 			FileName:        "Invalid.csproj",
 			HasFiles:        true,
-			ExpectedEnabled: false,
-			ExpectedString:  "cannot extract TFM from Invalid project file",
+			ExpectedEnabled: true,
+			ExpectedString:  "Invalid",
 		},
 		{
 			Case:            "no files",
@@ -370,6 +403,7 @@ func TestDotnetProject(t *testing.T) {
 			},
 		})
 		env.On("FileContent", tc.FileName).Return(tc.ProjectContents)
+		env.On("Error", mock2.Anything)
 		pkg := &Project{}
 		pkg.Init(properties.Map{}, env)
 		assert.Equal(t, tc.ExpectedEnabled, pkg.Enabled(), tc.Case)

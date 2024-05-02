@@ -12,7 +12,6 @@ import (
 	"net/http"
 	"net/http/httputil"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"runtime"
 	"strconv"
@@ -35,20 +34,7 @@ const (
 	WINDOWS = "windows"
 	DARWIN  = "darwin"
 	LINUX   = "linux"
-)
-
-func pid() string {
-	pid := os.Getenv("POSH_PID")
-	if len(pid) == 0 {
-		pid = strconv.Itoa(os.Getppid())
-	}
-	return pid
-}
-
-var (
-	TEMPLATECACHE    = fmt.Sprintf("template_cache_%s", pid())
-	TOGGLECACHE      = fmt.Sprintf("toggle_cache_%s", pid())
-	PROMPTCOUNTCACHE = fmt.Sprintf("prompt_count_cache_%s", pid())
+	CMD     = "cmd"
 )
 
 type Flags struct {
@@ -90,20 +76,6 @@ type FileInfo struct {
 	ParentFolder string
 	Path         string
 	IsDir        bool
-}
-
-type Cache interface {
-	Init(home string)
-	Close()
-	// Gets the value for a given key.
-	// Returns the value and a boolean indicating if the key was found.
-	// In case the ttl expired, the function returns false.
-	Get(key string) (string, bool)
-	// Sets a value for a given key.
-	// The ttl indicates how may minutes to cache the value.
-	Set(key, value string, ttl int)
-	// Deletes a key from the cache.
-	Delete(key string)
 }
 
 type HTTPRequestModifier func(request *http.Request)
@@ -168,36 +140,6 @@ type SystemInfo struct {
 	Disks map[string]disk.IOCountersStat
 }
 
-type TemplateCache struct {
-	Root          bool
-	PWD           string
-	Folder        string
-	Shell         string
-	ShellVersion  string
-	UserName      string
-	HostName      string
-	Code          int
-	Env           map[string]string
-	Var           SimpleMap
-	OS            string
-	WSL           bool
-	PromptCount   int
-	SHLVL         int
-	Segments      *ConcurrentMap
-	SegmentsCache SimpleMap
-
-	initialized bool
-	sync.RWMutex
-}
-
-func (t *TemplateCache) AddSegmentData(key string, value any) {
-	t.Segments.Set(key, value)
-}
-
-func (t *TemplateCache) RemoveSegmentData(key string) {
-	t.Segments.Delete(key)
-}
-
 type Environment interface {
 	Getenv(key string) string
 	Pwd() string
@@ -253,23 +195,6 @@ type Environment interface {
 	Trace(start time.Time, args ...string)
 }
 
-type commandCache struct {
-	commands *ConcurrentMap
-}
-
-func (c *commandCache) set(command, path string) {
-	c.commands.Set(command, path)
-}
-
-func (c *commandCache) get(command string) (string, bool) {
-	cacheCommand, found := c.commands.Get(command)
-	if !found {
-		return "", false
-	}
-	command, ok := cacheCommand.(string)
-	return command, ok
-}
-
 type Shell struct {
 	CmdFlags *Flags
 	Var      SimpleMap
@@ -281,6 +206,8 @@ type Shell struct {
 	networks  []*Connection
 
 	sync.RWMutex
+
+	lsDirMap ConcurrentMap
 }
 
 func (env *Shell) Init() {
@@ -351,6 +278,12 @@ func (env *Shell) downloadConfig(location string) error {
 	configPath := filepath.Join(env.CachePath(), filename)
 	cfg, err := env.HTTPRequest(location, nil, 5000)
 	if err != nil {
+		if _, osErr := os.Stat(configPath); !os.IsNotExist(osErr) {
+			// use the already cached config
+			env.CmdFlags.Config = configPath
+			return nil
+		}
+
 		return err
 	}
 	out, err := os.Create(configPath)
@@ -424,20 +357,37 @@ func (env *Shell) Pwd() string {
 }
 
 func (env *Shell) HasFiles(pattern string) bool {
+	return env.HasFilesInDir(env.Pwd(), pattern)
+}
+
+func (env *Shell) HasFilesInDir(dir, pattern string) bool {
 	defer env.Trace(time.Now(), pattern)
 
-	cwd := env.Pwd()
-	fileSystem := os.DirFS(cwd)
+	fileSystem := os.DirFS(dir)
+	var dirEntries []fs.DirEntry
 
-	matches, err := fs.ReadDir(fileSystem, ".")
-	if err != nil {
-		env.Error(err)
-		env.Debug("false")
-		return false
+	if files, OK := env.lsDirMap.Get(dir); OK {
+		dirEntries, _ = files.([]fs.DirEntry)
+	}
+
+	if len(dirEntries) == 0 {
+		var err error
+		dirEntries, err = fs.ReadDir(fileSystem, ".")
+		if err != nil {
+			env.Error(err)
+			env.Debug("false")
+			return false
+		}
+
+		env.lsDirMap.Set(dir, dirEntries)
 	}
 
 	pattern = strings.ToLower(pattern)
-	for _, match := range matches {
+
+	env.RWMutex.RLock()
+	defer env.RWMutex.RUnlock()
+
+	for _, match := range dirEntries {
 		if match.IsDir() {
 			continue
 		}
@@ -457,20 +407,6 @@ func (env *Shell) HasFiles(pattern string) bool {
 
 	env.Debug("false")
 	return false
-}
-
-func (env *Shell) HasFilesInDir(dir, pattern string) bool {
-	defer env.Trace(time.Now(), pattern)
-	fileSystem := os.DirFS(dir)
-	matches, err := fs.Glob(fileSystem, pattern)
-	if err != nil {
-		env.Error(err)
-		env.Debug("false")
-		return false
-	}
-	hasFilesInDir := len(matches) > 0
-	env.DebugF("%t", hasFilesInDir)
-	return hasFilesInDir
 }
 
 func (env *Shell) HasFileInParentDirs(pattern string, depth uint) bool {
@@ -602,12 +538,14 @@ func (env *Shell) CommandPath(command string) string {
 		env.Debug(path)
 		return path
 	}
-	path, err := exec.LookPath(command)
+
+	path, err := env.LookPath(command)
 	if err == nil {
 		env.cmdCache.set(command, path)
 		env.Debug(path)
 		return path
 	}
+
 	env.Error(err)
 	return ""
 }
@@ -622,6 +560,15 @@ func (env *Shell) HasCommand(command string) bool {
 
 func (env *Shell) StatusCodes() (int, string) {
 	defer env.Trace(time.Now())
+
+	if env.CmdFlags.Shell != CMD || !env.CmdFlags.NoExitCode {
+		return env.CmdFlags.ErrorCode, env.CmdFlags.PipeStatus
+	}
+
+	errorCode := env.Getenv("=ExitCode")
+	env.Debug(errorCode)
+	env.CmdFlags.ErrorCode, _ = strconv.Atoi(errorCode)
+
 	return env.CmdFlags.ErrorCode, env.CmdFlags.PipeStatus
 }
 

@@ -3,15 +3,16 @@ package segments
 import (
 	"encoding/json"
 	"encoding/xml"
-	"errors"
+	"fmt"
 	"path/filepath"
 	"strings"
 
 	"github.com/jandedobbeleer/oh-my-posh/src/platform"
 	"github.com/jandedobbeleer/oh-my-posh/src/properties"
 	"github.com/jandedobbeleer/oh-my-posh/src/regex"
+	"golang.org/x/exp/slices"
 
-	"github.com/BurntSushi/toml"
+	toml "github.com/pelletier/go-toml/v2"
 )
 
 type ProjectItem struct {
@@ -32,9 +33,10 @@ type CargoTOML struct {
 	Package ProjectData
 }
 
-// Python Poetry package
+// Python package
 type PyProjectTOML struct {
-	Tool PyProjectToolTOML
+	Project ProjectData
+	Tool    PyProjectToolTOML
 }
 
 type PyProjectToolTOML struct {
@@ -94,9 +96,9 @@ func (n *Project) Init(props properties.Properties, env platform.Environment) {
 			Fetcher: n.getCargoPackage,
 		},
 		{
-			Name:    "poetry",
+			Name:    "python",
 			Files:   []string{"pyproject.toml"},
-			Fetcher: n.getPoetryPackage,
+			Fetcher: n.getPythonPackage,
 		},
 		{
 			Name:    "php",
@@ -110,7 +112,7 @@ func (n *Project) Init(props properties.Properties, env platform.Environment) {
 		},
 		{
 			Name:    "dotnet",
-			Files:   []string{"*.vbproj", "*.fsproj", "*.csproj"},
+			Files:   []string{"*.sln", "*.slnf", "*.vbproj", "*.fsproj", "*.csproj"},
 			Fetcher: n.getDotnetProject,
 		},
 		{
@@ -152,7 +154,7 @@ func (n *Project) getCargoPackage(item ProjectItem) *ProjectData {
 	content := n.env.FileContent(item.Files[0])
 
 	var data CargoTOML
-	_, err := toml.Decode(content, &data)
+	err := toml.Unmarshal([]byte(content), &data)
 	if err != nil {
 		n.Error = err.Error()
 		return nil
@@ -164,19 +166,25 @@ func (n *Project) getCargoPackage(item ProjectItem) *ProjectData {
 	}
 }
 
-func (n *Project) getPoetryPackage(item ProjectItem) *ProjectData {
+func (n *Project) getPythonPackage(item ProjectItem) *ProjectData {
 	content := n.env.FileContent(item.Files[0])
 
 	var data PyProjectTOML
-	_, err := toml.Decode(content, &data)
+	err := toml.Unmarshal([]byte(content), &data)
 	if err != nil {
 		n.Error = err.Error()
 		return nil
 	}
 
+	if len(data.Tool.Poetry.Version) != 0 || len(data.Tool.Poetry.Name) != 0 {
+		return &ProjectData{
+			Version: data.Tool.Poetry.Version,
+			Name:    data.Tool.Poetry.Name,
+		}
+	}
 	return &ProjectData{
-		Version: data.Tool.Poetry.Version,
-		Name:    data.Tool.Poetry.Name,
+		Version: data.Project.Version,
+		Name:    data.Project.Name,
 	}
 }
 
@@ -205,27 +213,36 @@ func (n *Project) getNuSpecPackage(_ ProjectItem) *ProjectData {
 }
 
 func (n *Project) getDotnetProject(_ ProjectItem) *ProjectData {
-	files := n.env.LsDir(n.env.Pwd())
 	var name string
 	var content string
+	var extension string
+
+	extensions := []string{".sln", ".slnf", ".csproj", ".fsproj", ".vbproj"}
+	files := n.env.LsDir(n.env.Pwd())
+
 	// get the first match only
 	for _, file := range files {
-		extension := filepath.Ext(file.Name())
-		if extension == ".csproj" || extension == ".fsproj" || extension == ".vbproj" {
+		extension = filepath.Ext(file.Name())
+		if slices.Contains(extensions, extension) {
 			name = strings.TrimSuffix(file.Name(), filepath.Ext(file.Name()))
 			content = n.env.FileContent(file.Name())
 			break
 		}
 	}
+
 	// the name of the parameter may differ depending on the version,
 	// so instead of xml.Unmarshal() we use regex:
+	var target string
 	tag := "(?P<TAG><.*TargetFramework.*>(?P<TFM>.*)</.*TargetFramework.*>)"
+
 	values := regex.FindNamedRegexMatch(tag, content)
-	if len(values) == 0 {
-		n.Error = errors.New("cannot extract TFM from " + name + " project file").Error()
-		return nil
+	if len(values) != 0 {
+		target = values["TFM"]
 	}
-	target := values["TFM"]
+
+	if len(target) == 0 {
+		n.env.Error(fmt.Errorf("cannot extract TFM from %s project file", name))
+	}
 
 	return &ProjectData{
 		Target: target,
@@ -276,7 +293,7 @@ func (n *Project) getProjectData(item ProjectItem) *ProjectData {
 	content := n.env.FileContent(item.Files[0])
 
 	var data ProjectData
-	_, err := toml.Decode(content, &data)
+	err := toml.Unmarshal([]byte(content), &data)
 	if err != nil {
 		n.Error = err.Error()
 		return nil

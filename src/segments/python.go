@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"path/filepath"
+	"slices"
 	"strings"
 
 	"github.com/jandedobbeleer/oh-my-posh/src/platform"
@@ -20,6 +21,7 @@ const (
 	// FetchVirtualEnv fetches the virtual env
 	FetchVirtualEnv      properties.Property = "fetch_virtual_env"
 	UsePythonVersionFile properties.Property = "use_python_version_file"
+	FolderNameFallback   properties.Property = "folder_name_fallback"
 )
 
 func (p *Python) Template() string {
@@ -72,13 +74,26 @@ func (p *Python) loadContext() {
 		"CONDA_ENV_PATH",
 		"CONDA_DEFAULT_ENV",
 	}
+
+	folderNameFallback := p.language.props.GetBool(FolderNameFallback, true)
+	defaultVenvNames := []string{
+		".venv",
+		"venv",
+	}
+
 	var venv string
 	for _, venvVar := range venvVars {
 		venv = p.language.env.Getenv(venvVar)
 		if len(venv) == 0 {
 			continue
 		}
+
 		name := platform.Base(p.language.env, venv)
+		if folderNameFallback && slices.Contains(defaultVenvNames, name) {
+			venv = strings.TrimSuffix(venv, name)
+			name = platform.Base(p.language.env, venv)
+		}
+
 		if p.canUseVenvName(name) {
 			p.Venv = name
 			break

@@ -30,6 +30,7 @@ import (
 	"math"
 	"os"
 	"path/filepath"
+	"slices"
 	"strconv"
 	"strings"
 	"unicode/utf8"
@@ -41,8 +42,8 @@ import (
 
 	"github.com/esimov/stackblur-go"
 	"github.com/fogleman/gg"
-	"github.com/golang/freetype/truetype"
 	"golang.org/x/image/font"
+	"golang.org/x/image/font/opentype"
 )
 
 type ConnectionError struct {
@@ -216,7 +217,7 @@ func (ir *ImageRenderer) loadFonts() error {
 
 	// Download font if not cached
 	if data == nil {
-		url := "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.0/Hack.zip"
+		url := "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/Hack.zip"
 		var err error
 
 		data, err = fontCLI.Download(url)
@@ -236,7 +237,7 @@ func (ir *ImageRenderer) loadFonts() error {
 		return err
 	}
 
-	fontFaceOptions := &truetype.Options{Size: 2.0 * 12, DPI: 144}
+	fontFaceOptions := &opentype.FaceOptions{Size: 2.0 * 12, DPI: 144}
 
 	parseFont := func(file *zip.File) (font.Face, error) {
 		rc, err := file.Open()
@@ -251,12 +252,16 @@ func (ir *ImageRenderer) loadFonts() error {
 			return nil, err
 		}
 
-		font, err := truetype.Parse(data)
+		font, err := opentype.Parse(data)
 		if err != nil {
 			return nil, err
 		}
 
-		return truetype.NewFace(font, fontFaceOptions), nil
+		fontFace, err := opentype.NewFace(font, fontFaceOptions)
+		if err != nil {
+			return nil, err
+		}
+		return fontFace, nil
 	}
 
 	for _, file := range zipReader.File {
@@ -291,7 +296,7 @@ type RuneRange struct {
 // If we're a Nerd Font code point, treat as double width
 var doubleWidthRunes = []RuneRange{
 	// Seti-UI + Custom range
-	{Start: '\ue5fa', End: '\ue62b'},
+	{Start: '\ue5fa', End: '\ue6b1'},
 	// Devicons
 	{Start: '\ue700', End: '\ue7c5'},
 	// Font Awesome
@@ -299,40 +304,112 @@ var doubleWidthRunes = []RuneRange{
 	// Font Awesome Extension
 	{Start: '\ue200', End: '\ue2a9'},
 	// Material Design Icons
-	{Start: '\U000f0001', End: '\U000f0848'},
+	{Start: '\U000f0001', End: '\U000f1af0'},
 	// Weather
-	{Start: '\ue300', End: '\ue3eb'},
+	{Start: '\ue300', End: '\ue3e3'},
 	// Octicons
-	{Start: '\uf400', End: '\uf4a8'},
+	{Start: '\uf400', End: '\uf532'},
 	{Start: '\u2665', End: '\u2665'},
 	{Start: '\u26A1', End: '\u26A1'},
-	{Start: '\uf27c', End: '\uf27c'},
 	// Powerline Extra Symbols (intentionally excluding single width bubbles (e0b4-e0b7) and pixelated (e0c4-e0c7))
 	{Start: '\ue0a3', End: '\ue0a3'},
-	{Start: '\ue0b8', End: '\ue0c3'},
-	{Start: '\ue0c8', End: '\ue0c8'},
+	{Start: '\ue0b4', End: '\ue0c8'},
 	{Start: '\ue0ca', End: '\ue0ca'},
-	{Start: '\ue0cc', End: '\ue0d2'},
-	{Start: '\ue0d4', End: '\ue0d4'},
+	{Start: '\ue0cc', End: '\ue0d4'},
 	// IEC Power Symbols
 	{Start: '\u23fb', End: '\u23fe'},
 	{Start: '\u2b58', End: '\u2b58'},
 	// Font Logos
-	{Start: '\uf300', End: '\uf31c'},
+	{Start: '\uf300', End: '\uf372'},
 	// Pomicons
-	{Start: '\ue000', End: '\ue00d'},
+	{Start: '\ue000', End: '\ue00a'},
+	// Codicons
+	{Start: '\uea60', End: '\uebeb'},
 }
 
 // This is getting how many additional characters of width to allocate when drawing
 // e.g. for characters that are 2 or more wide. A standard character will return 0
 // Nerd Font glyphs will return 1, since most are double width
 func (ir *ImageRenderer) runeAdditionalWidth(r rune) int {
+	// exclude the round leading diamond
+	singles := []rune{'\ue0b6', '\ue0ba', '\ue0bc'}
+	if slices.Contains(singles, r) {
+		return 0
+	}
+
 	for _, runeRange := range doubleWidthRunes {
 		if runeRange.Start <= r && r <= runeRange.End {
 			return 1
 		}
 	}
 	return 0
+}
+
+func (ir *ImageRenderer) cleanContent() {
+	// clean abundance of empty lines
+	ir.AnsiString = strings.Trim(ir.AnsiString, "\n")
+	ir.AnsiString = "\n" + ir.AnsiString
+
+	// clean string before render
+	ir.AnsiString = strings.ReplaceAll(ir.AnsiString, "\x1b[m", "\x1b[0m")
+	ir.AnsiString = strings.ReplaceAll(ir.AnsiString, "\x1b[K", "")
+	ir.AnsiString = strings.ReplaceAll(ir.AnsiString, "\x1b[0J", "")
+	ir.AnsiString = strings.ReplaceAll(ir.AnsiString, "\x1b[27m", "")
+	ir.AnsiString = strings.ReplaceAll(ir.AnsiString, "\x1b8", "")
+	ir.AnsiString = strings.ReplaceAll(ir.AnsiString, "\u2800", " ")
+
+	// cursor indication
+	saveCursorAnsi := "\x1b7"
+	if !strings.Contains(ir.AnsiString, saveCursorAnsi) {
+		ir.AnsiString += "_"
+	}
+	ir.AnsiString = strings.ReplaceAll(ir.AnsiString, saveCursorAnsi, "_")
+
+	// replace rprompt with adding and mark right aligned blocks with a pointer
+	ir.AnsiString = strings.ReplaceAll(ir.AnsiString, "\x1b[1000C", strings.Repeat(" ", ir.RPromptOffset))
+
+	// add watermarks
+	ir.AnsiString += "\n\n\x1b[1mohmyposh.dev\x1b[22m"
+	if len(ir.Author) > 0 {
+		createdBy := fmt.Sprintf(" by \x1b[1m%s\x1b[22m", ir.Author)
+		ir.AnsiString += createdBy
+	}
+}
+
+func (ir *ImageRenderer) measureContent() (width, height float64) {
+	linewidth := 145
+	linewidth += ir.additionalWidth()
+
+	tmpDrawer := &font.Drawer{Face: ir.regular}
+	advance := tmpDrawer.MeasureString(strings.Repeat(" ", linewidth))
+	width = float64(advance >> 6)
+	// height, lines times font height and line spacing
+	height = float64(len(strings.Split(ir.AnsiString, "\n"))) * ir.fontHeight() * ir.lineSpacing
+	return width, height
+}
+
+/*
+additionalWidth returns the number of additional characters of width to allocate when drawing
+for characters that are 2 wide. A standard character will return 0
+Nerd Font glyphs will return 1, since most are double width
+*/
+func (ir *ImageRenderer) additionalWidth() int {
+	longest := 0
+	var longestLine string
+	for _, line := range strings.Split(ir.AnsiString, "\n") {
+		length := ir.lenWithoutANSI(line)
+		if length > longest {
+			longestLine = line
+			longest = length
+		}
+	}
+
+	var additionalWidth int
+	for _, rune := range longestLine {
+		additionalWidth += ir.runeAdditionalWidth(rune)
+	}
+
+	return additionalWidth
 }
 
 func (ir *ImageRenderer) lenWithoutANSI(text string) int {
@@ -357,57 +434,6 @@ func (ir *ImageRenderer) lenWithoutANSI(text string) int {
 		length += ir.runeAdditionalWidth(rune)
 	}
 	return length
-}
-
-func (ir *ImageRenderer) calculateWidth() int {
-	longest := 0
-	for _, line := range strings.Split(ir.AnsiString, "\n") {
-		length := ir.lenWithoutANSI(line)
-		if length > longest {
-			longest = length
-		}
-	}
-	return longest
-}
-
-func (ir *ImageRenderer) cleanContent() {
-	rPromptAnsi := "\x1b7\x1b[1000C"
-	hasRPrompt := strings.Contains(ir.AnsiString, rPromptAnsi)
-	// clean abundance of empty lines
-	ir.AnsiString = strings.Trim(ir.AnsiString, "\n")
-	ir.AnsiString = "\n" + ir.AnsiString
-	// clean string before render
-	ir.AnsiString = strings.ReplaceAll(ir.AnsiString, "\x1b[m", "\x1b[0m")
-	ir.AnsiString = strings.ReplaceAll(ir.AnsiString, "\x1b[K", "")
-	ir.AnsiString = strings.ReplaceAll(ir.AnsiString, "\x1b[0J", "")
-	ir.AnsiString = strings.ReplaceAll(ir.AnsiString, "\x1b[27m", "")
-	ir.AnsiString = strings.ReplaceAll(ir.AnsiString, "\x1b[1F", "")
-	ir.AnsiString = strings.ReplaceAll(ir.AnsiString, "\x1b8", "")
-	ir.AnsiString = strings.ReplaceAll(ir.AnsiString, "\u2800", " ")
-	// replace rprompt with adding and mark right aligned blocks with a pointer
-	ir.AnsiString = strings.ReplaceAll(ir.AnsiString, rPromptAnsi, fmt.Sprintf("_%s", strings.Repeat(" ", ir.CursorPadding)))
-	ir.AnsiString = strings.ReplaceAll(ir.AnsiString, "\x1b[1000C", strings.Repeat(" ", ir.RPromptOffset))
-	if !hasRPrompt {
-		ir.AnsiString += fmt.Sprintf("_%s", strings.Repeat(" ", ir.CursorPadding))
-	}
-	// add watermarks
-	ir.AnsiString += "\n\n\x1b[1mohmyposh.dev\x1b[22m"
-	if len(ir.Author) > 0 {
-		createdBy := fmt.Sprintf(" by \x1b[1m%s\x1b[22m", ir.Author)
-		ir.AnsiString += createdBy
-	}
-}
-
-func (ir *ImageRenderer) measureContent() (width, height float64) {
-	// get the longest line
-	linewidth := ir.calculateWidth()
-	// width, taken from the longest line
-	tmpDrawer := &font.Drawer{Face: ir.regular}
-	advance := tmpDrawer.MeasureString(strings.Repeat(" ", linewidth))
-	width = float64(advance >> 6)
-	// height, lines times font height and line spacing
-	height = float64(len(strings.Split(ir.AnsiString, "\n"))) * ir.fontHeight() * ir.lineSpacing
-	return width, height
 }
 
 func (ir *ImageRenderer) SavePNG() error {

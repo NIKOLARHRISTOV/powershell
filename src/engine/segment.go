@@ -20,28 +20,28 @@ import (
 
 // Segment represent a single segment and it's configuration
 type Segment struct {
-	Type                SegmentType    `json:"type,omitempty"`
-	Tips                []string       `json:"tips,omitempty"`
-	Style               SegmentStyle   `json:"style,omitempty"`
-	PowerlineSymbol     string         `json:"powerline_symbol,omitempty"`
-	InvertPowerline     bool           `json:"invert_powerline,omitempty"`
-	Foreground          string         `json:"foreground,omitempty"`
-	ForegroundTemplates template.List  `json:"foreground_templates,omitempty"`
-	Background          string         `json:"background,omitempty"`
-	BackgroundTemplates template.List  `json:"background_templates,omitempty"`
-	LeadingDiamond      string         `json:"leading_diamond,omitempty"`
-	TrailingDiamond     string         `json:"trailing_diamond,omitempty"`
-	Template            string         `json:"template,omitempty"`
-	Templates           template.List  `json:"templates,omitempty"`
-	TemplatesLogic      template.Logic `json:"templates_logic,omitempty"`
-	Properties          properties.Map `json:"properties,omitempty"`
-	Interactive         bool           `json:"interactive,omitempty"`
-	Alias               string         `json:"alias,omitempty"`
-	MaxWidth            int            `json:"max_width,omitempty"`
-	MinWidth            int            `json:"min_width,omitempty"`
-	Filler              string         `json:"filler,omitempty"`
+	Type                SegmentType    `json:"type,omitempty" toml:"type,omitempty"`
+	Tips                []string       `json:"tips,omitempty" toml:"tips,omitempty"`
+	Style               SegmentStyle   `json:"style,omitempty" toml:"style,omitempty"`
+	PowerlineSymbol     string         `json:"powerline_symbol,omitempty" toml:"powerline_symbol,omitempty"`
+	InvertPowerline     bool           `json:"invert_powerline,omitempty" toml:"invert_powerline,omitempty"`
+	Foreground          string         `json:"foreground,omitempty" toml:"foreground,omitempty"`
+	ForegroundTemplates template.List  `json:"foreground_templates,omitempty" toml:"foreground_templates,omitempty"`
+	Background          string         `json:"background,omitempty" toml:"background,omitempty"`
+	BackgroundTemplates template.List  `json:"background_templates,omitempty" toml:"background_templates,omitempty"`
+	LeadingDiamond      string         `json:"leading_diamond,omitempty" toml:"leading_diamond,omitempty"`
+	TrailingDiamond     string         `json:"trailing_diamond,omitempty" toml:"trailing_diamond,omitempty"`
+	Template            string         `json:"template,omitempty" toml:"template,omitempty"`
+	Templates           template.List  `json:"templates,omitempty" toml:"templates,omitempty"`
+	TemplatesLogic      template.Logic `json:"templates_logic,omitempty" toml:"templates_logic,omitempty"`
+	Properties          properties.Map `json:"properties,omitempty" toml:"properties,omitempty"`
+	Interactive         bool           `json:"interactive,omitempty" toml:"interactive,omitempty"`
+	Alias               string         `json:"alias,omitempty" toml:"alias,omitempty"`
+	MaxWidth            int            `json:"max_width,omitempty" toml:"max_width,omitempty"`
+	MinWidth            int            `json:"min_width,omitempty" toml:"min_width,omitempty"`
+	Filler              string         `json:"filler,omitempty" toml:"filler,omitempty"`
 
-	Enabled bool `json:"-"`
+	Enabled bool `json:"-" toml:"-"`
 
 	colors     *ansi.Colors
 	env        platform.Environment
@@ -104,10 +104,14 @@ const (
 	AZFUNC SegmentType = "azfunc"
 	// BATTERY writes the battery percentage
 	BATTERY SegmentType = "battery"
+	// BAZEL writes the bazel version
+	BAZEL SegmentType = "bazel"
 	// Brewfather segment
 	BREWFATHER SegmentType = "brewfather"
 	// Buf segment writes the active buf version
 	BUF SegmentType = "buf"
+	// CARBONINTENSITY writes the actual and forecast carbon intensity in gCO2/kWh
+	CARBONINTENSITY SegmentType = "carbonintensity"
 	// cds (SAP CAP) version
 	CDS SegmentType = "cds"
 	// Cloud Foundry segment
@@ -142,6 +146,8 @@ const (
 	FOSSIL SegmentType = "fossil"
 	// GCP writes the active GCP context
 	GCP SegmentType = "gcp"
+	// FIREBASE writes the active firebase project
+	FIREBASE SegmentType = "firebase"
 	// GIT represents the git status and information
 	GIT SegmentType = "git"
 	// GITVERSION represents the gitversion information
@@ -164,10 +170,14 @@ const (
 	KOTLIN SegmentType = "kotlin"
 	// KUBECTL writes the Kubernetes context we're currently in
 	KUBECTL SegmentType = "kubectl"
+	// LASTFM writes the lastfm status
+	LASTFM SegmentType = "lastfm"
 	// LUA writes the active lua version
 	LUA SegmentType = "lua"
 	// MERCURIAL writes the Mercurial source control information
 	MERCURIAL SegmentType = "mercurial"
+	// NBA writes NBA game data
+	NBA SegmentType = "nba"
 	// NBGV writes the nbgv version information
 	NBGV SegmentType = "nbgv"
 	// NIGHTSCOUT is an open source diabetes system
@@ -178,6 +188,8 @@ const (
 	NPM SegmentType = "npm"
 	// NX writes which Nx version us currently active
 	NX SegmentType = "nx"
+	// OCAML writes the active Ocaml version
+	OCAML SegmentType = "ocaml"
 	// OS write os specific icon
 	OS SegmentType = "os"
 	// OWM writes the weather coming from openweatherdata
@@ -192,12 +204,16 @@ const (
 	PLASTIC SegmentType = "plastic"
 	// Project version
 	PROJECT SegmentType = "project"
+	// PULUMI writes the pulumi user, store and stack
+	PULUMI SegmentType = "pulumi"
 	// PYTHON writes the virtual env name
 	PYTHON SegmentType = "python"
 	// QUASAR writes the QUASAR version and context
 	QUASAR SegmentType = "quasar"
 	// R version
 	R SegmentType = "r"
+	// REACT writes the current react version
+	REACT SegmentType = "react"
 	// ROOT writes root symbol
 	ROOT SegmentType = "root"
 	// RUBY writes which ruby version is currently active
@@ -232,6 +248,8 @@ const (
 	TIME SegmentType = "time"
 	// UI5 Tooling segment
 	UI5TOOLING SegmentType = "ui5tooling"
+	// UMBRACO writes the Umbraco version if Umbraco is present
+	UMBRACO SegmentType = "umbraco"
 	// UNITY writes which Unity version is currently active
 	UNITY SegmentType = "unity"
 	// UPGRADE lets you know if you can upgrade Oh My Posh
@@ -253,84 +271,93 @@ const (
 // Segments contains all available prompt segment writers.
 // Consumers of the library can also add their own segment writer.
 var Segments = map[SegmentType]func() SegmentWriter{
-	ANGULAR:       func() SegmentWriter { return &segments.Angular{} },
-	ARGOCD:        func() SegmentWriter { return &segments.Argocd{} },
-	AWS:           func() SegmentWriter { return &segments.Aws{} },
-	AZ:            func() SegmentWriter { return &segments.Az{} },
-	AZFUNC:        func() SegmentWriter { return &segments.AzFunc{} },
-	BATTERY:       func() SegmentWriter { return &segments.Battery{} },
-	BREWFATHER:    func() SegmentWriter { return &segments.Brewfather{} },
-	BUF:           func() SegmentWriter { return &segments.Buf{} },
-	CDS:           func() SegmentWriter { return &segments.Cds{} },
-	CF:            func() SegmentWriter { return &segments.Cf{} },
-	CFTARGET:      func() SegmentWriter { return &segments.CfTarget{} },
-	CMD:           func() SegmentWriter { return &segments.Cmd{} },
-	CONNECTION:    func() SegmentWriter { return &segments.Connection{} },
-	CRYSTAL:       func() SegmentWriter { return &segments.Crystal{} },
-	CMAKE:         func() SegmentWriter { return &segments.Cmake{} },
-	DART:          func() SegmentWriter { return &segments.Dart{} },
-	DENO:          func() SegmentWriter { return &segments.Deno{} },
-	DOCKER:        func() SegmentWriter { return &segments.Docker{} },
-	DOTNET:        func() SegmentWriter { return &segments.Dotnet{} },
-	EXECUTIONTIME: func() SegmentWriter { return &segments.Executiontime{} },
-	ELIXIR:        func() SegmentWriter { return &segments.Elixir{} },
-	EXIT:          func() SegmentWriter { return &segments.Status{} },
-	FLUTTER:       func() SegmentWriter { return &segments.Flutter{} },
-	FOSSIL:        func() SegmentWriter { return &segments.Fossil{} },
-	GCP:           func() SegmentWriter { return &segments.Gcp{} },
-	GIT:           func() SegmentWriter { return &segments.Git{} },
-	GITVERSION:    func() SegmentWriter { return &segments.GitVersion{} },
-	GOLANG:        func() SegmentWriter { return &segments.Golang{} },
-	HASKELL:       func() SegmentWriter { return &segments.Haskell{} },
-	HELM:          func() SegmentWriter { return &segments.Helm{} },
-	IPIFY:         func() SegmentWriter { return &segments.IPify{} },
-	ITERM:         func() SegmentWriter { return &segments.ITerm{} },
-	JAVA:          func() SegmentWriter { return &segments.Java{} },
-	JULIA:         func() SegmentWriter { return &segments.Julia{} },
-	KOTLIN:        func() SegmentWriter { return &segments.Kotlin{} },
-	KUBECTL:       func() SegmentWriter { return &segments.Kubectl{} },
-	LUA:           func() SegmentWriter { return &segments.Lua{} },
-	MERCURIAL:     func() SegmentWriter { return &segments.Mercurial{} },
-	NBGV:          func() SegmentWriter { return &segments.Nbgv{} },
-	NIGHTSCOUT:    func() SegmentWriter { return &segments.Nightscout{} },
-	NODE:          func() SegmentWriter { return &segments.Node{} },
-	NPM:           func() SegmentWriter { return &segments.Npm{} },
-	NX:            func() SegmentWriter { return &segments.Nx{} },
-	OS:            func() SegmentWriter { return &segments.Os{} },
-	OWM:           func() SegmentWriter { return &segments.Owm{} },
-	PATH:          func() SegmentWriter { return &segments.Path{} },
-	PERL:          func() SegmentWriter { return &segments.Perl{} },
-	PHP:           func() SegmentWriter { return &segments.Php{} },
-	PLASTIC:       func() SegmentWriter { return &segments.Plastic{} },
-	PROJECT:       func() SegmentWriter { return &segments.Project{} },
-	PYTHON:        func() SegmentWriter { return &segments.Python{} },
-	QUASAR:        func() SegmentWriter { return &segments.Quasar{} },
-	R:             func() SegmentWriter { return &segments.R{} },
-	ROOT:          func() SegmentWriter { return &segments.Root{} },
-	RUBY:          func() SegmentWriter { return &segments.Ruby{} },
-	RUST:          func() SegmentWriter { return &segments.Rust{} },
-	SAPLING:       func() SegmentWriter { return &segments.Sapling{} },
-	SESSION:       func() SegmentWriter { return &segments.Session{} },
-	SHELL:         func() SegmentWriter { return &segments.Shell{} },
-	SITECORE:      func() SegmentWriter { return &segments.Sitecore{} },
-	SPOTIFY:       func() SegmentWriter { return &segments.Spotify{} },
-	STATUS:        func() SegmentWriter { return &segments.Status{} },
-	STRAVA:        func() SegmentWriter { return &segments.Strava{} },
-	SVN:           func() SegmentWriter { return &segments.Svn{} },
-	SWIFT:         func() SegmentWriter { return &segments.Swift{} },
-	SYSTEMINFO:    func() SegmentWriter { return &segments.SystemInfo{} },
-	TERRAFORM:     func() SegmentWriter { return &segments.Terraform{} },
-	TEXT:          func() SegmentWriter { return &segments.Text{} },
-	TIME:          func() SegmentWriter { return &segments.Time{} },
-	UI5TOOLING:    func() SegmentWriter { return &segments.UI5Tooling{} },
-	UNITY:         func() SegmentWriter { return &segments.Unity{} },
-	UPGRADE:       func() SegmentWriter { return &segments.Upgrade{} },
-	VALA:          func() SegmentWriter { return &segments.Vala{} },
-	WAKATIME:      func() SegmentWriter { return &segments.Wakatime{} },
-	WINREG:        func() SegmentWriter { return &segments.WindowsRegistry{} },
-	WITHINGS:      func() SegmentWriter { return &segments.Withings{} },
-	XMAKE:         func() SegmentWriter { return &segments.XMake{} },
-	YTM:           func() SegmentWriter { return &segments.Ytm{} },
+	ANGULAR:         func() SegmentWriter { return &segments.Angular{} },
+	ARGOCD:          func() SegmentWriter { return &segments.Argocd{} },
+	AWS:             func() SegmentWriter { return &segments.Aws{} },
+	AZ:              func() SegmentWriter { return &segments.Az{} },
+	AZFUNC:          func() SegmentWriter { return &segments.AzFunc{} },
+	BATTERY:         func() SegmentWriter { return &segments.Battery{} },
+	BAZEL:           func() SegmentWriter { return &segments.Bazel{} },
+	BREWFATHER:      func() SegmentWriter { return &segments.Brewfather{} },
+	BUF:             func() SegmentWriter { return &segments.Buf{} },
+	CARBONINTENSITY: func() SegmentWriter { return &segments.CarbonIntensity{} },
+	CDS:             func() SegmentWriter { return &segments.Cds{} },
+	CF:              func() SegmentWriter { return &segments.Cf{} },
+	CFTARGET:        func() SegmentWriter { return &segments.CfTarget{} },
+	CMD:             func() SegmentWriter { return &segments.Cmd{} },
+	CONNECTION:      func() SegmentWriter { return &segments.Connection{} },
+	CRYSTAL:         func() SegmentWriter { return &segments.Crystal{} },
+	CMAKE:           func() SegmentWriter { return &segments.Cmake{} },
+	DART:            func() SegmentWriter { return &segments.Dart{} },
+	DENO:            func() SegmentWriter { return &segments.Deno{} },
+	DOCKER:          func() SegmentWriter { return &segments.Docker{} },
+	DOTNET:          func() SegmentWriter { return &segments.Dotnet{} },
+	EXECUTIONTIME:   func() SegmentWriter { return &segments.Executiontime{} },
+	ELIXIR:          func() SegmentWriter { return &segments.Elixir{} },
+	EXIT:            func() SegmentWriter { return &segments.Status{} },
+	FLUTTER:         func() SegmentWriter { return &segments.Flutter{} },
+	FOSSIL:          func() SegmentWriter { return &segments.Fossil{} },
+	GCP:             func() SegmentWriter { return &segments.Gcp{} },
+	FIREBASE:        func() SegmentWriter { return &segments.Firebase{} },
+	GIT:             func() SegmentWriter { return &segments.Git{} },
+	GITVERSION:      func() SegmentWriter { return &segments.GitVersion{} },
+	GOLANG:          func() SegmentWriter { return &segments.Golang{} },
+	HASKELL:         func() SegmentWriter { return &segments.Haskell{} },
+	HELM:            func() SegmentWriter { return &segments.Helm{} },
+	IPIFY:           func() SegmentWriter { return &segments.IPify{} },
+	ITERM:           func() SegmentWriter { return &segments.ITerm{} },
+	JAVA:            func() SegmentWriter { return &segments.Java{} },
+	JULIA:           func() SegmentWriter { return &segments.Julia{} },
+	KOTLIN:          func() SegmentWriter { return &segments.Kotlin{} },
+	KUBECTL:         func() SegmentWriter { return &segments.Kubectl{} },
+	LASTFM:          func() SegmentWriter { return &segments.LastFM{} },
+	LUA:             func() SegmentWriter { return &segments.Lua{} },
+	MERCURIAL:       func() SegmentWriter { return &segments.Mercurial{} },
+	NBA:             func() SegmentWriter { return &segments.Nba{} },
+	NBGV:            func() SegmentWriter { return &segments.Nbgv{} },
+	NIGHTSCOUT:      func() SegmentWriter { return &segments.Nightscout{} },
+	NODE:            func() SegmentWriter { return &segments.Node{} },
+	NPM:             func() SegmentWriter { return &segments.Npm{} },
+	NX:              func() SegmentWriter { return &segments.Nx{} },
+	OCAML:           func() SegmentWriter { return &segments.OCaml{} },
+	OS:              func() SegmentWriter { return &segments.Os{} },
+	OWM:             func() SegmentWriter { return &segments.Owm{} },
+	PATH:            func() SegmentWriter { return &segments.Path{} },
+	PERL:            func() SegmentWriter { return &segments.Perl{} },
+	PHP:             func() SegmentWriter { return &segments.Php{} },
+	PLASTIC:         func() SegmentWriter { return &segments.Plastic{} },
+	PROJECT:         func() SegmentWriter { return &segments.Project{} },
+	PULUMI:          func() SegmentWriter { return &segments.Pulumi{} },
+	PYTHON:          func() SegmentWriter { return &segments.Python{} },
+	QUASAR:          func() SegmentWriter { return &segments.Quasar{} },
+	R:               func() SegmentWriter { return &segments.R{} },
+	REACT:           func() SegmentWriter { return &segments.React{} },
+	ROOT:            func() SegmentWriter { return &segments.Root{} },
+	RUBY:            func() SegmentWriter { return &segments.Ruby{} },
+	RUST:            func() SegmentWriter { return &segments.Rust{} },
+	SAPLING:         func() SegmentWriter { return &segments.Sapling{} },
+	SESSION:         func() SegmentWriter { return &segments.Session{} },
+	SHELL:           func() SegmentWriter { return &segments.Shell{} },
+	SITECORE:        func() SegmentWriter { return &segments.Sitecore{} },
+	SPOTIFY:         func() SegmentWriter { return &segments.Spotify{} },
+	STATUS:          func() SegmentWriter { return &segments.Status{} },
+	STRAVA:          func() SegmentWriter { return &segments.Strava{} },
+	SVN:             func() SegmentWriter { return &segments.Svn{} },
+	SWIFT:           func() SegmentWriter { return &segments.Swift{} },
+	SYSTEMINFO:      func() SegmentWriter { return &segments.SystemInfo{} },
+	TERRAFORM:       func() SegmentWriter { return &segments.Terraform{} },
+	TEXT:            func() SegmentWriter { return &segments.Text{} },
+	TIME:            func() SegmentWriter { return &segments.Time{} },
+	UI5TOOLING:      func() SegmentWriter { return &segments.UI5Tooling{} },
+	UMBRACO:         func() SegmentWriter { return &segments.Umbraco{} },
+	UNITY:           func() SegmentWriter { return &segments.Unity{} },
+	UPGRADE:         func() SegmentWriter { return &segments.Upgrade{} },
+	VALA:            func() SegmentWriter { return &segments.Vala{} },
+	WAKATIME:        func() SegmentWriter { return &segments.Wakatime{} },
+	WINREG:          func() SegmentWriter { return &segments.WindowsRegistry{} },
+	WITHINGS:        func() SegmentWriter { return &segments.Withings{} },
+	XMAKE:           func() SegmentWriter { return &segments.XMake{} },
+	YTM:             func() SegmentWriter { return &segments.Ytm{} },
 }
 
 func (segment *Segment) style() SegmentStyle {
@@ -353,6 +380,14 @@ func (segment *Segment) shouldIncludeFolder() bool {
 func (segment *Segment) isPowerline() bool {
 	style := segment.style()
 	return style == Powerline || style == Accordion
+}
+
+func (segment *Segment) hasEmptyDiamondAtEnd() bool {
+	if segment.style() != Diamond {
+		return false
+	}
+
+	return len(segment.TrailingDiamond) == 0
 }
 
 func (segment *Segment) cwdIncluded() bool {

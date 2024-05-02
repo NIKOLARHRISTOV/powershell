@@ -32,7 +32,7 @@ func (n *Node) Init(props properties.Properties, env platform.Environment) {
 	n.language = language{
 		env:        env,
 		props:      props,
-		extensions: []string{"*.js", "*.ts", "package.json", ".nvmrc", "pnpm-workspace.yaml", ".pnpmfile.cjs", ".npmrc", ".vue"},
+		extensions: []string{"*.js", "*.ts", "package.json", ".nvmrc", "pnpm-workspace.yaml", ".pnpmfile.cjs", ".vue"},
 		commands: []*cmd{
 			{
 				executable: "node",
@@ -55,7 +55,7 @@ func (n *Node) loadContext() {
 		return
 	}
 	if n.language.env.HasFiles("yarn.lock") {
-		n.PackageManagerIcon = n.language.props.GetString(YarnIcon, "\uF61A")
+		n.PackageManagerIcon = n.language.props.GetString(YarnIcon, "\U000F011B")
 		return
 	}
 	if n.language.env.HasFiles("package-lock.json") || n.language.env.HasFiles("package.json") {
@@ -67,6 +67,33 @@ func (n *Node) matchesVersionFile() (string, bool) {
 	fileVersion := n.language.env.FileContent(".nvmrc")
 	if len(fileVersion) == 0 {
 		return "", true
+	}
+
+	fileVersion = strings.TrimSpace(fileVersion)
+
+	if strings.HasPrefix(fileVersion, "lts/") {
+		fileVersion = strings.ToLower(fileVersion)
+		codeName := strings.TrimPrefix(fileVersion, "lts/")
+		switch codeName {
+		case "argon":
+			fileVersion = "4.9.1"
+		case "boron":
+			fileVersion = "6.17.1"
+		case "carbon":
+			fileVersion = "8.17.0"
+		case "dubnium":
+			fileVersion = "10.24.1"
+		case "erbium":
+			fileVersion = "12.22.12"
+		case "fermium":
+			fileVersion = "14.21.3"
+		case "gallium":
+			fileVersion = "16.20.2"
+		case "hydrogen":
+			fileVersion = "18.19.1"
+		case "iron":
+			fileVersion = "20.11.1"
+		}
 	}
 
 	re := fmt.Sprintf(

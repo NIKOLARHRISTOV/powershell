@@ -113,6 +113,8 @@ const (
 	DETACHED     = "(detached)"
 	BRANCHPREFIX = "ref: refs/heads/"
 	GITCOMMAND   = "git"
+
+	trueStr = "true"
 )
 
 type Git struct {
@@ -165,7 +167,7 @@ func (g *Git) Enabled() bool {
 		g.setUser()
 	}
 
-	g.RepoName = platform.Base(g.env, g.convertToLinuxPath(g.realDir))
+	g.RepoName = g.repoName()
 
 	g.Working = &GitStatus{}
 	g.Staging = &GitStatus{}
@@ -266,6 +268,10 @@ func (g *Git) Kraken() string {
 	return fmt.Sprintf("gitkraken://repolink/%s/commit/%s?url=%s", root, g.Hash, url2.QueryEscape(g.RawUpstreamURL))
 }
 
+func (g *Git) LatestTag() string {
+	return g.getGitCommandOutput("describe", "--tags", "--abbrev=0")
+}
+
 func (g *Git) shouldDisplay() bool {
 	if !g.hasCommand(GITCOMMAND) {
 		return false
@@ -278,7 +284,7 @@ func (g *Git) shouldDisplay() bool {
 		}
 		g.realDir = g.env.Pwd()
 		bare := g.getGitCommandOutput("rev-parse", "--is-bare-repository")
-		if bare == "true" {
+		if bare == trueStr {
 			g.IsBare = true
 			g.workingDir = g.realDir
 			return true
@@ -293,7 +299,12 @@ func (g *Git) shouldDisplay() bool {
 	g.setDir(gitdir.Path)
 
 	if !gitdir.IsDir {
-		return g.hasWorktree(gitdir)
+		if g.hasWorktree(gitdir) {
+			g.realDir = g.convertToWindowsPath(g.realDir)
+			return true
+		}
+
+		return false
 	}
 
 	g.workingDir = gitdir.Path
@@ -425,6 +436,7 @@ func (g *Git) cleanUpstreamURL(url string) string {
 	if strings.HasPrefix(url, "http") {
 		return url
 	}
+
 	// /path/to/repo.git/
 	match := regex.FindNamedRegexMatch(`^(?P<URL>[a-z0-9./]+)$`, url)
 	if len(match) != 0 {
@@ -432,28 +444,33 @@ func (g *Git) cleanUpstreamURL(url string) string {
 		url = strings.TrimSuffix(url, ".git")
 		return fmt.Sprintf("https://%s", strings.TrimPrefix(url, "/"))
 	}
+
 	// ssh://user@host.xz:1234/path/to/repo.git/
 	match = regex.FindNamedRegexMatch(`(ssh|ftp|git|rsync)://(.*@)?(?P<URL>[a-z0-9.]+)(:[0-9]{4})?/(?P<PATH>.*).git`, url)
 	if len(match) == 0 {
 		// host.xz:/path/to/repo.git/
 		match = regex.FindNamedRegexMatch(`^(?P<URL>[a-z0-9./]+):(?P<PATH>[a-z0-9./]+)$`, url)
 	}
+
 	if len(match) != 0 {
 		path := strings.Trim(match["PATH"], "/")
 		path = strings.TrimSuffix(path, ".git")
 		return fmt.Sprintf("https://%s/%s", match["URL"], path)
 	}
+
 	// codecommit::region-identifier-id://repo-name
 	match = regex.FindNamedRegexMatch(`codecommit::(?P<URL>[a-z0-9-]+)://(?P<PATH>[\w\.@\:/\-~]+)`, url)
 	if len(match) != 0 {
 		return fmt.Sprintf("https://%s.console.aws.amazon.com/codesuite/codecommit/repositories/%s/browse?region=%s", match["URL"], match["PATH"], match["URL"])
 	}
+
 	// user@host.xz:/path/to/repo.git
-	match = regex.FindNamedRegexMatch(`.*@(?P<URL>.*):(?P<PATH>.*).git`, url)
+	match = regex.FindNamedRegexMatch(`.*@(?P<URL>.*):(?P<PATH>.*)`, url)
 	if len(match) == 0 {
 		return ""
 	}
-	return fmt.Sprintf("https://%s/%s", match["URL"], match["PATH"])
+
+	return fmt.Sprintf("https://%s/%s", match["URL"], strings.TrimSuffix(match["PATH"], ".git"))
 }
 
 func (g *Git) getUpstreamIcon() string {
@@ -727,6 +744,7 @@ func (g *Git) setPrettyHEADName() {
 	// we didn't fetch status, fallback to parsing the HEAD file
 	if len(g.ShortHash) == 0 {
 		HEADRef := g.FileContents(g.workingDir, "HEAD")
+		g.Detached = !strings.HasPrefix(HEADRef, "ref:")
 		if strings.HasPrefix(HEADRef, BRANCHPREFIX) {
 			branchName := strings.TrimPrefix(HEADRef, BRANCHPREFIX)
 			g.HEAD = fmt.Sprintf("%s%s", g.props.GetString(BranchIcon, "\uE0A0"), g.formatHEAD(branchName))
@@ -738,17 +756,20 @@ func (g *Git) setPrettyHEADName() {
 			g.Hash = HEADRef[0:]
 		}
 	}
+
 	// check for tag
 	tagName := g.getGitCommandOutput("describe", "--tags", "--exact-match")
 	if len(tagName) > 0 {
 		g.HEAD = fmt.Sprintf("%s%s", g.props.GetString(TagIcon, "\uF412"), tagName)
 		return
 	}
+
 	// fallback to commit
 	if len(g.ShortHash) == 0 {
 		g.HEAD = g.props.GetString(NoCommitsIcon, "\uF594 ")
 		return
 	}
+
 	g.HEAD = fmt.Sprintf("%s%s", g.props.GetString(CommitIcon, "\uF417"), g.ShortHash)
 }
 
@@ -831,4 +852,17 @@ func (g *Git) getSwitchMode(property properties.Property, gitSwitch, mode string
 		return ""
 	}
 	return fmt.Sprintf("%s%s", gitSwitch, mode)
+}
+
+func (g *Git) repoName() string {
+	if !g.IsWorkTree {
+		return platform.Base(g.env, g.convertToLinuxPath(g.realDir))
+	}
+
+	ind := strings.LastIndex(g.workingDir, ".git/worktrees")
+	if ind > -1 {
+		return platform.Base(g.env, g.workingDir[:ind])
+	}
+
+	return ""
 }
