@@ -1,5 +1,6 @@
 {
 	"name": "@script/bluesky",
+	"version": "",
 	"private": false,
 	"license": "MIT",
 	"author": {
@@ -9,11 +10,10 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@atproto/api": "0.12.12",
+		"@atproto/api": "0.12.13",
 		"@octokit/rest": "20.1.1"
 	},
 	"publishConfig": {
 		"access": "public"
-	},
-	"version": ""
+	}
 }
