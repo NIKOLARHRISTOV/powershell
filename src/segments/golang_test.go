@@ -6,8 +6,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/jandedobbeleer/oh-my-posh/src/platform"
-
+	"github.com/jandedobbeleer/oh-my-posh/src/runtime"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -22,7 +21,7 @@ func TestGolang(t *testing.T) {
 	}{
 		{Case: "Go 1.15", ExpectedString: "1.15.8", Version: "go version go1.15.8 darwin/amd64"},
 		{Case: "Go 1.16", ExpectedString: "1.16", Version: "go version go1.16 darwin/amd64"},
-		{Case: "go.mod 1.22.0", ParseModFile: true, HasModFileInParentDir: true, ExpectedString: "1.22.0"},
+		{Case: "go.mod 1.22.3", ParseModFile: true, HasModFileInParentDir: true, ExpectedString: "1.22.3"},
 		{Case: "no go.mod file fallback", ParseModFile: true, ExpectedString: "1.16", Version: "go version go1.16 darwin/amd64"},
 		{
 			Case:                  "invalid go.mod file fallback",
@@ -43,7 +42,7 @@ func TestGolang(t *testing.T) {
 		env, props := getMockedLanguageEnv(params)
 		if tc.ParseModFile {
 			props[ParseModFile] = tc.ParseModFile
-			fileInfo := &platform.FileInfo{
+			fileInfo := &runtime.FileInfo{
 				Path:         "../go.mod",
 				ParentFolder: "./",
 				IsDir:        false,

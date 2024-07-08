@@ -2,6 +2,7 @@
 
 .fleet/
 src/test/umbraco/obj/
+src/keys
 
 # Created by https://www.toptal.com/developers/gitignore/api/node,go,visualstudiocode
 # Edit at https://www.toptal.com/developers/gitignore?templates=node,go,visualstudiocode
@@ -71,6 +72,7 @@ bower_components
 build/Release
 
 # Dependency directories
+node_modules/
 jspm_packages/
 
 # TypeScript v1 declaration files
@@ -101,6 +103,7 @@ typings/
 .yarn-integrity
 
 # dotenv environment variables file
+.env
 .env.test
 
 # parcel-bundler cache (https://parceljs.org/)
@@ -186,6 +189,7 @@ Output/
 
 ### macOS ###
 # General
+.DS_Store
 .AppleDouble
 .LSOverride
 

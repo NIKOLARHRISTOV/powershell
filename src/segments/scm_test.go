@@ -3,9 +3,9 @@ package segments
 import (
 	"testing"
 
-	"github.com/jandedobbeleer/oh-my-posh/src/mock"
-	"github.com/jandedobbeleer/oh-my-posh/src/platform"
 	"github.com/jandedobbeleer/oh-my-posh/src/properties"
+	"github.com/jandedobbeleer/oh-my-posh/src/runtime"
+	"github.com/jandedobbeleer/oh-my-posh/src/runtime/mock"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -186,7 +186,7 @@ func TestHasCommand(t *testing.T) {
 		IsWslSharedPath bool
 		NativeFallback  bool
 	}{
-		{Case: "On Windows", ExpectedCommand: "git.exe", GOOS: platform.WINDOWS},
+		{Case: "On Windows", ExpectedCommand: "git.exe", GOOS: runtime.WINDOWS},
 		{Case: "Cache", ExpectedCommand: "git.exe", Command: "git.exe"},
 		{Case: "Non Windows", ExpectedCommand: "git"},
 		{Case: "Iside WSL2, non shared", ExpectedCommand: "git"},
@@ -195,7 +195,7 @@ func TestHasCommand(t *testing.T) {
 	}
 
 	for _, tc := range cases {
-		env := new(mock.MockedEnvironment)
+		env := new(mock.Environment)
 		env.On("GOOS").Return(tc.GOOS)
 		env.On("InWSLSharedDrive").Return(tc.IsWslSharedPath)
 		env.On("HasCommand", "git").Return(true)

@@ -4,16 +4,16 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/jandedobbeleer/oh-my-posh/src/mock"
-	"github.com/jandedobbeleer/oh-my-posh/src/platform"
 	"github.com/jandedobbeleer/oh-my-posh/src/properties"
+	"github.com/jandedobbeleer/oh-my-posh/src/runtime"
+	"github.com/jandedobbeleer/oh-my-posh/src/runtime/mock"
 
 	"github.com/stretchr/testify/assert"
 )
 
 func TestConnection(t *testing.T) {
 	type connectionResponse struct {
-		Connection *platform.Connection
+		Connection *runtime.Connection
 		Error      error
 	}
 	cases := []struct {
@@ -30,7 +30,7 @@ func TestConnection(t *testing.T) {
 			ConnectionType:  "wifi",
 			Connections: []*connectionResponse{
 				{
-					Connection: &platform.Connection{
+					Connection: &runtime.Connection{
 						Name: "WiFi",
 						Type: "wifi",
 					},
@@ -42,8 +42,8 @@ func TestConnection(t *testing.T) {
 			ConnectionType: "wifi",
 			Connections: []*connectionResponse{
 				{
-					Connection: &platform.Connection{
-						Type: platform.WIFI,
+					Connection: &runtime.Connection{
+						Type: runtime.WIFI,
 					},
 					Error: fmt.Errorf("no connection"),
 				},
@@ -56,14 +56,14 @@ func TestConnection(t *testing.T) {
 			ExpectedEnabled: true,
 			Connections: []*connectionResponse{
 				{
-					Connection: &platform.Connection{
-						Type: platform.WIFI,
+					Connection: &runtime.Connection{
+						Type: runtime.WIFI,
 					},
 					Error: fmt.Errorf("no connection"),
 				},
 				{
-					Connection: &platform.Connection{
-						Type: platform.ETHERNET,
+					Connection: &runtime.Connection{
+						Type: runtime.ETHERNET,
 					},
 				},
 			},
@@ -73,14 +73,14 @@ func TestConnection(t *testing.T) {
 			ConnectionType: "wifi|ethernet",
 			Connections: []*connectionResponse{
 				{
-					Connection: &platform.Connection{
-						Type: platform.WIFI,
+					Connection: &runtime.Connection{
+						Type: runtime.WIFI,
 					},
 					Error: fmt.Errorf("no connection"),
 				},
 				{
-					Connection: &platform.Connection{
-						Type: platform.ETHERNET,
+					Connection: &runtime.Connection{
+						Type: runtime.ETHERNET,
 					},
 					Error: fmt.Errorf("no connection"),
 				},
@@ -88,7 +88,7 @@ func TestConnection(t *testing.T) {
 		},
 	}
 	for _, tc := range cases {
-		env := &mock.MockedEnvironment{}
+		env := &mock.Environment{}
 		for _, con := range tc.Connections {
 			env.On("Connection", con.Connection.Type).Return(con.Connection, con.Error)
 		}

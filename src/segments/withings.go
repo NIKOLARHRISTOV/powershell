@@ -8,11 +8,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/jandedobbeleer/oh-my-posh/src/http"
-	"github.com/jandedobbeleer/oh-my-posh/src/platform"
 	"github.com/jandedobbeleer/oh-my-posh/src/properties"
+	"github.com/jandedobbeleer/oh-my-posh/src/runtime"
+	"github.com/jandedobbeleer/oh-my-posh/src/runtime/http"
 
-	http2 "net/http"
+	httplib "net/http"
 	"net/url"
 )
 
@@ -120,15 +120,18 @@ func (w *withingsAPI) GetSleep() (*WithingsData, error) {
 }
 
 func (w *withingsAPI) getWithingsData(endpoint string, formData url.Values) (*WithingsData, error) {
-	modifiers := func(request *http2.Request) {
-		request.Method = http2.MethodPost
+	modifiers := func(request *httplib.Request) {
+		request.Method = httplib.MethodPost
 		request.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	}
+
 	body := strings.NewReader(formData.Encode())
+
 	data, err := http.OauthResult[*WithingsData](w.OAuthRequest, endpoint, body, modifiers)
 	if data != nil && data.Status != 0 {
 		return nil, errors.New("Withings API error: " + strconv.Itoa(data.Status))
 	}
+
 	return data, err
 }
 
@@ -207,25 +210,34 @@ func (w *Withings) getSleep() bool {
 		if sleepStart.IsZero() || start.Before(sleepStart) {
 			sleepStart = start
 		}
+
 		end := time.Unix(series.Enddate, 0)
 		if sleepStart.IsZero() || start.After(sleepEnd) {
 			sleepEnd = end
 		}
 	}
+
 	sleepHours := sleepEnd.Sub(sleepStart).Hours()
 	w.SleepHours = fmt.Sprintf("%0.1f", sleepHours)
+
 	return true
 }
 
-func (w *Withings) Init(props properties.Properties, env platform.Environment) {
+func (w *Withings) Init(props properties.Properties, env runtime.Environment) {
 	w.props = props
 
 	oauth := &http.OAuthRequest{
 		AccessTokenKey:  WithingsAccessTokenKey,
 		RefreshTokenKey: WithingsRefreshTokenKey,
 		SegmentName:     "withings",
+		AccessToken:     w.props.GetString(properties.AccessToken, ""),
+		RefreshToken:    w.props.GetString(properties.RefreshToken, ""),
+		Request: http.Request{
+			Env:          env,
+			CacheTimeout: w.props.GetInt(properties.CacheTimeout, 30),
+			HTTPTimeout:  w.props.GetInt(properties.HTTPTimeout, properties.DefaultHTTPTimeout),
+		},
 	}
-	oauth.Init(env, props)
 
 	w.api = &withingsAPI{
 		OAuthRequest: oauth,

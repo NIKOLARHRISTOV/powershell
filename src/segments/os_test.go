@@ -3,9 +3,9 @@ package segments
 import (
 	"testing"
 
-	"github.com/jandedobbeleer/oh-my-posh/src/mock"
-	"github.com/jandedobbeleer/oh-my-posh/src/platform"
+	"github.com/jandedobbeleer/oh-my-posh/src/cache"
 	"github.com/jandedobbeleer/oh-my-posh/src/properties"
+	"github.com/jandedobbeleer/oh-my-posh/src/runtime/mock"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -76,12 +76,20 @@ func TestOSInfo(t *testing.T) {
 			GOOS:           "linux",
 			Platform:       "crazy",
 		},
+		{
+			Case:              "show distro name, mapped",
+			ExpectedString:    "<3",
+			DisplayDistroName: true,
+			GOOS:              "linux",
+			Icon:              "<3",
+			Platform:          "love",
+		},
 	}
 	for _, tc := range cases {
-		env := new(mock.MockedEnvironment)
+		env := new(mock.Environment)
 		env.On("GOOS").Return(tc.GOOS)
 		env.On("Platform").Return(tc.Platform)
-		env.On("TemplateCache").Return(&platform.TemplateCache{
+		env.On("TemplateCache").Return(&cache.Template{
 			Env: make(map[string]string),
 			WSL: tc.IsWSL,
 		})

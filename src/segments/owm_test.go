@@ -3,27 +3,25 @@ package segments
 import (
 	"errors"
 	"fmt"
+	"net/url"
 	"testing"
 
-	"github.com/jandedobbeleer/oh-my-posh/src/mock"
+	cache_ "github.com/jandedobbeleer/oh-my-posh/src/cache/mock"
 	"github.com/jandedobbeleer/oh-my-posh/src/properties"
+	"github.com/jandedobbeleer/oh-my-posh/src/runtime/mock"
 
 	"github.com/stretchr/testify/assert"
-	mock2 "github.com/stretchr/testify/mock"
+	testify_ "github.com/stretchr/testify/mock"
 )
 
 const (
-	OWMGEOAPIURL     = "http://api.openweathermap.org/geo/1.0/direct?q=AMSTERDAM,NL&limit=1&appid=key"
-	OWMWEATHERAPIURL = "http://api.openweathermap.org/data/2.5/weather?lat=52.3727598&lon=4.8936041&units=metric&appid=key"
+	OWMWEATHERAPIURL = "https://api.openweathermap.org/data/2.5/weather?q=%s&units=metric&appid=key"
 )
 
 func TestOWMSegmentSingle(t *testing.T) {
 	cases := []struct {
 		Case                string
 		Location            string
-		Latitude            float64
-		Longitude           float64
-		GeoJSONResponse     string
 		WeatherJSONResponse string
 		ExpectedString      string
 		ExpectedEnabled     bool
@@ -33,7 +31,6 @@ func TestOWMSegmentSingle(t *testing.T) {
 		{
 			Case:                "Sunny Display",
 			Location:            "AMSTERDAM,NL",
-			GeoJSONResponse:     `[{"lat": 52.3727598,"lon": 4.8936041}]`,
 			WeatherJSONResponse: `{"weather":[{"icon":"01d"}],"main":{"temp":20}}`,
 			ExpectedString:      "\ue30d (20°C)",
 			ExpectedEnabled:     true,
@@ -41,7 +38,6 @@ func TestOWMSegmentSingle(t *testing.T) {
 		{
 			Case:                "Sunny Display",
 			Location:            "AMSTERDAM,NL",
-			GeoJSONResponse:     `[{"lat": 52.3727598,"lon": 4.8936041}]`,
 			WeatherJSONResponse: `{"weather":[{"icon":"01d"}],"main":{"temp":20}}`,
 			ExpectedString:      "\ue30d (20°C)",
 			ExpectedEnabled:     true,
@@ -50,7 +46,6 @@ func TestOWMSegmentSingle(t *testing.T) {
 		{
 			Case:                "Sunny Display",
 			Location:            "AMSTERDAM,NL",
-			GeoJSONResponse:     `[{"lat": 52.3727598,"lon": 4.8936041}]`,
 			WeatherJSONResponse: `{"weather":[{"icon":"01d"}],"main":{"temp":20}}`,
 			ExpectedString:      "\ue30d",
 			ExpectedEnabled:     true,
@@ -59,24 +54,18 @@ func TestOWMSegmentSingle(t *testing.T) {
 		{
 			Case:                "Config Skip Geocoding Check With Location",
 			Location:            "AMSTERDAM,NL",
-			Latitude:            52.3727598,
-			Longitude:           4.8936041,
 			WeatherJSONResponse: `{"weather":[{"icon":"01d"}],"main":{"temp":20}}`,
 			ExpectedString:      "\ue30d (20°C)",
 			ExpectedEnabled:     true,
 		},
 		{
 			Case:                "Config Skip Geocoding Check Without Location",
-			Latitude:            52.3727598,
-			Longitude:           4.8936041,
 			WeatherJSONResponse: `{"weather":[{"icon":"01d"}],"main":{"temp":20}}`,
-			ExpectedString:      "\ue30d (20°C)",
-			ExpectedEnabled:     true,
+			ExpectedEnabled:     false,
 		},
 		{
 			Case:                "Error in retrieving data",
 			Location:            "AMSTERDAM,NL",
-			GeoJSONResponse:     "nonsense",
 			WeatherJSONResponse: "nonsense",
 			Error:               errors.New("Something went wrong"),
 			ExpectedEnabled:     false,
@@ -84,37 +73,18 @@ func TestOWMSegmentSingle(t *testing.T) {
 	}
 
 	for _, tc := range cases {
-		env := &mock.MockedEnvironment{}
-		var props properties.Map
-		if tc.Latitude != 0 && tc.Longitude != 0 && tc.Location != "" { //nolint: gocritic
-			props = properties.Map{
-				APIKey:                  "key",
-				Location:                tc.Location,
-				Latitude:                tc.Latitude,
-				Longitude:               tc.Longitude,
-				Units:                   "metric",
-				properties.CacheTimeout: 0,
-			}
-		} else if tc.Location != "" {
-			props = properties.Map{
-				APIKey:                  "key",
-				Location:                tc.Location,
-				Units:                   "metric",
-				properties.CacheTimeout: 0,
-			}
-		} else if tc.Latitude != 0 && tc.Longitude != 0 {
-			props = properties.Map{
-				APIKey:                  "key",
-				Latitude:                tc.Latitude,
-				Longitude:               tc.Longitude,
-				Units:                   "metric",
-				properties.CacheTimeout: 0,
-			}
+		env := &mock.Environment{}
+		props := properties.Map{
+			APIKey:                  "key",
+			Location:                tc.Location,
+			Units:                   "metric",
+			properties.CacheTimeout: 0,
 		}
 
-		env.On("HTTPRequest", OWMGEOAPIURL).Return([]byte(tc.GeoJSONResponse), tc.Error)
-		env.On("HTTPRequest", OWMWEATHERAPIURL).Return([]byte(tc.WeatherJSONResponse), tc.Error)
-		env.On("Error", mock2.Anything)
+		location := url.QueryEscape(tc.Location)
+		testURL := fmt.Sprintf(OWMWEATHERAPIURL, location)
+		env.On("HTTPRequest", testURL).Return([]byte(tc.WeatherJSONResponse), tc.Error)
+		env.On("Error", testify_.Anything)
 
 		o := &Owm{
 			props: props,
@@ -232,16 +202,17 @@ func TestOWMSegmentIcons(t *testing.T) {
 			ExpectedIconString: "\ue313",
 		},
 	}
-	geoResponse := `[{"lat": 52.3727598,"lon": 4.8936041}]`
+
+	location := url.QueryEscape("AMSTERDAM,NL")
+	testURL := fmt.Sprintf(OWMWEATHERAPIURL, location)
 
 	for _, tc := range cases {
-		env := &mock.MockedEnvironment{}
+		env := &mock.Environment{}
 
 		weatherResponse := fmt.Sprintf(`{"weather":[{"icon":"%s"}],"main":{"temp":20.3}}`, tc.IconID)
 		expectedString := fmt.Sprintf("%s (20°C)", tc.ExpectedIconString)
 
-		env.On("HTTPRequest", OWMGEOAPIURL).Return([]byte(geoResponse), nil)
-		env.On("HTTPRequest", OWMWEATHERAPIURL).Return([]byte(weatherResponse), nil)
+		env.On("HTTPRequest", testURL).Return([]byte(weatherResponse), nil)
 
 		o := &Owm{
 			props: properties.Map{
@@ -259,13 +230,12 @@ func TestOWMSegmentIcons(t *testing.T) {
 
 	// test with hyperlink enabled
 	for _, tc := range cases {
-		env := &mock.MockedEnvironment{}
+		env := &mock.Environment{}
 
 		weatherResponse := fmt.Sprintf(`{"weather":[{"icon":"%s"}],"main":{"temp":20.3}}`, tc.IconID)
-		expectedString := fmt.Sprintf("«%s (20°C)»(http://api.openweathermap.org/data/2.5/weather?lat=52.3727598&lon=4.8936041&units=metric&appid=key)", tc.ExpectedIconString)
+		expectedString := fmt.Sprintf("«%s (20°C)»(%s)", tc.ExpectedIconString, testURL)
 
-		env.On("HTTPRequest", OWMGEOAPIURL).Return([]byte(geoResponse), nil)
-		env.On("HTTPRequest", OWMWEATHERAPIURL).Return([]byte(weatherResponse), nil)
+		env.On("HTTPRequest", testURL).Return([]byte(weatherResponse), nil)
 
 		o := &Owm{
 			props: properties.Map{
@@ -281,12 +251,13 @@ func TestOWMSegmentIcons(t *testing.T) {
 		assert.Equal(t, expectedString, renderTemplate(env, "«{{.Weather}} ({{.Temperature}}{{.UnitIcon}})»({{.URL}})", o), tc.Case)
 	}
 }
-func TestOWMSegmentFromCache(t *testing.T) {
+
+func TestOWMSegmentFromCacheByGeoName(t *testing.T) {
 	response := fmt.Sprintf(`{"weather":[{"icon":"%s"}],"main":{"temp":20}}`, "01d")
 	expectedString := fmt.Sprintf("%s (20°C)", "\ue30d")
 
-	env := &mock.MockedEnvironment{}
-	cache := &mock.MockedCache{}
+	env := &mock.Environment{}
+	cache := &cache_.Cache{}
 	o := &Owm{
 		props: properties.Map{
 			APIKey:   "key",
@@ -296,7 +267,7 @@ func TestOWMSegmentFromCache(t *testing.T) {
 		env: env,
 	}
 	cache.On("Get", "owm_response").Return(response, true)
-	cache.On("Get", "owm_url").Return("http://api.openweathermap.org/data/2.5/weather?lat=52.3727598&lon=4.8936041&units=metric&appid=key", true)
+	cache.On("Get", "owm_url").Return("http://api.openweathermap.org/data/2.5/weather?q=AMSTERDAM,NL&units=metric&appid=key", true)
 	cache.On("Set").Return()
 	env.On("Cache").Return(cache)
 
@@ -304,12 +275,12 @@ func TestOWMSegmentFromCache(t *testing.T) {
 	assert.Equal(t, expectedString, renderTemplate(env, o.Template(), o), "should return the cached response")
 }
 
-func TestOWMSegmentFromCacheWithHyperlink(t *testing.T) {
+func TestOWMSegmentFromCacheWithHyperlinkByGeoName(t *testing.T) {
 	response := fmt.Sprintf(`{"weather":[{"icon":"%s"}],"main":{"temp":20}}`, "01d")
-	expectedString := fmt.Sprintf("«%s (20°C)»(http://api.openweathermap.org/data/2.5/weather?lat=52.3727598&lon=4.8936041&units=metric&appid=key)", "\ue30d")
+	expectedString := fmt.Sprintf("«%s (20°C)»(http://api.openweathermap.org/data/2.5/weather?q=AMSTERDAM,NL&units=metric&appid=key)", "\ue30d")
 
-	env := &mock.MockedEnvironment{}
-	cache := &mock.MockedCache{}
+	env := &mock.Environment{}
+	cache := &cache_.Cache{}
 
 	o := &Owm{
 		props: properties.Map{
@@ -320,7 +291,7 @@ func TestOWMSegmentFromCacheWithHyperlink(t *testing.T) {
 		env: env,
 	}
 	cache.On("Get", "owm_response").Return(response, true)
-	cache.On("Get", "owm_url").Return("http://api.openweathermap.org/data/2.5/weather?lat=52.3727598&lon=4.8936041&units=metric&appid=key", true)
+	cache.On("Get", "owm_url").Return("http://api.openweathermap.org/data/2.5/weather?q=AMSTERDAM,NL&units=metric&appid=key", true)
 	cache.On("Set").Return()
 	env.On("Cache").Return(cache)
 

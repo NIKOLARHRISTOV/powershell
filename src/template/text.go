@@ -7,8 +7,9 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/jandedobbeleer/oh-my-posh/src/platform"
+	"github.com/jandedobbeleer/oh-my-posh/src/cache"
 	"github.com/jandedobbeleer/oh-my-posh/src/regex"
+	"github.com/jandedobbeleer/oh-my-posh/src/runtime"
 )
 
 const (
@@ -23,34 +24,36 @@ var (
 	knownVariables = []string{
 		"Root",
 		"PWD",
+		"AbsolutePWD",
 		"Folder",
 		"Shell",
 		"ShellVersion",
 		"UserName",
 		"HostName",
-		"Env",
-		"Data",
 		"Code",
+		"Env",
 		"OS",
 		"WSL",
-		"Segments",
-		"Templates",
 		"PromptCount",
+		"Segments",
+		"SHLVL",
+		"Templates",
 		"Var",
+		"Data",
 	}
 )
 
 type Text struct {
 	Template        string
 	Context         any
-	Env             platform.Environment
+	Env             runtime.Environment
 	TemplatesResult string
 }
 
 type Data any
 
 type Context struct {
-	*platform.TemplateCache
+	*cache.Template
 
 	// Simple container to hold ANY object
 	Data
@@ -60,27 +63,33 @@ type Context struct {
 func (c *Context) init(t *Text) {
 	c.Data = t.Context
 	c.Templates = t.TemplatesResult
-	if cache := t.Env.TemplateCache(); cache != nil {
-		c.TemplateCache = cache
+	if tmplCache := t.Env.TemplateCache(); tmplCache != nil {
+		c.Template = tmplCache
 		return
 	}
 }
 
 func (t *Text) Render() (string, error) {
 	t.Env.DebugF("Rendering template: %s", t.Template)
+
 	if !strings.Contains(t.Template, "{{") || !strings.Contains(t.Template, "}}") {
 		return t.Template, nil
 	}
+
 	t.cleanTemplate()
+
 	tmpl, err := template.New(t.Template).Funcs(funcMap()).Parse(t.Template)
 	if err != nil {
 		t.Env.Error(err)
 		return "", errors.New(InvalidTemplate)
 	}
+
 	context := &Context{}
 	context.init(t)
+
 	buffer := new(bytes.Buffer)
 	defer buffer.Reset()
+
 	err = tmpl.Execute(buffer, context)
 	if err != nil {
 		t.Env.Error(err)
@@ -90,10 +99,12 @@ func (t *Text) Render() (string, error) {
 		}
 		return "", errors.New(msg["MSG"])
 	}
+
 	text := buffer.String()
 	// issue with missingkey=zero ignored for map[string]any
 	// https://github.com/golang/go/issues/24963
 	text = strings.ReplaceAll(text, "<no value>", "")
+
 	return text, nil
 }
 
@@ -101,19 +112,23 @@ func (t *Text) cleanTemplate() {
 	isKnownVariable := func(variable string) bool {
 		variable = strings.TrimPrefix(variable, ".")
 		splitted := strings.Split(variable, ".")
+
 		if len(splitted) == 0 {
 			return true
 		}
+
 		variable = splitted[0]
 		// check if alphanumeric
 		if !regex.MatchString(`^[a-zA-Z0-9]+$`, variable) {
 			return true
 		}
+
 		for _, b := range knownVariables {
 			if variable == b {
 				return true
 			}
 		}
+
 		return false
 	}
 
@@ -164,7 +179,7 @@ func (t *Text) cleanTemplate() {
 				// as we can't provide a clean way to access the list
 				// of segments, we need to replace the property with
 				// the list of segments so they can be accessed directly
-				property = strings.Replace(property, ".Segments", ".Segments.SimpleMap", 1)
+				property = strings.Replace(property, ".Segments", ".Segments.ToSimple", 1)
 				result += property
 			} else {
 				// check if we have the same property in Data

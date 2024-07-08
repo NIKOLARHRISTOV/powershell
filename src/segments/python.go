@@ -7,8 +7,8 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/jandedobbeleer/oh-my-posh/src/platform"
 	"github.com/jandedobbeleer/oh-my-posh/src/properties"
+	"github.com/jandedobbeleer/oh-my-posh/src/runtime"
 )
 
 type Python struct {
@@ -28,7 +28,7 @@ func (p *Python) Template() string {
 	return " {{ if .Error }}{{ .Error }}{{ else }}{{ if .Venv }}{{ .Venv }} {{ end }}{{ .Full }}{{ end }} "
 }
 
-func (p *Python) Init(props properties.Properties, env platform.Environment) {
+func (p *Python) Init(props properties.Properties, env runtime.Environment) {
 	p.language = language{
 		env:         env,
 		props:       props,
@@ -48,6 +48,11 @@ func (p *Python) Init(props properties.Properties, env platform.Environment) {
 			},
 			{
 				executable: "python3",
+				args:       []string{"--version"},
+				regex:      `(?:Python (?P<version>((?P<major>[0-9]+).(?P<minor>[0-9]+).(?P<patch>[0-9]+))))`,
+			},
+			{
+				executable: "py",
 				args:       []string{"--version"},
 				regex:      `(?:Python (?P<version>((?P<major>[0-9]+).(?P<minor>[0-9]+).(?P<patch>[0-9]+))))`,
 			},
@@ -88,10 +93,10 @@ func (p *Python) loadContext() {
 			continue
 		}
 
-		name := platform.Base(p.language.env, venv)
+		name := runtime.Base(p.language.env, venv)
 		if folderNameFallback && slices.Contains(defaultVenvNames, name) {
 			venv = strings.TrimSuffix(venv, name)
-			name = platform.Base(p.language.env, venv)
+			name = runtime.Base(p.language.env, venv)
 		}
 
 		if p.canUseVenvName(name) {

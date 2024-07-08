@@ -5,8 +5,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/jandedobbeleer/oh-my-posh/src/ansi"
-	"github.com/jandedobbeleer/oh-my-posh/src/platform"
+	"github.com/jandedobbeleer/oh-my-posh/src/cache"
+	"github.com/jandedobbeleer/oh-my-posh/src/color"
+	"github.com/jandedobbeleer/oh-my-posh/src/runtime"
 
 	color2 "github.com/gookit/color"
 	"github.com/spf13/cobra"
@@ -44,8 +45,8 @@ This command is used to get the value of the following variables:
 			return
 		}
 
-		env := &platform.Shell{
-			CmdFlags: &platform.Flags{
+		env := &runtime.Terminal{
+			CmdFlags: &runtime.Flags{
 				Shell: shellName,
 			},
 		}
@@ -56,7 +57,7 @@ This command is used to get the value of the following variables:
 		case "shell":
 			fmt.Println(env.Shell())
 		case "accent":
-			rgb, err := ansi.GetAccentColor(env)
+			rgb, err := color.GetAccentColor(env)
 			if err != nil {
 				fmt.Println("error getting accent color:", err.Error())
 				return
@@ -64,8 +65,7 @@ This command is used to get the value of the following variables:
 			accent := color2.RGB(rgb.R, rgb.G, rgb.B)
 			fmt.Println("#" + accent.Hex())
 		case "toggles":
-			cache := env.Cache()
-			togglesCache, _ := cache.Get(platform.TOGGLECACHE)
+			togglesCache, _ := env.Cache().Get(cache.TOGGLECACHE)
 			var toggles []string
 			if len(togglesCache) != 0 {
 				toggles = strings.Split(togglesCache, ",")
@@ -91,7 +91,7 @@ This command is used to get the value of the following variables:
 	},
 }
 
-func init() { //nolint:gochecknoinits
+func init() {
 	RootCmd.AddCommand(getCmd)
 	getCmd.Flags().StringVar(&shellName, "shell", "", "the shell to print for")
 }

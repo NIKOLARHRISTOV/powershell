@@ -1,5 +1,6 @@
 # Make sure to check the documentation at https://goreleaser.com
 # yaml-language-server: $schema=https://goreleaser.com/static/schema.json
+version: 2
 before:
   hooks:
     - go mod tidy
@@ -36,14 +37,15 @@ builds:
         goarch: arm
       - goos: windows
         goarch: arm
-    hooks:
-      post:
-      - sh -c "cosign sign-blob --key $COSIGN_KEY_LOCATION {{ .Path }} > dist/{{ .Name }}.sig"
 archives:
   - id: oh-my-posh
     format: binary
     name_template: "posh-{{ .Os }}-{{ .Arch }}"
 checksum:
   name_template: 'checksums.txt'
+signs:
+  - cmd: openssl
+    args: [ "pkeyutl", "-sign", "-inkey", "{{ .Env.SIGNING_KEY_LOCATION }}", "-out", "${artifact}.sig", "-rawin", "-in", "${artifact}" ]
+    artifacts: checksum
 changelog:
-  skip: true
+  disable: true

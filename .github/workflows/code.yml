@@ -20,14 +20,14 @@ jobs:
         working-directory: ${{ github.workspace }}/src
     steps:
     - name: Install Go
-      uses: actions/setup-go@0c52d547c9bc32b1aa3301fd7a9cb496313a4491
+      uses: actions/setup-go@cdcb36043654635271a94b9a6d1392de5bb323a7
       with:
         go-version: 1.21
         cache-dependency-path: src/go.sum
     - name: Checkout code
-      uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b
+      uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332
     - name: Golang CI
-      uses: golangci/golangci-lint-action@9d1e0624a798bb64f6c3cea93db47765312263dc
+      uses: golangci/golangci-lint-action@a4f60bb28d35aeee14e6880718e0c85ff1882e64
       with:
         working-directory: src
     - name: Unit Tests

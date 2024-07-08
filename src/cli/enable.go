@@ -3,7 +3,7 @@ package cli
 import (
 	"fmt"
 
-	"github.com/jandedobbeleer/oh-my-posh/src/platform"
+	"github.com/jandedobbeleer/oh-my-posh/src/runtime"
 	"github.com/jandedobbeleer/oh-my-posh/src/upgrade"
 
 	"github.com/spf13/cobra"
@@ -37,13 +37,13 @@ var enableCmd = &cobra.Command{
 	},
 }
 
-func init() { //nolint:gochecknoinits
+func init() {
 	RootCmd.AddCommand(enableCmd)
 }
 
 func toggleFeature(cmd *cobra.Command, feature string, enable bool) {
-	env := &platform.Shell{
-		CmdFlags: &platform.Flags{
+	env := &runtime.Terminal{
+		CmdFlags: &runtime.Flags{
 			Shell: shellName,
 		},
 	}
@@ -55,6 +55,7 @@ func toggleFeature(cmd *cobra.Command, feature string, enable bool) {
 			env.Cache().Delete(upgrade.CACHEKEY)
 			return
 		}
+
 		env.Cache().Set(upgrade.CACHEKEY, "disabled", -1)
 	default:
 		_ = cmd.Help()
