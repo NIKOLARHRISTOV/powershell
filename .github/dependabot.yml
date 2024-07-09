@@ -1,16 +1,20 @@
 version: 2
+enable-beta-ecosystems: true
+
 updates:
+    - package-ecosystem: "github-actions"
+      directory: "/"
+      schedule:
+          interval: "daily"
 
-  # Maintain dependencies for GitHub Actions
-  - package-ecosystem: "github-actions"
-    directory: "/"
-    target-branch: "main"
-    schedule:
-      interval: "daily"
+    - package-ecosystem: "npm"
+      directory: "/scripts/bluesky"
+      schedule:
+          interval: "daily"
+      versioning-strategy: increase
 
-  # Maintain dependencies for Go modules
-  - package-ecosystem: "gomod"
-    directory: "/src"
-    target-branch: "main"
-    schedule:
-      interval: "daily"
+    - package-ecosystem: "nuget"
+      directory: "/src/test/umbraco"
+      schedule:
+          interval: "daily"
+      versioning-strategy: increase
