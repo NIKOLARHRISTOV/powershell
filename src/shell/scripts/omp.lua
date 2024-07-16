@@ -300,7 +300,7 @@ end
 
 function ohmyposh_space(rl_buffer)
     -- Insert space first, in case it might affect the tip word, e.g. it could
-    -- split "gitcommit" into "git commit".
+    -- split "gitcommit" into "git ecommit".
     rl_buffer:insert(" ")
     -- Get the first word of command line as tip.
     local tip_command = rl_buffer:getbuffer():gsub("^%s*([^%s]*).*$", "%1")

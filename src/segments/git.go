@@ -675,7 +675,7 @@ func (g *Git) setGitHEADContext() {
 
 	// sequencer status
 	// see if a cherry-pick or revert is in progress, if the user has committed a
-	// conflict resolution with 'git commit' in the middle of a sequence of picks or
+	// conflict resolution with 'git ecommit' in the middle of a sequence of picks or
 	// reverts then CHERRY_PICK_HEAD/REVERT_HEAD will not exist so we have to read
 	// the todo file.
 	if g.hasGitFile("CHERRY_PICK_HEAD") {
