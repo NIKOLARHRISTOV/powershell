@@ -14,7 +14,7 @@
 		"@octokit/rest": "21.0.1"
 	},
 	"publishConfig": {
-		"provenance": true,
-		"access": "public"
+		"access": "public",
+		"provenance": true
 	}
 }
