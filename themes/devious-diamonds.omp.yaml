@@ -42,8 +42,8 @@ blocks:
             powerline_symbol: 
             background: magenta
             foreground: black
-            template:
-                " {{ if .SSHSession }}󰌘 {{ end }}{{ .UserName }}@{{ .HostName }}
+            template: " {{ if .SSHSession }}󰌘 {{ end }}{{ .UserName }}@{{
+                .HostName }}
                 "
           - type: angular
             style: powerline
