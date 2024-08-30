@@ -10,7 +10,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@atproto/api": "0.13.3",
+		"@atproto/api": "0.13.5",
 		"@octokit/rest": "21.0.2"
 	},
 	"publishConfig": {
