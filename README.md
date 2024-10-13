@@ -8,15 +8,15 @@
 </p>
 <!-- markdownlint-enable -->
 
-![MIT license badge](https://img.shields.io/github/license/JanDeDobbeleer/oh-my-posh.svg)
+![`MIT license badge`](https://img.shields.io/github/license/JanDeDobbeleer/oh-my-posh.svg)
 
-![Build Status badge](https://img.shields.io/github/actions/workflow/status/jandedobbeleer/oh-my-posh/release.yml?branch=main)
+![`Build Status badge`](https://img.shields.io/github/actions/workflow/status/jandedobbeleer/oh-my-posh/release.yml?branch=main)
 
 [![Release version number badge][release-badge]][release]
 
 [![Documentation link badge ohmyposh.dev][docs-badge]][docs]
 
-![Number of GitHub Downloads badge](https://img.shields.io/github/downloads/jandedobbeleer/oh-my-posh/total?color=pink&label=GitHub%20Downloads)
+![`Number of GitHub Downloads badge`](https://img.shields.io/github/downloads/jandedobbeleer/oh-my-posh/total?color=pink&label=GitHub%20Downloads)
 
 This repo was made with love using GitKraken.
 
@@ -26,12 +26,12 @@ This repo was made with love using GitKraken.
 
 ## Join the community
 
-![Mastodon badge](https://img.shields.io/mastodon/follow/110275292073181892?domain=https%3A%2F%2Fhachyderm.io&label=Mastodon&style=social)
+![`Mastodon badge`](https://img.shields.io/mastodon/follow/110275292073181892?domain=https%3A%2F%2Fhachyderm.io&label=Mastodon&style=social)
 
-![Discord badge](https://img.shields.io/discord/1023597603331526656)
+![`Discord badge`](https://img.shields.io/discord/1023597603331526656)
 
 What started as the offspring of
-[oh-my-posh2](https://github.com/JanDeDobbeleer/oh-my-posh2) for PowerShell
+[`oh-my-posh2`](https://github.com/JanDeDobbeleer/oh-my-posh2) for PowerShell
 resulted in a cross platform, highly customizable and extensible prompt theme
 engine. After 4 years of working on oh-my-posh, a modern and more efficient tool
 was needed to suit my personal needs.
@@ -61,21 +61,21 @@ donation?
 
 ## Reviews
 
--   [Repo review](https://repo-reviews.github.io//reviews/2023-06-21_TameWizard_JanDeDobbeleer_oh-my-posh)
-    by [TameWizard](https://github.com/TameWizard)
+-   [`Repo review`](https://repo-reviews.github.io//reviews/2023-06-21_TameWizard_JanDeDobbeleer_oh-my-posh)
+    by [`TameWizard`](https://github.com/TameWizard)
 
 ## Thanks
 
--   [Chris Benti](https://github.com/chrisbenti/PS-Config) providing the first
+-   [`Chris Benti`](https://github.com/chrisbenti/PS-Config) providing the first
     influence to start oh-my-posh
--   [Keith Dahlby](https://github.com/dahlbyk/posh-git) for creating posh-git
+-   [`Keith Dahlby`](https://github.com/dahlbyk/posh-git) for creating posh-git
     and making life more enjoyable
--   [Robby Russell](https://github.com/ohmyzsh/ohmyzsh) for creating oh-my-zsh,
+-   [`Robby Russell`](https://github.com/ohmyzsh/ohmyzsh) for creating oh-my-zsh,
     without him this would probably not be here
--   [Janne Mareike Koschinski](https://github.com/justjanne) for providing
+-   [`Janne Mareike Koschinski`](https://github.com/justjanne) for providing
     information on how to get certain information using Go (and the amazing
-    [README](https://github.com/justjanne/powerline-go))
--   [Starship](https://github.com/starship/starship/blob/master/src/init/mod.rs)
+    [`README`](https://github.com/justjanne/powerline-go))
+-   [`Starship`](https://github.com/starship/starship/blob/master/src/init/mod.rs)
     for doing great things
 
 [kraken]:
