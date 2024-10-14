@@ -2,11 +2,11 @@
 
 ## Supported Versions
 
-Only the latest [release][releases] is supported.
+Only the latest [`release`][releases] is supported.
 
 ## Reporting a Vulnerability
 
-Vulnerabilities can be sent in via [email][email] to avoid publishing in the
+Vulnerabilities can be sent in via [`email`][email] to avoid publishing in the
 open. Oh My Posh does not have a bounty program, neither do we respond to bug
 bounties.
 

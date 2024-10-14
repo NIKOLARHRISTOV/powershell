@@ -3,16 +3,16 @@
 Note we have a code of conduct, please follow it in all your interactions with
 the project.
 
-Ensure you've read through the [documentation][docs] so you understand the core
+Ensure you've read through the [`documentation`][docs] so you understand the core
 concepts of the project. If you're looking to get familiar with go, following
-the getting started [guide][guide] can be a good starting point.
+the getting started [`guide`][guide] can be a good starting point.
 
 ## Pull Request Process
 
 1. Ensure any dependencies or build artifacts are removed/ignored before
    creating a commit.
-2. Commits follow the [conventional commits][cc] guidelines. (You can [look up
-   the supported _types_][cc-types] along with an explanation [here][cc-types])
+2. Commits follow the [`conventional commits`][cc] guidelines. (You can [look up
+   the supported _types_][cc-types] along with an explanation [`here`][cc-types])
 3. Update the documentation with details of changes to the functionality, this
    includes new segments or core functionality.
 4. Pull Requests are merged once all checks pass and a project maintainer has
@@ -26,8 +26,8 @@ development environment.
 We have a `.devcontainer/devcontainer.json` file, meaning we are compatible
 with:
 
--   [![Open in GitHub Codespaces][codespaces-badge]][codespaces-link], or
--   the [Visual Studio Code Remote - Containers][devcontainer-ext] extension.
+-   [![Open in GitHub Codespaces][`codespaces-badge]`][codespaces-link], or
+-   the [`Visual Studio Code Remote - Containers`][devcontainer-ext] extension.
 
 This Linux environment includes all shells supported by oh-my-posh, including
 Bash, ZSH, Fish and PowerShell, the latter of which is the default.
@@ -37,7 +37,7 @@ Bash, ZSH, Fish and PowerShell, the latter of which is the default.
 1. Open the `.devcontainer/devcontainer.json` file and in the "_build_" section
    modify:
 
-    - `TZ`: with [your own timezone][timezones]
+    - `TZ`: with [`your own timezone`][timezones]
 
 2. Summon the Command Panel (Ctrl+Shift+P) and select
    `Codespaces: Rebuild Container` to rebuild your devcontainer. (This should

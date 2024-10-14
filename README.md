@@ -12,15 +12,15 @@
 
 ![`Build Status badge`](https://img.shields.io/github/actions/workflow/status/jandedobbeleer/oh-my-posh/release.yml?branch=main)
 
-[![Release version number badge][release-badge]][release]
+[![Release version number badge][`release-badge]`][release]
 
-[![Documentation link badge ohmyposh.dev][docs-badge]][docs]
+[![Documentation link badge ohmyposh.dev][`docs-badge]`][docs]
 
 ![`Number of GitHub Downloads badge`](https://img.shields.io/github/downloads/jandedobbeleer/oh-my-posh/total?color=pink&label=GitHub%20Downloads)
 
 This repo was made with love using GitKraken.
 
-[![GitKraken shield][kraken]][kraken-ref]
+[![GitKraken shield][`kraken]`][kraken-ref]
 
 <!-- markdownlint-disable first-header-h1 -->
 
@@ -38,12 +38,12 @@ was needed to suit my personal needs.
 
 ## :heart: Support :heart:
 
-[![Swag][swag-badge]][swag] - Show your love with a t-shirt!
+[![Swag][`swag-badge]`][swag] - Show your love with a t-shirt!
 
-[![GitHub][github-badge]][github-sponsors] - One time support, or a recurring
+[![GitHub][`github-badge]`][github-sponsors] - One time support, or a recurring
 donation?
 
-[![Ko-Fi][kofi-badge]][kofi] - No coffee, no code.
+[![Ko-Fi][`kofi-badge]`][kofi] - No coffee, no code.
 
 ## Features
 
@@ -57,7 +57,7 @@ donation?
 
 ## Documentation
 
-[![Documentation][docs-badge]][docs]
+[![Documentation][`docs-badge]`][docs]
 
 ## Reviews
 
