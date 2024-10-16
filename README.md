@@ -8,8 +8,6 @@
 </p>
 <!-- markdownlint-enable -->
 
-![`MIT license badge`](https://img.shields.io/github/license/JanDeDobbeleer/oh-my-posh.svg)
-
 ![`Build Status badge`](https://img.shields.io/github/actions/workflow/status/jandedobbeleer/oh-my-posh/release.yml?branch=main)
 
 [![Release version number badge][`release-badge]`][release]
