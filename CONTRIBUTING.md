@@ -59,14 +59,14 @@ Should you somehow mess up your devcontainer's OMP install catastrophically,
 remember that if you do `Codespaces: Rebuild Container` again, you'll be back to
 the latest stable release.
 
-[docs]: https://ohmyposh.dev/docs
-[guide]: https://ohmyposh.dev/docs/contributing/started
-[cc]: https://www.conventionalcommits.org/en/v1.0.0/#summary
+[docs]: HTTPS://ohmyposh.dev/docs
+[guide]: HTTPS://ohmyposh.dev/docs/contributing/started
+[cc]: HTTPS://www.conventionalcommits.org/en/v1.0.0/#summary
 [cc-types]:
-	https://github.com/JanDeDobbeleer/oh-my-posh/blob/main/.commitlintrc.yml#L23-L33
-[codespaces-badge]: https://github.com/codespaces/badge.svg
+	HTTPS://github.com/JanDeDobbeleer/oh-my-posh/blob/main/.commitlintrc.yml#L23-L33
+[codespaces-badge]: HTTPS://github.com/codespaces/badge.svg
 [codespaces-link]:
-	https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=175405157
+	HTTPS://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=175405157
 [devcontainer-ext]:
-	https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers
-[timezones]: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+	HTTPS://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers
+[timezones]: HTTPS://en.wikipedia.org/wiki/List_of_tz_database_time_zones
