@@ -2,7 +2,7 @@
 <p align="center">
   <img
     width="400"
-    src="HTTPS://raw.githubusercontent.com/jandedobbeleer/oh-my-posh/main/website/static/img/logo.png"
+    src="https://raw.githubusercontent.com/jandedobbeleer/oh-my-posh/main/website/static/img/logo.png"
     alt="Oh My Posh logo – Prompt theme engine for any shell"
   />
 </p>
