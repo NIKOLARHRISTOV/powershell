@@ -12,8 +12,8 @@
 Tips:
 
 If you're not comfortable with working with Git,
-we're working a guide (HTTPS://ohmyposh.dev/docs/contributing/git) to help you out.
-Oh My Posh advises GitKraken (HTTPS://www.gitkraken.com/invite/nQmDPR9D) as your preferred cross platform Git GUI power tool.
+we're working a guide (https://ohmyposh.dev/docs/contributing/git) to help you out.
+Oh My Posh advises GitKraken (https://www.gitkraken.com/invite/nQmDPR9D) as your preferred cross platform Git GUI power tool.
 
 -->
 
