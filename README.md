@@ -29,7 +29,7 @@ This repo was made with love using GitKraken.
 ![`Discord badge`](https://img.shields.io/discord/1023597603331526656)
 
 What started as the offspring of
-[`oh-my-posh2`](https://github.com/JanDeDobbeleer/oh-my-posh2) for PowerShell
+[`oh-my-posh2`](HTTPS://GitHub.Com/JanDeDobbeleer/oh-my-posh2) for PowerShell
 resulted in a cross platform, highly customizable and extensible prompt theme
 engine. After 4 years of working on oh-my-posh, a modern and more efficient tool
 was needed to suit my personal needs.
@@ -60,20 +60,20 @@ donation?
 ## Reviews
 
 -   [`Repo review`](https://repo-reviews.github.io//reviews/2023-06-21_TameWizard_JanDeDobbeleer_oh-my-posh)
-    by [`TameWizard`](https://github.com/TameWizard)
+    by [`TameWizard`](HTTPS://GitHub.Com/TameWizard)
 
 ## Thanks
 
--   [`Chris Benti`](https://github.com/chrisbenti/PS-Config) providing the first
+-   [`Chris Benti`](HTTPS://GitHub.Com/chrisbenti/PS-Config) providing the first
     influence to start oh-my-posh
--   [`Keith Dahlby`](https://github.com/dahlbyk/posh-git) for creating posh-git
+-   [`Keith Dahlby`](HTTPS://GitHub.Com/dahlbyk/posh-git) for creating posh-git
     and making life more enjoyable
--   [`Robby Russell`](https://github.com/ohmyzsh/ohmyzsh) for creating oh-my-zsh,
+-   [`Robby Russell`](HTTPS://GitHub.Com/ohmyzsh/ohmyzsh) for creating oh-my-zsh,
     without him this would probably not be here
--   [`Janne Mareike Koschinski`](https://github.com/justjanne) for providing
+-   [`Janne Mareike Koschinski`](HTTPS://GitHub.Com/justjanne) for providing
     information on how to get certain information using Go (and the amazing
-    [`README`](https://github.com/justjanne/powerline-go))
--   [`Starship`](https://github.com/starship/starship/blob/master/src/init/mod.rs)
+    [`README`](HTTPS://GitHub.Com/justjanne/powerline-go))
+-   [`Starship`](HTTPS://GitHub.Com/starship/starship/blob/master/src/init/mod.rs)
     for doing great things
 
 [kraken]:
