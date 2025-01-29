@@ -18,7 +18,7 @@ jobs:
         working-directory: ${{ github.workspace }}/packages/scoop
     steps:
     - name: Checkout code 👋
-      uses: actions/setup-node@v4.1.0
+      uses: actions/setup-node@v4.2.0
     - name: Update Template ✍️
       run: |
         ./build.ps1 -Version ${{ github.event.inputs.version }}
