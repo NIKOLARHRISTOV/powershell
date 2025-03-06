@@ -27,7 +27,7 @@ jobs:
     - name: Checkout code
       uses: actions/setup-node@v4.2.0
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@v3.25.12
+      uses: github/codeql-action/init@v3.28.10
       with:
         languages: go
     - name: Autobuild
